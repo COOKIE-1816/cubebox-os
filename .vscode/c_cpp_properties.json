@@ -12,6 +12,7 @@
                 "databaseFilename": "${default}",
                 "path": [
                     "${default}",
+                    "${workspaceFolder}/**",
                     "./inc"
                 ]
             },

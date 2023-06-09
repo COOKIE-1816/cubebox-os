@@ -1,5 +1,13 @@
+//#pragma once
+
 #ifndef _CB_VGA_H
 #define _CB_VGA_H
+
+#include <stdint.h>
+#include <stddef.h>
+
+static const size_t VGA_WIDTH = 80;
+static const size_t VGA_HEIGHT = 25;
 
 enum vga_color {
 	VGA_COLOR_BLACK = 0,
@@ -19,5 +27,15 @@ enum vga_color {
 	VGA_COLOR_LIGHT_BROWN = 14,
 	VGA_COLOR_WHITE = 15,
 };
+
+static inline uint8_t vga_entryColor(enum vga_color foreground, enum vga_color background) {
+	return foreground | background << 4;
+}
+ 
+typedef unsigned char uc;
+
+static inline uint16_t vga_entry(uc str, uint8_t color) {
+	return (uint16_t) str | (uint16_t) color << 8;
+}
 
 #endif

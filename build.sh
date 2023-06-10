@@ -13,8 +13,14 @@ echo " -   Phase:           $phase"
 echo " -   ISO Location:    $isofile"
 echo "------------------------------------------------"
 
-echo STEP 1: Assemble boot sector
+mkdir -p build/obj/drivers
+mkdir -p build/obj/libs
+mkdir -p build/obj/kernel/crt
+
+echo STEP 1: Assemble assembly files
 i686-elf-as boot.s -o build/obj/boot.s.o
+i686-elf-as kernel/crt/crti.s -o build/obj/kernel/crt/crti.s.o
+i686-elf-as kernel/crt/crtn.s -o build/obj/kernel/crt/crtn.s.o
 
 echo STEP 2: Compile sources
 i686-elf-gcc -c libs/stringt.c -o build/obj/libs/stringt.c.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra -m32 -I ./ -I libs

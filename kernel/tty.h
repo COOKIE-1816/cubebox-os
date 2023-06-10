@@ -14,6 +14,7 @@ extern void tty_write(String data, size_t size);
 extern void tty_writeString(String data);
 extern void tty_breakLine();
 extern void tty_scroll(int rowsAmount);
+extern void tty_colored(uint8_t color, String data);
 //void printc(String data);
 
 #endif

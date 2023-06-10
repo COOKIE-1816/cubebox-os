@@ -75,3 +75,12 @@ void tty_write(String data, size_t size) {
 void tty_writeString(String data) {
 	tty_write(data, strlen(data));
 }
+
+void tty_colored(uint8_t color, String data) {
+    uint8_t prc = tty_color;
+
+    tty_setColor(color);
+    tty_writeString(data);
+
+    tty_setColor(prc);
+}

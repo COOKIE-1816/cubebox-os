@@ -5,11 +5,7 @@
 #include <stdint.h>
 #include <stddef.h>
 
-size_t tty_row;
-size_t tty_column;
-uint8_t tty_color;
-uint16_t* tty_buffer;
- 
+
 extern void tty_initialize(void);
 extern void tty_setColor(uint8_t color);
 extern void tty_putEntryAt(char c, uint8_t color, size_t x, size_t y);

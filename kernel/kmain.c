@@ -8,9 +8,11 @@ void kernel_initializeKernelParticipals() {
 
 void kernel_main(void) {
     kernel_initializeKernelParticipals();
-    
+
     tty_writeString("CubeBox, kernel v0.0.1.0a - Alpha phase.\n");
-    tty_writeString("Copyright (C) Vaclav Hajsman 2023\n\n");
+
+    for(int s = 0; s < 30; s++)
+        tty_writeString("Copyright (C) Vaclav Hajsman 2023\n\n");
     
     tty_writeString(unstableWarning);
 }

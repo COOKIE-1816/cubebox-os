@@ -1,7 +1,13 @@
 #include "kernel/tty.h"
 #include "drivers/vga.h"
-
+#include <stdint.h>
+#include <stddef.h> 
 //static uint16_t* const VGA_MEMORY = (uint16_t*) 0xB8000;
+
+size_t tty_row;
+size_t tty_column;
+uint8_t tty_color;
+uint16_t* tty_buffer;
  
 void tty_scroll(int rowsAmount) {
     for(int _r = 0; _r < rowsAmount; _r++) {

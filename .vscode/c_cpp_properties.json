@@ -4,7 +4,9 @@
             "name": "CUBEBOX",
             "includePath": [
                 "${default}",
-                "./inc"
+                "${workspaceFolder}/**",
+                "./",
+                "./libs"
             ],
             "compileCommands": "${default}",
             "browse": {
@@ -13,7 +15,8 @@
                 "path": [
                     "${default}",
                     "${workspaceFolder}/**",
-                    "./inc"
+                    "./",
+                    "./libs"
                 ]
             },
             "intelliSenseMode": "${default}",

@@ -3,7 +3,11 @@
 #include "kernel/gdt/gdt.h"
 #include "kernel/gdt/gdtdef.h"
 
-String unstableWarning = "WARNING: UNSTABLE RELEASE, USE AT YOUR OWN RISK!\n";
+#ifndef KERNEL_REL_STABLE
+    String unstableWarning = "WARNING: UNSTABLE RELEASE, USE AT YOUR OWN RISK!\n";
+#else
+    String unstableWarning = "";
+#endif
 
 void drawLine() {
     for(size_t i = 0; i < VGA_WIDTH; i++)
@@ -18,7 +22,7 @@ void kernel_main(void) {
     kernel_initializeKernelParticipals();
 
     tty_writeString("CubeBox, kernel v0.0.1.0a - Alpha phase.\n");
-    tty_writeString("Copyright (C) Vaclav Hajsman 2023\n");
+    tty_writeString("Copyright (C) Vaclav Hajsman 2023\nVítejte!\n");
     drawLine();
 
     tty_colored(14, unstableWarning);

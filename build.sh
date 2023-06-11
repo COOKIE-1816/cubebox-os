@@ -60,6 +60,8 @@ if grub-file --is-x86-multiboot $binfile; then
     cp $binfile build/iso/boot/cb_bin.bin
     cp grub.cfg build/iso/boot/grub/grub.cfg
 
+    cp splash-*x*.png build/iso/boot/splash.png
+
     grub-mkrescue -o $isofile build/iso
 else
     echo MB not confirmed.

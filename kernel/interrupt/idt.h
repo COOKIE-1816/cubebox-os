@@ -1,7 +1,7 @@
 #ifndef _CB_IDT_H_
 #define _CB_IDT_H_
 
-#define IDT_MAX_DESCRIPTORS 512
+#define IDT_MAX_DESCRIPTORS 256
 
 #include <stdint.h>
 #include "kernel/interrupt/isr.h"

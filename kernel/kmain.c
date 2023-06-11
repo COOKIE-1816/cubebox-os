@@ -1,5 +1,7 @@
 #include "kernel/tty.h"
 #include "drivers/vga.h"
+#include "kernel/gdt/gdt.h"
+#include "kernel/gdt/gdtdef.h"
 
 String unstableWarning = "WARNING: UNSTABLE RELEASE, USE AT YOUR OWN RISK!\n";
 
@@ -19,6 +21,11 @@ void kernel_main(void) {
     tty_writeString("Copyright (C) Vaclav Hajsman 2023\n");
     drawLine();
 
-    //tty_writeString(unstableWarning);
     tty_colored(14, unstableWarning);
+
+    gdt_createDescriptor(0, 0x00000000, 0x000000      );
+    gdt_createDescriptor(0, 0x000FFFFF, (GDT_CODE_PL0));
+    gdt_createDescriptor(0, 0x000FFFFF, (GDT_DATA_PL0));
+    gdt_createDescriptor(0, 0x000FFFFF, (GDT_CODE_PL3));
+    gdt_createDescriptor(0, 0x000FFFFF, (GDT_DATA_PL3));
 }

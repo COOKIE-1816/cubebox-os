@@ -23,5 +23,6 @@ extern void gdt_flush(uint32_t);
 
 void init_gdt();
 void gdt_setGate(int32_t, uint32_t, uint32_t, uint8_t, uint8_t);
+void gdt_createDescriptor(uint32_t base, uint32_t limit, uint16_t flag);
 
 #endif 

@@ -34,10 +34,5 @@ void kernel_main(void) {
     gdt_createDescriptor(0, 0x000FFFFF, (GDT_CODE_PL3));
     gdt_createDescriptor(0, 0x000FFFFF, (GDT_DATA_PL3));
 
-    while(1){tty_colored(2, " OK ");
-    tty_writeString("| Initialize HW driver: ");
-    tty_colored(15, "Standart PS/2 Keyboard");
-    tty_writeString(".\n");}
-
     keyboard_leds_set(true, true, false);
 }

@@ -22,7 +22,7 @@ echo STEP 1: Assemble assembly files
 i686-elf-as boot.s -o build/obj/boot.s.o
 i686-elf-as kernel/crt/crti.s -o build/obj/kernel/crt/crti.s.o
 i686-elf-as kernel/crt/crtn.s -o build/obj/kernel/crt/crtn.s.o
-#i686-elf-as kernel/gdt/gdt.s -o build/obj/kernel/gdt/gdt.s.o
+nasm -felf32 kernel/gdt/gdt.asm -o build/obj/kernel/gdt/gdt.asm.o
 
 echo STEP 2: Compile sources
 i686-elf-gcc -c libs/stringt.c -o build/obj/libs/stringt.c.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra -m32 -I ./ -I libs
@@ -36,9 +36,11 @@ echo STEP 3: Link object files
 i686-elf-gcc -T linker.ld -o $binfile -ffreestanding -O2 -nostdlib -lgcc \
                 build/obj/kernel/crt/crti.s.o \
                 build/obj/kernel/crt/crtn.s.o \
+                build/obj/kernel/gdt/gdt.asm.o \
                 build/obj/libs/stringt.c.o \
                 build/obj/boot.s.o \
                 build/obj/kernel/kmain.c.o \
+                build/obj/kernel/gdt/gdt.c.o \
                 build/obj/kernel/tty.c.o \
                 build/obj/drivers/vga.c.o
 

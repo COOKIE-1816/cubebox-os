@@ -2,24 +2,31 @@
 #include "kernel/tty.h"
 #include <stdint.h>
 
-void gdt_encodeEntry(uint8_t *target, struct globalDescriptorTable_t source) {
-    if (source.limit > 0xFFFFF)
-        tty_colored(4, "Err: GDT: cannot encode limits larger than 0xfffff");
- 
-    target[0] = source.limit & 0xFF;
-    target[1] = (source.limit >> 8) & 0xFF;
-    target[6] = (source.limit >> 16) & 0x0F;
+gdt_entry_t gdt_entries[5];
+gdt_ptr_t   gdt_ptr;
 
-    target[2] = source.base & 0xFF;
-    target[3] = (source.base >> 8) & 0xFF;
-    target[4] = (source.base >> 16) & 0xFF;
-    target[7] = (source.base >> 24) & 0xFF;
- 
-    target[5] = source.access_byte;
+void init_gdt() {
+   gdt_ptr.limit = (sizeof(gdt_entry_t) * 5) - 1;
+   gdt_ptr.base  = (uint32_t)&gdt_entries;
 
-    target[6] |= (source.flags << 4);
+   gdt_set_gate(0, 0, 0, 0, 0);
+   gdt_set_gate(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
+   gdt_set_gate(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
+   gdt_set_gate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF);
+   gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);
+
+   gdt_flush((uint32_t)&gdt_ptr);
 }
 
-void gdt_init() {
-        
+// Set the value of one GDT entry.
+void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran) {
+   gdt_entries[num].base_low    = (base & 0xFFFF);
+   gdt_entries[num].base_middle = (base >> 16) & 0xFF;
+   gdt_entries[num].base_high   = (base >> 24) & 0xFF;
+
+   gdt_entries[num].limit_low   = (limit & 0xFFFF);
+   gdt_entries[num].granularity = (limit >> 16) & 0x0F;
+
+   gdt_entries[num].granularity |= gran & 0xF0;
+   gdt_entries[num].access      = access;
 }

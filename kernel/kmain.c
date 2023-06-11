@@ -20,5 +20,5 @@ void kernel_main(void) {
     drawLine();
 
     //tty_writeString(unstableWarning);
-    tty_colored(6, unstableWarning);
+    tty_colored(14, unstableWarning);
 }

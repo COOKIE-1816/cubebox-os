@@ -13,34 +13,42 @@ echo " -   Phase:           $phase"
 echo " -   ISO Location:    $isofile"
 echo "------------------------------------------------"
 
-mkdir -p build/obj/drivers
+gcc_flags="-std=gnu99 -ffreestanding -O2 -Wall -Wextra -m32 -I ./ -I libs"
+link_flags="linker.ld -o $binfile -ffreestanding -O2 -nostdlib -lgcc"
+
+mkdir -p build/obj/drivers/keyboard
 mkdir -p build/obj/libs
 mkdir -p build/obj/kernel/crt
 mkdir    build/obj/kernel/gdt
 mkdir    build/obj/kernel/interrupt
 
 echo STEP 1: Assemble assembly files
-i686-elf-as  boot.s                     -o build/obj/boot.s.o
-i686-elf-as  kernel/crt/crti.s          -o build/obj/kernel/crt/crti.s.o
-i686-elf-as  kernel/crt/crtn.s          -o build/obj/kernel/crt/crtn.s.o
-nasm -felf32 kernel/gdt/gdt.asm         -o build/obj/kernel/gdt/gdt.asm.o
-nasm -felf32 kernel/interrupt/isr.asm   -o build/obj/kernel/interrupt/isr.asm.o
+i686-elf-as  boot.s                                     -o build/obj/boot.s.o
+i686-elf-as  kernel/crt/crti.s                          -o build/obj/kernel/crt/crti.s.o
+i686-elf-as  kernel/crt/crtn.s                          -o build/obj/kernel/crt/crtn.s.o
+nasm -felf32 kernel/gdt/gdt.asm                         -o build/obj/kernel/gdt/gdt.asm.o
+nasm -felf32 kernel/interrupt/isr.asm                   -o build/obj/kernel/interrupt/isr.asm.o
+nasm -felf32 drivers/keyboard/i86_keyboard_irq_asm.asm  -o build/obj/drivers/keyboard/i86_keyboard_irq_asm.asm.o
 
 echo STEP 2: Compile sources
-i686-elf-gcc -c libs/stringt.c          -o build/obj/libs/stringt.c.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra -m32 -I ./ -I libs
-i686-elf-gcc -c drivers/vga.c           -o build/obj/drivers/vga.c.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra -m32 -I ./ -I libs
-i686-elf-gcc -c kernel/tty.c            -o build/obj/kernel/tty.c.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra -m32 -I ./ -I libs
-i686-elf-gcc -c kernel/kmain.c          -o build/obj/kernel/kmain.c.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra -m32 -I ./ -I libs
-i686-elf-gcc -c kernel/gdt/gdt.c        -o build/obj/kernel/gdt/gdt.c.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra -m32 -I ./ -I libs
-i686-elf-gcc -c kernel/interrupt/isr.c  -o build/obj/kernel/interrupt/isr.c.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra -m32 -I ./ -I libs
-i686-elf-gcc -c kernel/interrupt/idt.c  -o build/obj/kernel/interrupt/idt.c.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra -m32 -I ./ -I libs
+i686-elf-gcc -c libs/stringt.c                  -o build/obj/libs/stringt.c.o               $gcc_flags
+i686-elf-gcc -c drivers/vga.c                   -o build/obj/drivers/vga.c.o                $gcc_flags
+i686-elf-gcc -c kernel/tty.c                    -o build/obj/kernel/tty.c.o                 $gcc_flags
+i686-elf-gcc -c kernel/kmain.c                  -o build/obj/kernel/kmain.c.o               $gcc_flags
+i686-elf-gcc -c kernel/gdt/gdt.c                -o build/obj/kernel/gdt/gdt.c.o             $gcc_flags
+i686-elf-gcc -c kernel/interrupt/isr.c          -o build/obj/kernel/interrupt/isr.c.o       $gcc_flags
+i686-elf-gcc -c kernel/interrupt/idt.c          -o build/obj/kernel/interrupt/idt.c.o       $gcc_flags
+i686-elf-gcc -c kernel/common.c                 -o build/obj/kernel/common.c.o              $gcc_flags
+i686-elf-gcc -c drivers/keyboard.c              -o build/obj/drivers/keyboard.c.o           $gcc_flags
+i686-elf-gcc -c drivers/keyboard/leds.c         -o build/obj/drivers/keyboard/leds.c.o      $gcc_flags
 
 
 echo STEP 3: Link object files
-i686-elf-gcc -T linker.ld -o $binfile -ffreestanding -O2 -nostdlib -lgcc \
+i686-elf-gcc -T $link_flags \
                 build/obj/kernel/crt/crti.s.o \
                 build/obj/kernel/crt/crtn.s.o \
                 build/obj/kernel/gdt/gdt.asm.o \
+                build/obj/kernel/common.c.o \
                 build/obj/libs/stringt.c.o \
                 build/obj/boot.s.o \
                 build/obj/kernel/kmain.c.o \
@@ -49,7 +57,10 @@ i686-elf-gcc -T linker.ld -o $binfile -ffreestanding -O2 -nostdlib -lgcc \
                 build/obj/drivers/vga.c.o \
                 build/obj/kernel/interrupt/isr.asm.o \
                 build/obj/kernel/interrupt/isr.c.o \
-                build/obj/kernel/interrupt/idt.c.o
+                build/obj/kernel/interrupt/idt.c.o \
+                build/obj/drivers/keyboard.c.o \
+                build/obj/drivers/keyboard/leds.c.o \
+                build/obj/drivers/keyboard/i86_keyboard_irq_asm.asm.o
 
 echo STEP 4: Verify multiboot
 if grub-file --is-x86-multiboot $binfile; then

@@ -118,7 +118,10 @@ static int _keyboard_scancode_std [] = {
 
 
 inline uint8_t keyboard_ctrl_readStatus() {
-	return inb (keyboard_CTRL_STATS_REG);
+     /* Reads keyboard status register and returns its value.
+      * Docs. Ref.:
+      */
+     return inb (keyboard_CTRL_STATS_REG);
 }
 
 inline void keyboard_ctrl_sendCmd (uint8_t cmd) {

@@ -62,6 +62,7 @@ i686-elf-gcc -T $link_flags \
                 build/obj/kernel/interrupt/idt.c.o \
                 build/obj/drivers/keyboard.c.o \
                 build/obj/drivers/keyboard/leds.c.o \
+                build/obj/drivers/keyboard/i86_keyboard_irq_asm.asm.o
                 #[addfile.py: obj]
 
 echo STEP 4: Verify multiboot

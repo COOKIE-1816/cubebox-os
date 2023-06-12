@@ -1,8 +1,7 @@
 #ifndef _CB_KBD_SCANCODES_H_
 #define _CB_KBD_SCANCODES_H_
 
-
-
+/*
 static int _keyboard_scancode_std [] = {
 	KEY_UNKNOWN,	//0
 	KEY_ESCAPE,		//1
@@ -88,5 +87,6 @@ static int _keyboard_scancode_std [] = {
 	KEY_F11,		//0x57
 	KEY_F12			//0x58
 };
+*/
 
 #endif

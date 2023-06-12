@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include "cboolean.h"
 
+#include "drivers/keyboard/kbderr.h"
+#include "drivers/keyboard/leds.h"
+#include "drivers/keyboard/scancodes.h"
+
 //#define keyboard_CTRL_STATS_REG 0x64
 
 /*

@@ -430,19 +430,19 @@ inline void i86_keyboard_irq (){
 				break;
 		}
 	}
-	
+
     i86_keyboard_irq_asm();
 }
 
-inline KEYCODE keyboard_getLastKey () {
-	return (_scancode != INVALID_SCANCODE) ? ((KEYCODE) _keyboard_scancode_std[_scancode]) : (KEY_UNKNOWN);
+inline enum KEYCODE keyboard_getLastKey () {
+	return (_scancode != INVALID_SCANCODE) ? ((enum KEYCODE) _keyboard_scancode_std[_scancode]) : (KEY_UNKNOWN);
 }
 
 inline void keyboard_discardLastKey () {
 	_scancode = INVALID_SCANCODE;
 }
 
-inline char keyboard_key2ascii (KEYCODE code) {
+inline char keyboard_key2ascii (enum KEYCODE code) {
 	uint8_t key = code;
 
 	if (isascii (key)) {

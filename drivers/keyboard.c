@@ -430,25 +430,7 @@ inline void i86_keyboard_irq (){
 				break;
 		}
 	}
-
-	//interruptdone(0);
-
-	//asm(" sti");
-	/*asm(
-        "sti\n"
-        "pop edi\n"
-        "pop esi\n"
-        "pop ebp\n"
-        "pop ebx\n"
-        "pop edx\n"
-        "pop ecx\n"
-        "pop eax\n"
-        "ret\n"
-        :
-        :
-        : "%eax", "%ecx", "%edx", "%ebx", "%ebp", "%esi", "%edi"
-    );*/
-
+	
     i86_keyboard_irq_asm();
 }
 

@@ -29,6 +29,7 @@ i686-elf-as  kernel/crt/crtn.s                          -o build/obj/kernel/crt/
 nasm -felf32 kernel/gdt/gdt.asm                         -o build/obj/kernel/gdt/gdt.asm.o
 nasm -felf32 kernel/interrupt/isr.asm                   -o build/obj/kernel/interrupt/isr.asm.o
 nasm -felf32 drivers/keyboard/i86_keyboard_irq_asm.asm  -o build/obj/drivers/keyboard/i86_keyboard_irq_asm.asm.o
+#[addfile.py: assembly]
 
 echo STEP 2: Compile sources
 i686-elf-gcc -c libs/stringt.c                  -o build/obj/libs/stringt.c.o               $gcc_flags
@@ -41,6 +42,7 @@ i686-elf-gcc -c kernel/interrupt/idt.c          -o build/obj/kernel/interrupt/id
 i686-elf-gcc -c kernel/common.c                 -o build/obj/kernel/common.c.o              $gcc_flags
 i686-elf-gcc -c drivers/keyboard.c              -o build/obj/drivers/keyboard.c.o           $gcc_flags
 i686-elf-gcc -c drivers/keyboard/leds.c         -o build/obj/drivers/keyboard/leds.c.o      $gcc_flags
+#[addfile.py: c]
 
 
 echo STEP 3: Link object files
@@ -60,7 +62,7 @@ i686-elf-gcc -T $link_flags \
                 build/obj/kernel/interrupt/idt.c.o \
                 build/obj/drivers/keyboard.c.o \
                 build/obj/drivers/keyboard/leds.c.o \
-                build/obj/drivers/keyboard/i86_keyboard_irq_asm.asm.o
+                #[addfile.py: obj]
 
 echo STEP 4: Verify multiboot
 if grub-file --is-x86-multiboot $binfile; then

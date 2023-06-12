@@ -10,11 +10,11 @@
 static char _scancode;
 static bool _numlock, _scrolllock, _capslock;
 static bool _shift, _alt, _ctrl;
-static int _kkybrd_error = 0;
-static bool _kkybrd_bat_res = false;
-static bool _kkybrd_diag_res = false;
-static bool _kkybrd_resend_res = false;
-static bool _kkybrd_disable = false;
+static int _kkeyboard_error = 0;
+static bool _kkeyboard_bat_res = false;
+static bool _kkeyboard_diag_res = false;
+static bool _kkeyboard_resend_res = false;
+static bool _kkeyboard_disable = false;
 */
 
 //const int INVALID_SCANCODE = 0;
@@ -61,6 +61,23 @@ enum keyboard_ENC_CMDS {
 	keyboard_ENC_CMD_RESET					=	0xFF
 };
 
+enum keyboard_CTRL_CMDS {
+	keyboard_CTRL_CMD_READ				=	0x20,
+	keyboard_CTRL_CMD_WRITE				=	0x60,
+	keyboard_CTRL_CMD_SELF_TEST			=	0xAA,
+	keyboard_CTRL_CMD_INTERFACE_TEST	=	0xAB,
+	keyboard_CTRL_CMD_DISABLE			=	0xAD,
+	keyboard_CTRL_CMD_ENABLE			=	0xAE,
+	keyboard_CTRL_CMD_READ_IN_PORT		=	0xC0,
+	keyboard_CTRL_CMD_READ_OUT_PORT		=	0xD0,
+	keyboard_CTRL_CMD_WRITE_OUT_PORT	=	0xD1,
+	keyboard_CTRL_CMD_READ_TEST_INPUTS	=	0xE0,
+	keyboard_CTRL_CMD_SYSTEM_RESET		=	0xFE,
+	keyboard_CTRL_CMD_MOUSE_DISABLE		=	0xA7,
+	keyboard_CTRL_CMD_MOUSE_ENABLE		=	0xA8,
+	keyboard_CTRL_CMD_MOUSE_PORT_TEST	=	0xA9,
+	keyboard_CTRL_CMD_MOUSE_WRITE		=	0xD4
+};
 
 extern uint8_t keyboard_ctrl_readStatus();
 extern void keyboard_ctrl_sendCmd (uint8_t cmd);

@@ -21,29 +21,25 @@ int isAllowed(char c) {
 }
  
 void tty_scroll(int rowsAmount) {
-    /*for(int _r = 0; _r < rowsAmount; _r++) {
-        for(size_t _c = 0; _c < VGA_WIDTH; _c++)
-            tty_buffer[_c - 1] = tty_buffer[_c];
-    }*/
-
-	for (int row = 1; row < VGA_HEIGHT; ++row) {
-        for (int col = 0; col < VGA_WIDTH; ++col) {
-            const size_t index = (row * VGA_WIDTH + col) * 2;
+	for (size_t row = 1; row < VGA_HEIGHT; ++row) {
+        for (size_t col = 0; col < VGA_WIDTH; ++col) {
+            const size_t index =    ( row      * VGA_WIDTH + col) * 2;
             const size_t newIndex = ((row - 1) * VGA_WIDTH + col) * 2;
-            tty_buffer[newIndex] = tty_buffer[index];
+
+            tty_buffer[newIndex]     = tty_buffer[index];
             tty_buffer[newIndex + 1] = tty_buffer[index + 1];
         }
     }
 
-    // Clear the last row
     const size_t lastRowOffset = (VGA_HEIGHT - 1) * VGA_WIDTH * 2;
-    for (int col = 0; col < VGA_WIDTH; ++col) {
+    for (size_t col = 0; col < VGA_WIDTH; ++col) {
         const size_t index = lastRowOffset + col * 2;
+
         tty_buffer[index] = ' ';
         tty_buffer[index + 1] = tty_color;
     }
 
-    --tty_row; // Decrement the row counter
+    --tty_row;
 }
 
 void tty_breakLine() {

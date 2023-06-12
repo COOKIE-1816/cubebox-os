@@ -304,7 +304,7 @@ inline void keyboard_discardLastKey () {
 inline char keyboard_key2ascii (enum KEYCODE code) {
 	uint8_t key = code;
 
-	if (isascii (key)) {
+	if (/*isascii(key)*/ true) {
 		if (_shift || _capslock) {
 			if (key >= 'a' && key <= 'z')
 				key -= 32;

@@ -2,7 +2,7 @@
 #include "drivers/vga.h"
 #include "kernel/gdt/gdt.h"
 #include "kernel/gdt/gdtdef.h"
-#include "drivers/keyboard/leds.h"
+#include "drivers/keyboard.h"
 
 /*#ifndef KERNEL_REL_STABLE
     String unstableWarning = "WARNING: UNSTABLE RELEASE, USE AT YOUR OWN RISK!\n";
@@ -34,5 +34,6 @@ void kernel_main(void) {
     gdt_createDescriptor(0, 0x000FFFFF, (GDT_CODE_PL3));
     gdt_createDescriptor(0, 0x000FFFFF, (GDT_DATA_PL3));
 
+    
     keyboard_leds_set(true, true, false);
 }

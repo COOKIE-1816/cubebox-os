@@ -7,22 +7,7 @@
 #include "drivers/keyboard/kbderr.h"
 #include "drivers/keyboard/leds.h"
 #include "drivers/keyboard/scancodes.h"
-
-//#define keyboard_CTRL_STATS_REG 0x64
-
-/*
-static char _scancode;
-static bool _numlock, _scrolllock, _capslock;
-static bool _shift, _alt, _ctrl;
-static int _kkeyboard_error = 0;
-static bool _kkeyboard_bat_res = false;
-static bool _kkeyboard_diag_res = false;
-static bool _kkeyboard_resend_res = false;
-static bool _kkeyboard_disable = false;
-*/
-
-//const int INVALID_SCANCODE = 0;
-
+#include "drivers/keyboard/keycode.h"
 
 enum keyboard_ENCODER_IO {
 	keyboard_ENC_INPUT_BUF	=	0x60,
@@ -100,4 +85,16 @@ extern bool keyboard_getDiagnosticRes();
 extern bool keyboard_getBatRes();
 extern uint8_t keyboard_getLastScan();
 
+extern enum KEYCODE keyboard_getLastKey();
+extern void keyboard_discardLastKey();
+extern char keyboard_key2ascii(enum KEYCODE code);
+
+extern void keyboard_disable();
+extern void keyboard_enable();
+extern bool keyboard_isDisabled();
+
+extern void keyboard_resetSystem();
+extern bool keyboard_selfTest();
+
+extern void keyboard_init(int irq);
 #endif

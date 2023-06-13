@@ -21,25 +21,27 @@ int isAllowed(char c) {
 }
  
 void tty_scroll(int rowsAmount) {
-	for (size_t row = 1; row < VGA_HEIGHT; ++row) {
-        for (size_t col = 0; col < VGA_WIDTH; ++col) {
-            const size_t index =    ( row      * VGA_WIDTH + col) * 2;
-            const size_t newIndex = ((row - 1) * VGA_WIDTH + col) * 2;
+    for(int i = 0; i < rowsAmount; i++) {
+        for (size_t row = 1; row < VGA_HEIGHT; ++row) {
+            for (size_t col = 0; col < VGA_WIDTH; ++col) {
+                const size_t index =    ( row      * VGA_WIDTH + col) * 2;
+                const size_t newIndex = ((row - 1) * VGA_WIDTH + col) * 2;
 
-            tty_buffer[newIndex]     = tty_buffer[index];
-            tty_buffer[newIndex + 1] = tty_buffer[index + 1];
+                tty_buffer[newIndex]     = tty_buffer[index];
+                tty_buffer[newIndex + 1] = tty_buffer[index + 1];
+            }
         }
+
+        const size_t lastRowOffset = (VGA_HEIGHT - 1) * VGA_WIDTH * 2;
+        for (size_t col = 0; col < VGA_WIDTH; ++col) {
+            const size_t index = lastRowOffset + col * 2;
+
+            tty_buffer[index] = ' ';
+            tty_buffer[index + 1] = tty_color;
+        }
+
+        --tty_row;
     }
-
-    const size_t lastRowOffset = (VGA_HEIGHT - 1) * VGA_WIDTH * 2;
-    for (size_t col = 0; col < VGA_WIDTH; ++col) {
-        const size_t index = lastRowOffset + col * 2;
-
-        tty_buffer[index] = ' ';
-        tty_buffer[index + 1] = tty_color;
-    }
-
-    --tty_row;
 }
 
 void tty_breakLine() {

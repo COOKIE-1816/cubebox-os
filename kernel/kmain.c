@@ -4,6 +4,8 @@
 #include "kernel/gdt/gdtdef.h"
 #include "drivers/keyboard.h"
 
+#define NULL 0x00
+
 /*#ifndef KERNEL_REL_STABLE
     String unstableWarning = "WARNING: UNSTABLE RELEASE, USE AT YOUR OWN RISK!\n";
 #else
@@ -36,4 +38,5 @@ void kernel_main(void) {
 
     
     keyboard_leds_set(true, true, false);
+    keyboard_init(NULL);
 }

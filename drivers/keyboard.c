@@ -431,7 +431,7 @@ inline bool keyboard_selfTest () {
 }
 
 inline void keyboard_init(int irq) {
-	setvect(irq, i86_keyboard_irq);
+	//setvect(irq, i86_keyboard_irq);
 
 	_keyboard_bat_res = true;
 	_scancode = 0;

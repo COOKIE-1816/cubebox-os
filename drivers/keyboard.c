@@ -416,7 +416,7 @@ inline bool keyboard_isDisabled () {
 
 inline void keyboard_resetSystem () {
 	keyboard_ctrl_sendCmd (keyboard_CTRL_CMD_WRITE_OUT_PORT);
-	keyboard_enc_send_cmd (0xfe);
+	keyboard_enc_sendCmd (0xfe);
 }
 
 inline bool keyboard_selfTest () {

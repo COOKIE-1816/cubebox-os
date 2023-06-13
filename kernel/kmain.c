@@ -3,6 +3,10 @@
 #include "kernel/gdt/gdt.h"
 #include "kernel/gdt/gdtdef.h"
 #include "drivers/keyboard.h"
+#include "kernel/common.h"
+#include "stringt.h"
+//#include "stdlib.h"
+//#include "kernel/bootinfo.h"
 
 #define NULL 0x00
 
@@ -21,14 +25,39 @@ void kernel_initializeKernelParticipals() {
     tty_initialize();
 }
 
-void kernel_main(void) {
+/*unsigned char* stringMem(size_t __size) {
+    unsigned char* memoryPtr = (unsigned char*) 0;
+    unsigned char* currentPtr = memoryPtr;
+
+    while (__size > 0) {
+        *currentPtr = 0;
+        currentPtr++;
+        __size--;
+    }
+
+    return memoryPtr;
+}*/
+
+void kernel_main(/*multiboot_info* __boot_info*/ void) {
     kernel_initializeKernelParticipals();
 
     tty_writeString("CubeBox, kernel v0.0.1.0a - Alpha phase.\n");
     tty_writeString("Copyright (C) Vaclav Hajsman 2023\n");
     drawLine();
 
-    //tty_colored(14, unstableWarning);
+    /*unsigned short total;
+    unsigned char lowmem, highmem;
+    String buffer;
+
+    outb(0x70, 0x30);
+    lowmem = inb(0x71);
+    outb(0x70, 0x31);
+    highmem = inb(0x71);
+ 
+    total = lowmem | highmem << 8;*/
+    
+    //*((short*)buffer)  = total;   
+
 
     gdt_createDescriptor(0, 0x00000000, 0x000000      );
     gdt_createDescriptor(0, 0x000FFFFF, (GDT_CODE_PL0));

@@ -26,6 +26,7 @@ echo STEP 1: Assemble assembly files
 i686-elf-as  boot.s                                     -o build/obj/boot.s.o
 i686-elf-as  kernel/crt/crti.s                          -o build/obj/kernel/crt/crti.s.o
 i686-elf-as  kernel/crt/crtn.s                          -o build/obj/kernel/crt/crtn.s.o
+#nasm -felf32  kernel/probe.s                             -o build/obj/kernel/probe.s.o
 nasm -felf32 kernel/gdt/gdt.asm                         -o build/obj/kernel/gdt/gdt.asm.o
 nasm -felf32 kernel/interrupt/isr.asm                   -o build/obj/kernel/interrupt/isr.asm.o
 nasm -felf32 drivers/keyboard/i86_keyboard_irq_asm.asm  -o build/obj/drivers/keyboard/i86_keyboard_irq_asm.asm.o

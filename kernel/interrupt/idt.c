@@ -1,3 +1,34 @@
+/*
+============================================================= FILE INFORMATION =============================================================
+                 .@@@@@@@@@@@@@@@@@@@@@@@@@@%            
+                 .@@@@@@@@@@@@@@@@@@@@@@@@@@%               Product name:               CubeBox OS
+                 .@@@@@@@@@@@@@@@@@@@@@@@@@@%               Product version:            0.0.1.0a, Alpha stage - unstable
+                 .@@@@@@@@@@@@@@@@@@@@@@@@@@%               
+           @@@@@@@@@@@@@#             %@@@@@@@@@@@@@        File name & path:           /kernel/interrupt/idt.c
+           @@@@@@@@@@@@@#             %@@@@@@@@@@@@@        Programming language:       C
+           @@@@@@@@@@@@@#             %@@@@@@@@@@@@@        File usage:                 Interrupt Descriptor Table (IDT) implementation
+           @@@@@@@@@@@@@#             %@@@@@@@@@@@@@                           
+    @@@@@@@@@@@@@&                          ,@@@@@@@        Last revision:              13-06-2023, 13-56 UTC
+    @@@@@@@@@@@@@&                          ,@@@@@@@        Last revision describtion:  
+    @@@@@@@@@@@@@&                          ,@@@@@@@                           
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                          File usage:                 Vaclav Hajsman
+    @@@@@@@@@@@@@&                                          Contributors:               
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                          Docs. reference:            
+    @@@@@@@@@@@@@&                                          Online reference:           
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                          Copyright (C) Vaclav Hajsman (A.K.A. COOKIE) 2023. All rights reserved.
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                          This file is licensed as a part of the project inself, and licensing information
+    @@@@@@@@@@@@@&                                          Can be found in LICENSE file in root directory of this project.
+============================================================================================================================================
+*/
+
 #include "kernel/interrupt/idt.h"
 
 #define false 0

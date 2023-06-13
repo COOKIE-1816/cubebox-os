@@ -427,7 +427,7 @@ inline bool keyboard_selfTest () {
 			break;
 	}
 
-	return (keyboard_end_readBuffer () == 0x55) ? true : false;
+	return (keyboard_enc_readBuffer () == 0x55) ? true : false;
 }
 
 inline void keyboard_init(int irq) {

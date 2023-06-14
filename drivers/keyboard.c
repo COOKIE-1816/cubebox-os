@@ -324,7 +324,7 @@ inline enum KEYCODE keyboard_getLastKey () {
 	//return (_scancode != INVALID_SCANCODE) ? ((enum KEYCODE) _keyboard_scancode_std[_scancode]) : (KEY_UNKNOWN);
 	
 	if(_scancode != INVALID_SCANCODE)
-		return (enum KEYCODE) _keyboard_scancode_std[_scancode];
+		return (enum KEYCODE) _keyboard_scancode_std[(int) _scancode];
 	
 	return KEY_UNKNOWN;
 }
@@ -342,7 +342,7 @@ inline char keyboard_key2ascii (enum KEYCODE code) {
 				key -= 32;
 		}
 
-		if (_shift && !_capslock)
+		if (_shift && !_capslock) {
 			if (key >= '0' && key <= '9')
 				switch (key) {
 					case '0':
@@ -420,8 +420,9 @@ inline char keyboard_key2ascii (enum KEYCODE code) {
 						case KEY_BACKSLASH:
 							key = KEY_BAR;
 							break;
-					}
+				}
 			}
+		}
 
 		return key;
 	}
@@ -460,8 +461,8 @@ inline bool keyboard_selfTest () {
 }
 
 inline void keyboard_init(int irq) {
-	InterruptHandler h = i86_keyboard_irq;
-	setVect(irq, h);
+	InterruptHandler kbdhandler = i86_keyboard_irq;
+	setVect(irq, kbdhandler);
 
 	_keyboard_bat_res = true;
 	_scancode = 0;

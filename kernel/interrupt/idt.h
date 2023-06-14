@@ -56,7 +56,8 @@ typedef struct {
 } __attribute__((packed)) idtr_t;
 
 __attribute__((aligned(0x10))) 
-static idt_entry_t idt[256];
+
+//static idt_entry_t idt[256];
 static idtr_t idtr;
 
 void idt_setDescriptor(uint8_t vector, void* isr, uint8_t flags);

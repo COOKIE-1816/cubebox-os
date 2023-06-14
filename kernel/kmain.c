@@ -76,6 +76,10 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
         //enum KEYCODE k = KEY_UNKNOWN;
 
         tty_writeString("\n > ");
-        tty_writeString(keyboard_key2ascii(getKey()));
+
+        enum KEYCODE key = getKey();
+        char key_ascii   = keyboard_key2ascii(key);
+
+        tty_writeString(key_ascii);
     }
 }

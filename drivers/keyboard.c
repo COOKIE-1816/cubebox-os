@@ -213,7 +213,7 @@ inline uint8_t keyboard_getLastScan() {
 	return _scancode;
 }
 
-inline void i86_keyboard_irq (){
+void i86_keyboard_irq (){
 	asm volatile(
         "add $12, %esp\n"
         "pusha\n"
@@ -320,7 +320,12 @@ inline void i86_keyboard_irq (){
 }
 
 inline enum KEYCODE keyboard_getLastKey () {
-	return (_scancode != INVALID_SCANCODE) ? ((enum KEYCODE) _keyboard_scancode_std[_scancode]) : (KEY_UNKNOWN);
+	//return (_scancode != INVALID_SCANCODE) ? ((enum KEYCODE) _keyboard_scancode_std[_scancode]) : (KEY_UNKNOWN);
+	
+	if(_scancode != INVALID_SCANCODE)
+		return (enum KEYCODE) _keyboard_scancode_std[_scancode];
+	
+	return KEY_UNKNOWN;
 }
 
 inline void keyboard_discardLastKey () {
@@ -454,7 +459,6 @@ inline bool keyboard_selfTest () {
 }
 
 inline void keyboard_init(int irq) {
-	//setvect(irq, i86_keyboard_irq);
 	InterruptHandler h = i86_keyboard_irq;
 	setVect(irq, h);
 

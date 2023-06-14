@@ -34,6 +34,9 @@
 #define false 0
 #define true 1
 
+uint8_t* vectors;
+InterruptDescriptor interruptVectorTable[IDT_MAX_DESCRIPTORS];
+
 void idt_setDescriptor(uint8_t vector, void* isr, uint8_t flags) {
     idt_entry_t* descriptor = &idt[vector];
  
@@ -59,13 +62,13 @@ void idt_init() {
     __asm__ volatile ("sti");
 }
 
-void setVect(uint8_t __vector, InterruptHandler __handler) {
-    InterruptDescriptor* interruptDescriptor = &interruptVectorTable[__vector];
+inline void setVect(uint8_t __vector, InterruptHandler __handler) {
+    InterruptDescriptor* _interruptDescriptor = &interruptVectorTable[__vector];
     uint32_t handler_address = (uint32_t) __handler;
 
-    interruptDescriptor->isr_low    = handler_address & 0xFFFF;
-    interruptDescriptor->kernel_cs  = 0x0008;
-    interruptDescriptor->reserved   = 0;
-    interruptDescriptor->attributes = 0x8E;
-    interruptDescriptor->isr_high   = (handler_address >> 16) & 0xFFFF;
+    _interruptDescriptor->isr_low    = handler_address & 0xFFFF;
+    _interruptDescriptor->kernel_cs  = 0x0008;
+    _interruptDescriptor->reserved   = 0;
+    _interruptDescriptor->attributes = 0x8E;
+    _interruptDescriptor->isr_high   = (handler_address >> 16) & 0xFFFF;
 }

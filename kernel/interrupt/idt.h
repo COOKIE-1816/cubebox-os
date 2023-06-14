@@ -37,7 +37,7 @@
 #include <stdint.h>
 #include "kernel/interrupt/isr.h"
 
-uint8_t* vectors;
+//uint8_t* vectors;
 
 typedef struct {
 	uint16_t    isr_low;
@@ -64,8 +64,8 @@ void idt_init(void);
 
 typedef void (*InterruptHandler) ();
 
-InterruptDescriptor interruptVectorTable[IDT_MAX_DESCRIPTORS];
+//InterruptDescriptor interruptVectorTable[IDT_MAX_DESCRIPTORS];
 
-void setVect(uint8_t __vector, InterruptHandler __handler);
+extern  void setVect(uint8_t __vector, InterruptHandler __handler);
 
 #endif

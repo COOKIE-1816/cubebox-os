@@ -316,7 +316,8 @@ void i86_keyboard_irq (){
 		}
 	}
 
-    i86_keyboard_irq_asm();
+    //i86_keyboard_irq_asm();
+	asm("call i86_keyboard_irq_asm");
 }
 
 inline enum KEYCODE keyboard_getLastKey () {

@@ -1,3 +1,5 @@
+[CubeBox OS logo](cblogo.png)
+
 # CubeBox OS
 Free, open-source experimental operating system.
 

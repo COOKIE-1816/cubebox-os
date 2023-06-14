@@ -34,19 +34,6 @@
 #include <stdint.h>
 //#include <cstdint>
 
-void printAddress(const void* ptr) {
-    uintptr_t address = (uintptr_t)ptr;
-
-    int numDigits = sizeof(address) * 2;
-    char hexDigits[] = "0123456789ABCDEF";
-
-    for (int i = numDigits - 1; i >= 0; i--) {
-        uint8_t nibble = (address >> (i * 4)) & 0xF;
-
-        tty_writeString(hexDigits[nibble]);
-    }
-}
-
 gdt_entry_t gdt_entries[5];
 gdt_ptr_t   gdt_ptr;
 

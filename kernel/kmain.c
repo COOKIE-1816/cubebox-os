@@ -9,7 +9,8 @@
 //#include "stdlib.h"
 //#include "kernel/bootinfo.h"
 
-#define NULL 0x00
+//#define NULL 0x00
+#include <stddef.h>
 
 /*#ifndef KERNEL_REL_STABLE
     String unstableWarning = "WARNING: UNSTABLE RELEASE, USE AT YOUR OWN RISK!\n";
@@ -46,29 +47,18 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
     tty_writeString("Copyright (C) Vaclav Hajsman 2023\n");
     drawLine();
 
-    /*unsigned short total;
-    unsigned char lowmem, highmem;
-    String buffer;
-
-    outb(0x70, 0x30);
-    lowmem = inb(0x71);
-    outb(0x70, 0x31);
-    highmem = inb(0x71);
- 
-    total = lowmem | highmem << 8;*/
-    
     //*((short*)buffer)  = total;   
 
 
-    gdt_createDescriptor(0, 0x00000000, 0x000000      );
+    /*gdt_createDescriptor(0, 0x00000000, 0x000000      );
     gdt_createDescriptor(0, 0x000FFFFF, (GDT_CODE_PL0));
     gdt_createDescriptor(0, 0x000FFFFF, (GDT_DATA_PL0));
     gdt_createDescriptor(0, 0x000FFFFF, (GDT_CODE_PL3));
-    gdt_createDescriptor(0, 0x000FFFFF, (GDT_DATA_PL3));
+    gdt_createDescriptor(0, 0x000FFFFF, (GDT_DATA_PL3));*/
 
     /*rtc_sleep((uint8_t) 5);
     tty_colored(2, "OK");*/
 
     keyboard_leds_set(true, true, false);
-    keyboard_init(NULL);
+    keyboard_init(11);
 }

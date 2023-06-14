@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "leds.h": "c"
+        "leds.h": "c",
+        "kdrivers.h": "c"
     }
 }

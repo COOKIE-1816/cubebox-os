@@ -149,3 +149,7 @@ void tty_colored(uint8_t color, String data) {
 
     tty_setColor(prc);
 }
+
+size_t tty_getRow() {
+    return tty_row;
+}

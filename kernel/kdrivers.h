@@ -35,10 +35,29 @@
 #include "stringt.h"
 #include "cboolean.h"
 
-const int KDRIVERS_PENDING = 0;
-const int KDRIVERS_FAIL = 1;
-const int KDRIVERS_OK = 2;
+#define KDRIVERS_PENDING 0
+#define KDRIVERS_FAIL 1
+#define KDRIVERS_OK 2
 
-typedef struct kdriver_t;
+typedef int (*fnPtr_int)  (int[3]);
+typedef void (*fnPtr_void)(int[3]);
+
+typedef struct kdriver {
+    bool used;
+    String name;
+
+    int attributes[3];
+
+    fnPtr_int load;
+    fnPtr_int load_auto;
+    fnPtr_void unload;
+} kdriver;
+
+/*kdriver driversloaded[1024];
+bool driversaddressesusage[1024];*/
+
+void kdriver_statusMsg_create(kdriver __drv);
+void kdriver_statusMsg_status(/*kdriver __drv, */ const int __status);
+void kdriver_init();
 
 #endif

@@ -5,6 +5,7 @@
 #include "drivers/keyboard.h"
 #include "kernel/common.h"
 #include "stringt.h"
+#include "kernel/timing/rtc.h"
 //#include "stdlib.h"
 //#include "kernel/bootinfo.h"
 
@@ -65,7 +66,9 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
     gdt_createDescriptor(0, 0x000FFFFF, (GDT_CODE_PL3));
     gdt_createDescriptor(0, 0x000FFFFF, (GDT_DATA_PL3));
 
-    
+    /*rtc_sleep((uint8_t) 5);
+    tty_colored(2, "OK");*/
+
     keyboard_leds_set(true, true, false);
     keyboard_init(NULL);
 }

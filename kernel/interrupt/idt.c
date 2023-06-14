@@ -58,3 +58,14 @@ void idt_init() {
     __asm__ volatile ("lidt %0" : : "m"(idtr));
     __asm__ volatile ("sti");
 }
+
+void setVect(uint8_t __vector, InterruptHandler __handler) {
+    InterruptDescriptor* interruptDescriptor = &interruptVectorTable[__vector];
+    uint32_t handler_address = (uint32_t) __handler;
+
+    interruptDescriptor->isr_low    = handler_address & 0xFFFF;
+    interruptDescriptor->kernel_cs  = 0x0008;
+    interruptDescriptor->reserved   = 0;
+    interruptDescriptor->attributes = 0x8E;
+    interruptDescriptor->isr_high   = (handler_address >> 16) & 0xFFFF;
+}

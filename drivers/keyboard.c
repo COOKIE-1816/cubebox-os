@@ -144,9 +144,6 @@ static int _keyboard_scancode_std [] = {
 
 
 inline uint8_t keyboard_ctrl_readStatus() {
-     /* Reads keyboard status register and returns its value.
-      * Docs. Ref.:
-      */
      return inb (keyboard_CTRL_STATS_REG);
 }
 
@@ -458,6 +455,8 @@ inline bool keyboard_selfTest () {
 
 inline void keyboard_init(int irq) {
 	//setvect(irq, i86_keyboard_irq);
+	InterruptHandler h = i86_keyboard_irq;
+	setVect(irq, h);
 
 	_keyboard_bat_res = true;
 	_scancode = 0;

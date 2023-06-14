@@ -46,6 +46,9 @@ typedef struct {
 	uint8_t     attributes;
 	uint16_t    isr_high;
 } __attribute__((packed)) idt_entry_t;
+typedef idt_entry_t InterruptDescriptor;
+
+#define IDT_DESCRIPTOR_SIZE sizeof(InterruptDescriptor)
 
 typedef struct {
 	uint16_t	limit;
@@ -58,5 +61,11 @@ static idtr_t idtr;
 
 void idt_setDescriptor(uint8_t vector, void* isr, uint8_t flags);
 void idt_init(void);
+
+typedef void (*InterruptHandler) ();
+
+InterruptDescriptor interruptVectorTable[IDT_MAX_DESCRIPTORS];
+
+void setVect(uint8_t __vector, InterruptHandler __handler);
 
 #endif

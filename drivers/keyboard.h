@@ -39,6 +39,7 @@
 #include "drivers/keyboard/leds.h"
 #include "drivers/keyboard/scancodes.h"
 #include "drivers/keyboard/keycode.h"
+#include "kernel/interrupt/idt.h"
 
 enum keyboard_ENCODER_IO {
 	keyboard_ENC_INPUT_BUF	=	0x60,

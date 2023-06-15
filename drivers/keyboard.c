@@ -31,6 +31,7 @@
 
 #include "kernel/common.h"
 #include "drivers/keyboard.h"
+#include "kernel/tty.h"
 
 const int INVALID_SCANCODE = 0;
 
@@ -214,6 +215,7 @@ inline uint8_t keyboard_getLastScan() {
 }
 
 void i86_keyboard_irq (){
+	tty_writeString("Keyboard interrupt");
 	asm volatile(
         "add $12, %esp\n"
         "pusha\n"
@@ -462,7 +464,7 @@ inline bool keyboard_selfTest () {
 
 inline void keyboard_init(int irq) {
 	InterruptHandler kbdhandler = i86_keyboard_irq;
-	setVect(irq, kbdhandler);
+	setVect(irq, /*kbdhandler*/ &i86_keyboard_irq);
 
 	_keyboard_bat_res = true;
 	_scancode = 0;

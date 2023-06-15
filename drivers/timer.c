@@ -1,29 +1,24 @@
 #include "drivers/timer.h"
 #include "kernel/interrupt/idt.h"
+#include "kernel/kdrivers.h"
 #include <stdint.h>
 
-uint32_t _jiffies = 0;
-uint16_t _hz = 0;
+volatile uint32_t _ticks = 0;
 
-void _handler() {
-    _jiffies++;
+void _timer_handler() {  
+    _ticks++;
 }
 
-void _setFrequency(uint16_t __frequency) {
-    _hz = __frequency;
-    uint16_t div = CLOCK_FREQUENCY / __frequency;
+void timer_init() {
+    uint16_t divisor = 1193; // 1 kHz frequency
 
-    outb(TIMER_COMMAND, TIMER_ICW);
-    outb(TIMER_DATA,  div & 0xFF);
-    outb(TIMER_DATA, (div >> 8) & 0xFF);
+    outb(0x43, 0x36);
+    outb(0x40, divisor & 0xFF);
+    outb(0x40, (divisor >> 8) & 0xFF);
+
+    setVect(0x20, _timer_handler);
 }
 
-inline void sleep(int __ms) {
-    uint32_t end = _jiffies + __ms * _hz;
-    while(_jiffies < end);
-}
-
-inline void timer_init() {
-    _setFrequency(1000);
-    setVect(32, _handler);
+uint32_t timer_getTicks() {
+    return _ticks;
 }

@@ -48,8 +48,9 @@ i686-elf-gcc -c drivers/keyboard/leds.c         -o build/obj/drivers/keyboard/le
 i686-elf-gcc -c drivers/rtc.c                   -o build/obj/drivers/rtc.c.o                $gcc_flags
 i686-elf-gcc -c kernel/kdrivers.c               -o build/obj/kernel/kdrivers.c.o            $gcc_flags
 i686-elf-gcc -c drivers/buzzer.c                -o build/obj/drivers/buzzer.c.o             $gcc_flags
-i686-elf-gcc -c kernel/sound/beep.c             -o build/obj/kernel/sound/beep.c.o          $gcc_flags
+#i686-elf-gcc -c kernel/sound/beep.c             -o build/obj/kernel/sound/beep.c.o          $gcc_flags
 i686-elf-gcc -c drivers/timer.c                 -o build/obj/drivers/timer.c.o              $gcc_flags
+i686-elf-gcc -c drivers/pic.c                   -o build/obj/drivers/pic.c.o                $gcc_flags
 #[addfile.py: c]
 
 
@@ -74,8 +75,8 @@ i686-elf-gcc -T $link_flags \
                 build/obj/drivers/keyboard/i86_keyboard_irq_asm.asm.o \
                 build/obj/drivers/rtc.c.o \
                 build/obj/drivers/buzzer.c.o \
-                build/obj/kernel/sound/beep.c.o \
-                build/obj/drivers/timer.c.o
+                build/obj/drivers/timer.c.o \
+                build/obj/drivers/pic.c.o
                 #[addfile.py: obj]
 
 echo STEP 4: Verify multiboot

@@ -32,6 +32,7 @@
 #include "kernel/common.h"
 #include "drivers/keyboard.h"
 #include "kernel/tty.h"
+#include "kernel/kdrivers.h"
 
 const int INVALID_SCANCODE = 0;
 
@@ -463,6 +464,11 @@ inline bool keyboard_selfTest () {
 }
 
 inline void keyboard_init(int irq) {
+	kdriver kbd;
+	kbd.name = "PS2 Keyboard";
+
+	kdriver_statusMsg_create(kbd);
+
 	InterruptHandler kbdhandler = i86_keyboard_irq;
 	setVect(irq, /*kbdhandler*/ &i86_keyboard_irq);
 
@@ -473,4 +479,6 @@ inline void keyboard_init(int irq) {
 	keyboard_leds_set (false, false, false);
 
 	_shift = _alt = _ctrl = false;
+
+	kdriver_statusMsg_status(KDRIVERS_OK);
 }

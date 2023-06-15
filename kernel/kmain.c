@@ -9,6 +9,7 @@
 #include "kernel/kdrivers.h"
 #include "kernel/sound/beep.h"
 #include "drivers/timer.h"
+#include "drivers/pic.h"
 //#include "stdlib.h"
 //#include "kernel/bootinfo.h"
 
@@ -59,19 +60,14 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
 
     tty_writeString("CubeBox, kernel v0.0.1.0a - Alpha phase.\n");
     tty_writeString("Copyright (C) Vaclav Hajsman 2023\n");
-    sleep(1500);
     drawLine();
-
-    //*((short*)buffer)  = total;   
+    
+    pic_init();
 
     keyboard_init(33);
     keyboard_leds_set(true, true, false);
 
-    keyboard_leds_blink();
-
-    beep();
-
-    while(1) {
+    /*while(1) {
         //enum KEYCODE k = KEY_UNKNOWN;
 
         tty_writeString("\n > ");
@@ -83,5 +79,5 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
         char key_ascii   = keyboard_key2ascii(key);
 
         tty_writeString(key_ascii);
-    }
+    }*/
 }

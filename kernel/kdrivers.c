@@ -17,7 +17,7 @@ void kdriver_statusMsg_create(kdriver __drv) {
     tty_colored(15, driver_name);
     tty_writeString("\n");
 
-
+    kdriver_statusMsg_status(KDRIVERS_PENDING);
 }
 
 void kdriver_statusMsg_status(/*kdriver */ const int __status) {

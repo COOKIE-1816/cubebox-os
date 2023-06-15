@@ -26,6 +26,7 @@ void drawLine() {
 
 void kernel_initializeKernelParticipals() {
     tty_initialize();
+    kdriver_init();
 }
 
 /*unsigned char* stringMem(size_t __size) {
@@ -52,8 +53,6 @@ enum KEYCODE getKey() {
 }
 
 void kernel_main(/*multiboot_info* __boot_info*/ void) {
-    kdriver test, ps2, vga;
-
     kernel_initializeKernelParticipals();
 
     tty_writeString("CubeBox, kernel v0.0.1.0a - Alpha phase.\n");
@@ -72,30 +71,22 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
     /*rtc_sleep((uint8_t) 5);
     tty_colored(2, "OK");*/
 
-    kdriver_init();
-
-    test.name = "CubeBox test driver";
-    ps2.name = "Standart PS/2 Keyboard";
-    vga.name = "Basic VGA";
     
-    kdriver_statusMsg_create(test);
-    kdriver_statusMsg_status(KDRIVERS_OK);
-    kdriver_statusMsg_create(ps2);
-    kdriver_statusMsg_status(KDRIVERS_OK);
-    kdriver_statusMsg_create(vga);
-    kdriver_statusMsg_status(KDRIVERS_PENDING);
 
-    keyboard_init(11);
+    keyboard_init(33);
     keyboard_leds_set(true, true, false);
 
-    /*while(1) {
+    while(1) {
         //enum KEYCODE k = KEY_UNKNOWN;
 
         tty_writeString("\n > ");
 
         enum KEYCODE key = getKey();
+        if (key == KEY_KP_ENTER)
+            continue;
+
         char key_ascii   = keyboard_key2ascii(key);
 
         tty_writeString(key_ascii);
-    }*/
+    }
 }

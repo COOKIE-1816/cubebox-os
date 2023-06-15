@@ -43,3 +43,7 @@ inline uint8_t vga_entryColor(enum vga_color fg, enum vga_color bg) {
 inline uint16_t vga_entry(uc _uc, uint8_t color) {
 	return (uint16_t) _uc | (uint16_t) color << 8;
 }
+
+/*void vga_init() {
+    kdriver_statusMsg_create
+}*/

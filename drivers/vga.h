@@ -34,6 +34,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include "kernel/kdrivers.h"
 
 extern const size_t VGA_WIDTH;
 extern const size_t VGA_HEIGHT;
@@ -62,5 +63,7 @@ typedef unsigned char uc;
 
 extern uint8_t vga_entryColor(enum vga_color fg, enum vga_color bg);
 extern uint16_t vga_entry(uc _uc, uint8_t color);
+
+//kdriver systemDrv_vga;
 
 #endif

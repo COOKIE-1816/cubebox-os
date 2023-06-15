@@ -34,9 +34,13 @@ time rtc_now() {
 }
 
 void rtc_sleep(uint8_t __seconds) {
-    uint8_t c;
-    c = rtc_readRegister(RTC_REG_SECONDS);
+    if(__seconds >= 60)
+        // The timer can not count more than 59 seconds.
+        return;
 
-    while(c != (c + __seconds) % 60)
-        c = rtc_readRegister(RTC_REG_SECONDS);
+    uint8_t now  = rtc_readRegister(RTC_REG_SECONDS);
+    uint8_t wake = now + __seconds;
+
+    while(now != wake)
+        now = rtc_readRegister(RTC_REG_SECONDS);
 }

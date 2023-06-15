@@ -7,6 +7,7 @@
 #include "stringt.h"
 #include "kernel/timing/rtc.h"
 #include "kernel/kdrivers.h"
+#include "kernel/sound/beep.h"
 //#include "stdlib.h"
 //#include "kernel/bootinfo.h"
 
@@ -75,6 +76,8 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
 
     keyboard_init(33);
     keyboard_leds_set(true, true, false);
+
+    beep();
 
     while(1) {
         //enum KEYCODE k = KEY_UNKNOWN;

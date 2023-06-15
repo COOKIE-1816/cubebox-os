@@ -8,6 +8,7 @@
 #include "kernel/timing/rtc.h"
 #include "kernel/kdrivers.h"
 #include "kernel/sound/beep.h"
+#include "kernel/timing/timer.h"
 //#include "stdlib.h"
 //#include "kernel/bootinfo.h"
 
@@ -58,6 +59,7 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
 
     tty_writeString("CubeBox, kernel v0.0.1.0a - Alpha phase.\n");
     tty_writeString("Copyright (C) Vaclav Hajsman 2023\n");
+    sleep(1500);
     drawLine();
 
     //*((short*)buffer)  = total;   

@@ -22,6 +22,7 @@ mkdir -p build/obj/kernel/crt
 mkdir    build/obj/kernel/gdt
 mkdir    build/obj/kernel/interrupt
 mkdir    build/obj/kernel/timing
+mkdir    build/obj/kernel/sound
 
 echo STEP 1: Assemble assembly files
 i686-elf-as  boot.s                                     -o build/obj/boot.s.o

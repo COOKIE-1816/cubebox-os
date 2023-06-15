@@ -32,6 +32,7 @@
 #include "kernel/common.h"
 #include "drivers/keyboard/leds.h"
 #include "drivers/keyboard.h"
+#include "drivers/rtc.h"
 
 inline void keyboard_leds_set(bool n, bool c, bool s) {
     uint8_t data = 0;
@@ -42,4 +43,15 @@ inline void keyboard_leds_set(bool n, bool c, bool s) {
  
 	keyboard_enc_sendCmd(keyboard_ENC_CMD_SET_LED);
 	keyboard_enc_sendCmd(data);
+}
+
+inline void keyboard_leds_blink() {
+    bool state = false;
+
+    while(true) {
+        keyboard_leds_set(false, state, false);
+        state = !state;
+
+        rtc_sleep(1);
+    }
 }

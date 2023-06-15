@@ -10,3 +10,9 @@ inline uint8_t inb(uint16_t port) {
     asm volatile("inb %[port], %[value]" : [value] "=a" (value) : [port] "Nd" (port));
     return value;
 }
+
+inline void io_wait() {
+    asm volatile("jmp 1f\n\t"
+                 "1:jmp 2f\n\t"
+                 "2:");
+}

@@ -35,5 +35,6 @@
 #include "cboolean.h"
 
 extern void keyboard_leds_set(bool n, bool c, bool s);
+extern void keyboard_leds_blink();
 
 #endif

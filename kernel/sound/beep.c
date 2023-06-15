@@ -1,7 +1,6 @@
 #include "kernel/sound/beep.h"
 #include "drivers/buzzer.h"
-//#include "kernel/timing/rtc.h"
-#include "kernel/timing/timer.h"
+#include "drivers/timer.h"
 
 inline void beep() {
     buzzer_makeSound(1000);
@@ -10,3 +9,4 @@ inline void beep() {
 
     buzzer_stop();
 }
+

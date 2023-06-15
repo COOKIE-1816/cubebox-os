@@ -5,10 +5,10 @@
 #include "drivers/keyboard.h"
 #include "kernel/common.h"
 #include "stringt.h"
-#include "kernel/timing/rtc.h"
+#include "drivers/rtc.h"
 #include "kernel/kdrivers.h"
 #include "kernel/sound/beep.h"
-#include "kernel/timing/timer.h"
+#include "drivers/timer.h"
 //#include "stdlib.h"
 //#include "kernel/bootinfo.h"
 
@@ -64,20 +64,10 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
 
     //*((short*)buffer)  = total;   
 
-
-    /*gdt_createDescriptor(0, 0x00000000, 0x000000      );
-    gdt_createDescriptor(0, 0x000FFFFF, (GDT_CODE_PL0));
-    gdt_createDescriptor(0, 0x000FFFFF, (GDT_DATA_PL0));
-    gdt_createDescriptor(0, 0x000FFFFF, (GDT_CODE_PL3));
-    gdt_createDescriptor(0, 0x000FFFFF, (GDT_DATA_PL3));*/
-
-    /*rtc_sleep((uint8_t) 5);
-    tty_colored(2, "OK");*/
-
-    
-
     keyboard_init(33);
     keyboard_leds_set(true, true, false);
+
+    keyboard_leds_blink();
 
     beep();
 

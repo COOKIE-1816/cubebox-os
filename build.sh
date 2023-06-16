@@ -78,15 +78,19 @@ i686-elf-gcc -T $link_flags \
                 build/obj/drivers/rtc.c.o \
                 build/obj/drivers/buzzer.c.o \
                 build/obj/drivers/timer.c.o \
-                build/obj/drivers/pic.c.o \
-                build/obj/drivers/floppy.c.o \
+                build/obj/drivers/pic.c.o \ 
+                build/obj/drivers/floppy.c.o \ 
                 build/obj/kernel/interrupt/irq.c.o
                 #[addfile.py: obj]
 
 echo STEP 4: Verify multiboot
 if grub-file --is-x86-multiboot $binfile; then
     echo MB Confirmed.
-    echo STEP 5: Create bootable ISO image
+else
+    echo MB not confirmed.
+fi
+
+echo STEP 5: Create bootable ISO image
 
     mkdir -p build/iso/boot/grub
     cp $binfile build/iso/boot/cb_bin.bin
@@ -95,6 +99,3 @@ if grub-file --is-x86-multiboot $binfile; then
     cp splash-*x*.png build/iso/boot/splash.png
 
     grub-mkrescue -o $isofile build/iso
-else
-    echo MB not confirmed.
-fi

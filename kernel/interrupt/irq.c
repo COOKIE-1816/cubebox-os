@@ -4,23 +4,6 @@
 #include "kernel/common.h"
 #include "stddef.h"
 
-static void _irq0();
-static void _irq1();
-static void _irq2();
-static void _irq3();
-static void _irq4();
-static void _irq5();
-static void _irq6();
-static void _irq7();
-static void _irq8();
-static void _irq9();
-static void _irq10();
-static void _irq11();
-static void _irq12();
-static void _irq13();
-static void _irq14();
-static void _irq15();
-
 static irq_handler_t irq_routines[16] = { 
     NULL 
 };

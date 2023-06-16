@@ -222,7 +222,7 @@ void floppy_motor(int base, int onoff) {
 }
 
 void floppy_motor_kill(int base) {
-    out8_p(base + FLOPPY_DOR, 0x0c);
+    outb(base + FLOPPY_DOR, 0x0c);
     floppy_motor_state = floppy_motor_off;
 }
 

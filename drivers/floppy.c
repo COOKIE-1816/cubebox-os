@@ -15,6 +15,8 @@ static const int floppy_irq = 6;
 static volatile int floppy_motor_ticks = 0;
 static volatile int floppy_motor_state = 0;
 
+static volatile uint8_t _floppyDiskIRQ = 0;
+
 static String floppy_driveTypes[8] = {
     "none",
     "360kB 5.25\"",
@@ -99,6 +101,11 @@ inline void floppy_detect() {
     tty_writeString(floppy_driveTypes[_drives & 0xf]);
 }
 
+void _floppy_irq_wait() {
+    while ( _floppyDiskIRQ == 0);
+	_floppyDiskIRQ = 0;
+}
+
 inline void floppy_writeCmd(int base, char cmd) {
     for(int i = 0; i < 60; i++) {
         rtc_sleep(1);
@@ -137,7 +144,7 @@ int floppy_calibrate(int base) {
         floppy_writeCmd(base, CMD_RECALIBRATE);
         floppy_writeCmd(base, 0);
 
-        irq_wait(floppy_irq);
+        _floppy_irq_wait(floppy_irq);
         floppy_checkInterrupt(base, &st0, &cyl);
        
         if(st0 & 0xC0) {
@@ -171,7 +178,7 @@ int floppy_reset(int base) {
     outb(base + FLOPPY_DOR, 0x00);
     outb(base + FLOPPY_DOR, 0x0C);
 
-    irq_wait(floppy_irq);
+    _floppy_irq_wait(floppy_irq);
 
     {
         int st0, cyl;
@@ -244,7 +251,7 @@ int floppy_seek(int base, unsigned cyli, int head) {
         floppy_writeCmd(base, head<<2);
         floppy_writeCmd(base, cyli);
 
-        irq_wait(floppy_irq);
+        _floppy_irq_wait(floppy_irq);
         floppy_checkInterrupt(base, &st0, &cyl);
 
         if(st0 & 0xC0) {
@@ -358,7 +365,7 @@ int floppy_doTrack(int base, unsigned cyl, floppy_dir dir) {
         floppy_writeCmd(base, 0x1b);
         floppy_writeCmd(base, 0xff);
        
-        irq_wait(floppy_irq);
+        _floppy_irq_wait(floppy_irq);
 
         unsigned char   st0, 
                         st1, 

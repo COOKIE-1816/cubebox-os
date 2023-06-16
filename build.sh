@@ -68,7 +68,7 @@ i686-elf-gcc -T $link_flags \
                 build/obj/drivers/keyboard.c.o                          build/obj/drivers/keyboard/leds.c.o \
                 build/obj/drivers/keyboard/i86_keyboard_irq_asm.asm.o   build/obj/drivers/rtc.c.o \
                 build/obj/drivers/buzzer.c.o                            build/obj/drivers/timer.c.o \
-                build/obj/drivers/pic.c.o                               build/obj/drivers/floppy.c.o \
+                build/obj/drivers/pic.c.o                               \
                 build/obj/kernel/interrupt/irq.c.o
                 #[addfile.py: obj]
 

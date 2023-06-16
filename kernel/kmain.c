@@ -10,7 +10,7 @@
 #include "kernel/sound/beep.h"
 #include "drivers/timer.h"
 #include "drivers/pic.h"
-#include "drivers/floppy.h"
+//#include "drivers/floppy.h"
 //#include "stdlib.h"
 //#include "kernel/bootinfo.h"
 
@@ -68,7 +68,7 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
     keyboard_init(33);
     keyboard_leds_set(true, true, false);
 
-    floppy_init();
+    //floppy_init();
 
     /*while(1) {
         //enum KEYCODE k = KEY_UNKNOWN;

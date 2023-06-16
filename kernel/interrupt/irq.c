@@ -47,7 +47,7 @@ void irq_remap() {
 }
 
 void irq_gates() {
-	idt_setGate(32, (unsigned) _irq0,    0x08,   0x8E);
+	/*idt_setGate(32, (unsigned) _irq0,    0x08,   0x8E);
 	idt_setGate(33, (unsigned) _irq1,    0x08,   0x8E);
 	idt_setGate(34, (unsigned) _irq2,    0x08,   0x8E);
 	idt_setGate(35, (unsigned) _irq3,    0x08,   0x8E);
@@ -62,7 +62,7 @@ void irq_gates() {
 	idt_setGate(44, (unsigned) _irq12,   0x08,   0x8E);
 	idt_setGate(45, (unsigned) _irq13,   0x08,   0x8E);
 	idt_setGate(46, (unsigned) _irq14,   0x08,   0x8E);
-	idt_setGate(47, (unsigned) _irq15,   0x08,   0x8E);
+	idt_setGate(47, (unsigned) _irq15,   0x08,   0x8E);*/
 }
 
 void irq_install() {

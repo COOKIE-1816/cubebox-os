@@ -15,6 +15,6 @@
 #define ICW4 0x01
 
 void pic_init();
-void irq_ack(uint8_t __irq);
+void pic_irq_ack(uint8_t __irq);
 
 #endif

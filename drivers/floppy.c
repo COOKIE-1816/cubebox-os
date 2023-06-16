@@ -1,9 +1,9 @@
 #include "drivers/floppy.h"
 #include "kernel/common.h"
 #include "kernel/tty.h"
-#include "drivers/floppy/drivetypes.h"
 #include "drivers/rtc.h"
 #include "kernel/kdrivers.h"
+#include "kernel/interrupt/irq.h"
 
 #define floppy_dmalen 0x4800
 
@@ -14,6 +14,17 @@ static const int floppy_irq = 6;
 
 static volatile int floppy_motor_ticks = 0;
 static volatile int floppy_motor_state = 0;
+
+static String floppy_driveTypes[8] = {
+    "none",
+    "360kB 5.25\"",
+    "1.2MB 5.25\"",
+    "720kB 3.5\"",
+    "1.44MB 3.5\"",
+    "2.88MB 3.5\"",
+    "unknown type",
+    "unknown type"
+};
 
 enum floppy_registers {
     REG_STATUS_A        = 0x3F0,
@@ -112,7 +123,7 @@ inline unsigned char floppy_readData(int base) {
 }
 
 void floppy_checkInterrupt(int __base, int* __st0, int* __cyl) {
-    floppy_write_cmd(__base, CMD_SENSE_INTERRUPT);
+    floppy_writeCmd(__base, CMD_SENSE_INTERRUPT);
 
     *__st0 = floppy_readData(__base);
     *__cyl = floppy_readData(__base);

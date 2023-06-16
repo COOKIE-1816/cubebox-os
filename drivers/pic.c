@@ -26,7 +26,7 @@ void pic_init() {
     kdriver_statusMsg_status(KDRIVERS_OK);
 }
 
-void irq_ack(uint8_t __irq) {
+void pic_irq_ack(uint8_t __irq) {
     if(__irq >= 0x28)
         outb(PIC2, PIC_EOI);
 

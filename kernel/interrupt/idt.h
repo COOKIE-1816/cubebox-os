@@ -68,5 +68,6 @@ typedef void (*InterruptHandler) ();
 //InterruptDescriptor interruptVectorTable[IDT_MAX_DESCRIPTORS];
 
 extern  void setVect(uint8_t __vector, InterruptHandler __handler);
+extern void idt_setGate(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags);
 
 #endif

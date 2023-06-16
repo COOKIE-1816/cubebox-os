@@ -72,3 +72,15 @@ inline void setVect(uint8_t __vector, InterruptHandler __handler) {
     _interruptDescriptor->attributes = 0x8E;
     _interruptDescriptor->isr_high   = (handler_address >> 16) & 0xFFFF;
 }
+
+inline void idt_setGate(unsigned char num, 
+                        unsigned long base, 
+                        unsigned short sel,
+                        unsigned char flags) {
+                            
+	interruptVectorTable[num].isr_low =	   (base & 0xFFFF);
+	interruptVectorTable[num].isr_high =   (base >> 16) & 0xFFFF;
+	interruptVectorTable[num].kernel_cs =  sel;
+	interruptVectorTable[num].reserved =   0;
+	interruptVectorTable[num].attributes = flags | 0x60;
+}

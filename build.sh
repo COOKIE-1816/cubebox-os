@@ -58,39 +58,24 @@ i686-elf-gcc -c kernel/interrupt/irq.c          -o build/obj/kernel/interrupt/ir
 
 echo STEP 3: Link object files
 i686-elf-gcc -T $link_flags \
-                build/obj/kernel/crt/crti.s.o \
-                build/obj/kernel/crt/crtn.s.o \
-                build/obj/kernel/gdt/gdt.asm.o \
-                build/obj/kernel/common.c.o \
-                build/obj/libs/stringt.c.o \
-                build/obj/boot.s.o \
-                build/obj/kernel/kdrivers.c.o \
-                build/obj/kernel/kmain.c.o \
-                build/obj/kernel/gdt/gdt.c.o \
-                build/obj/kernel/tty.c.o \
-                build/obj/drivers/vga.c.o \
-                build/obj/kernel/interrupt/isr.asm.o \
-                build/obj/kernel/interrupt/isr.c.o \
-                build/obj/kernel/interrupt/idt.c.o \
-                build/obj/drivers/keyboard.c.o \
-                build/obj/drivers/keyboard/leds.c.o \
-                build/obj/drivers/keyboard/i86_keyboard_irq_asm.asm.o \
-                build/obj/drivers/rtc.c.o \
-                build/obj/drivers/buzzer.c.o \
-                build/obj/drivers/timer.c.o \
-                build/obj/drivers/pic.c.o \ 
-                build/obj/drivers/floppy.c.o \ 
+                build/obj/kernel/crt/crti.s.o                           build/obj/kernel/crt/crtn.s.o \
+                build/obj/kernel/gdt/gdt.asm.o                          build/obj/kernel/common.c.o \
+                build/obj/libs/stringt.c.o                              build/obj/boot.s.o \
+                build/obj/kernel/kdrivers.c.o                           build/obj/kernel/kmain.c.o \
+                build/obj/kernel/gdt/gdt.c.o                            build/obj/kernel/tty.c.o \
+                build/obj/drivers/vga.c.o                               build/obj/kernel/interrupt/isr.asm.o \
+                build/obj/kernel/interrupt/isr.c.o                      build/obj/kernel/interrupt/idt.c.o \
+                build/obj/drivers/keyboard.c.o                          build/obj/drivers/keyboard/leds.c.o \
+                build/obj/drivers/keyboard/i86_keyboard_irq_asm.asm.o   build/obj/drivers/rtc.c.o \
+                build/obj/drivers/buzzer.c.o                            build/obj/drivers/timer.c.o \
+                build/obj/drivers/pic.c.o                               build/obj/drivers/floppy.c.o \
                 build/obj/kernel/interrupt/irq.c.o
                 #[addfile.py: obj]
 
 echo STEP 4: Verify multiboot
 if grub-file --is-x86-multiboot $binfile; then
     echo MB Confirmed.
-else
-    echo MB not confirmed.
-fi
-
-echo STEP 5: Create bootable ISO image
+    echo STEP 5: Create bootable ISO image
 
     mkdir -p build/iso/boot/grub
     cp $binfile build/iso/boot/cb_bin.bin
@@ -99,3 +84,6 @@ echo STEP 5: Create bootable ISO image
     cp splash-*x*.png build/iso/boot/splash.png
 
     grub-mkrescue -o $isofile build/iso
+else
+    echo MB not confirmed.
+fi

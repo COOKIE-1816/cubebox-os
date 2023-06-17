@@ -19,7 +19,7 @@ Althrough project is not complete, i believe in that, one day you will find it u
 Also, if you are going to use it for educational purposes, the doors are always open for you :).
 
 ## CubeBox OS community discord?
-Yes, CubeBox OS has its discord community server. Link id [here](https://discord.gg/WmbKD9Sx7j)
+Yes, CubeBox OS has its discord community server. Link is [here](https://discord.gg/WmbKD9Sx7j)
 
 ## Build dependency list
 These are dependencies required to build:

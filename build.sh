@@ -53,6 +53,7 @@ i686-elf-gcc -c drivers/timer.c                 -o build/obj/drivers/timer.c.o  
 i686-elf-gcc -c drivers/pic.c                   -o build/obj/drivers/pic.c.o                $gcc_flags
 i686-elf-gcc -c drivers/floppy.c                -o build/obj/drivers/floppy.c.o             $gcc_flags
 i686-elf-gcc -c kernel/interrupt/irq.c          -o build/obj/kernel/interrupt/irq.c.o       $gcc_flags
+i686-elf-gcc -c drivers/pci.c                   -o build/obj/drivers/pci.c.o                $gcc_flags
 #[addfile.py: c]
 
 
@@ -79,7 +80,8 @@ i686-elf-gcc -T $link_flags \
                 build/obj/drivers/buzzer.c.o \
                 build/obj/drivers/timer.c.o \
                 build/obj/drivers/pic.c.o \
-                build/obj/kernel/interrupt/irq.c.o
+                build/obj/kernel/interrupt/irq.c.o \
+                build/obj/drivers/pci.c.o
                 #build/obj/drivers/floppy.c.o
                 #[addfile.py: obj]
 

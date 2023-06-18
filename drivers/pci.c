@@ -1,5 +1,6 @@
 #include "drivers/pci.h"
 #include "kernel/common.h"
+#include "kernel/kdrivers.h"
 
 pci_device *pci_devices = 0;
 uint32_t devs = 0;
@@ -41,6 +42,7 @@ uint16_t pci_getVendor( uint16_t __bus,
                         uint16_t __function) {
 
     uint32_t r0 = pci_readWord(__bus, __device, __function, 0);
+    return r0;
 }
 
 uint16_t pci_getDeviceId(   uint16_t __bus, 
@@ -100,3 +102,20 @@ uint16_t pci_getSubClassId( uint16_t __bus,
        //. . .
     } return (vendor);
 }*/
+
+void pci_init() {
+
+    kdriver pci;
+    pci.name = "PCI BUS";
+
+    kdriver_statusMsg_create(pci);
+
+    devs = drivs = 0;
+
+	//pci_devices = (pci_device **)malloc(32 * sizeof(pci_device));
+	//pci_drivers = (pci_driver **)malloc(32 * sizeof(pci_driver));
+	
+    //pci_probe();
+
+    kdriver_statusMsg_status(KDRIVERS_OK);
+}

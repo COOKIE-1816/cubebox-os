@@ -58,10 +58,10 @@ i686-elf-gcc -c kernel/interrupt/irq.c          -o build/obj/kernel/interrupt/ir
 
 echo STEP 3: Link object files
 i686-elf-gcc -T $link_flags \
+                build/obj/kernel/kdrivers.c.o                           build/obj/kernel/kmain.c.o \
                 build/obj/kernel/crt/crti.s.o                           build/obj/kernel/crt/crtn.s.o \
                 build/obj/kernel/gdt/gdt.asm.o                          build/obj/kernel/common.c.o \
                 build/obj/libs/stringt.c.o                              build/obj/boot.s.o \
-                build/obj/kernel/kdrivers.c.o                           build/obj/kernel/kmain.c.o \
                 build/obj/kernel/gdt/gdt.c.o                            build/obj/kernel/tty.c.o \
                 build/obj/drivers/vga.c.o                               build/obj/kernel/interrupt/isr.asm.o \
                 build/obj/kernel/interrupt/isr.c.o                      build/obj/kernel/interrupt/idt.c.o \

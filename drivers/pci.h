@@ -33,6 +33,24 @@ uint16_t pci_readWord(      uint16_t __bus,
 
 //uint16_t pci_checkVendor(uint8_t __bus, uint8_t __slot);
 
+void pci_addDevice(pci_device __device);
+
+uint16_t pci_getVendor(     uint16_t __bus, 
+                            uint16_t __device, 
+                            uint16_t __function);
+
+uint16_t pci_getDeviceId(   uint16_t __bus, 
+                            uint16_t __device, 
+                            uint16_t __function);
+
+uint16_t pci_getClassId(    uint16_t __bus,
+                            uint16_t __device,
+                            uint16_t __function);
+
+uint16_t pci_getSubClassId( uint16_t __bus,
+                            uint16_t __device,
+                            uint16_t __function);
+
 void pci_init();
 
 #endif

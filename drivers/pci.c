@@ -67,7 +67,7 @@ uint16_t pci_getSubClassId( uint16_t __bus,
     return (r0 & ~0x00FF);
 }
 
-void pci_probe() {
+/*void pci_probe() {
     for(uint32_t bus = 0; bus < 256; bus++) {
         for(uint32_t slot = 0; slot < 32; slot++) {
             for(uint32_t function = 0; function < 8; function++) {
@@ -90,7 +90,7 @@ void pci_probe() {
             }
         }
     }
-}
+}*/
 
 /*uint16_t pci_checkVendor(uint8_t __bus, uint8_t __slot) {
     uint16_t vendor, device;

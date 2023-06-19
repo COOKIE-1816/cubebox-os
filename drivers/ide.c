@@ -2,6 +2,7 @@
 #include "drivers/ata/atadefs.h"
 #include "kernel/common.h"
 #include "kernel/tty.h"
+#include "drivers/rtc.h"
 
 unsigned char ide_buf[2048] = {0};
 volatile unsigned static char ide_irq_invoked = 0;
@@ -220,10 +221,12 @@ void ide_init(  unsigned int BAR0,
             ide_devices[count].Reserved = 0;
     
             ide_write(i, ATA_REG_HDDEVSEL, 0xA0 | (j << 4));
-            sleep(1);
+            //sleep(1);
+            rtc_sleep(1);
     
             ide_write(i, ATA_REG_COMMAND, ATA_CMD_IDENTIFY);
-            sleep(1);
+            //sleep(1);
+            rtc_sleep(1);
             
             if(ide_read(i, ATA_REG_STATUS) == 0)
                 continue;
@@ -253,10 +256,11 @@ void ide_init(  unsigned int BAR0,
                 }
     
                 ide_write(i, ATA_REG_COMMAND, ATA_CMD_IDENTIFY_PACKET);
-                sleep(1);
+                //sleep(1);
+                rtc_sleep(1);
             }
     
-            ide_read_buffer(i, ATA_REG_DATA, (unsigned int) ide_buf, 128);
+            ide_readBuffer(i, ATA_REG_DATA, (unsigned int) ide_buf, 128);
     
             ide_devices[count].Reserved     = 1;
             ide_devices[count].Type         = type;

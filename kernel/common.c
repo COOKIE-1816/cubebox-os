@@ -16,3 +16,10 @@ inline void io_wait() {
                  "1:jmp 2f\n\t"
                  "2:");
 }
+
+void insl(uint16_t port, void* addr, uint32_t count){
+    asm volatile("cld; rep insl"
+                 : "=D" (addr), "=c" (count)
+                 : "d" (port), "0" (addr), "1" (count)
+                 : "memory");
+}

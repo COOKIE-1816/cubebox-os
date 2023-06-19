@@ -76,9 +76,9 @@ unsigned char ide_read(unsigned char channel, unsigned char reg) {
         result = inb(channels[channel].bmide + reg - 0x0E);
 
     if (reg > 0x07 && reg < 0x0C)
-      ide_write(channel, ATA_REG_CONTROL, channels[channel].nIEN);
+        ide_write(channel, ATA_REG_CONTROL, channels[channel].nIEN);
 
-   return result;
+   return (unsigned char) result;
 }
 
 void ide_write(unsigned char channel, unsigned char reg, unsigned char data) {
@@ -253,8 +253,10 @@ void ide_init(  unsigned int BAR0,
     ide_write(ATA_SECONDARY, ATA_REG_CONTROL, 2);
 
     for (int i = 0; i < 2; i++)
-        for (int j = 0; j < 2; j++) {
+
+        for (j = 0; j < 2; j++) {
             unsigned char err = 0, type = IDE_ATA, status;
+
             ide_devices[count].Reserved = 0;
     
             ide_write(i, ATA_REG_HDDEVSEL, 0xA0 | (j << 4));
@@ -369,6 +371,8 @@ unsigned char ide_ata_access(   unsigned char direction,
                                 unsigned char numsects,
                                 unsigned short selector, 
                                 unsigned int edi){
+
+    unsigned char err;
     
     unsigned char   lba_mode,
                     dma, 
@@ -381,8 +385,7 @@ unsigned char ide_ata_access(   unsigned char direction,
     unsigned short  cyl, 
                     i;
     unsigned char   head, 
-                    sect, 
-                    err;
+                    sect;
 
     ide_write(channel, ATA_REG_CONTROL, channels[channel].nIEN = (ide_irq_invoked = 0x0) + 0x02);
 
@@ -487,7 +490,7 @@ unsigned char ide_ata_access(   unsigned char direction,
         if (direction == 0)
             // PIO Read.
         for (i = 0; i < numsects; i++) {
-            if (err = ide_polling(channel, 1))
+            if (err == ide_polling(channel, 1))
                 return err;
 
             asm("pushw %es");
@@ -571,8 +574,9 @@ unsigned char ide_atapi_read(   unsigned char drive,
     ide_write(channel, ATA_REG_LBA2, (words * 2) >> 8);
 
     ide_write(channel, ATA_REG_COMMAND, ATA_CMD_PACKET);
- 
-    if (err = ide_polling(channel, 1))
+
+    unsigned char p = ide_polling(channel, 1);
+    if (err == p)
         return err;
  
     asm("rep   outsw" : : "c"(6), "d"(bus), "S"(atapi_packet));
@@ -580,7 +584,7 @@ unsigned char ide_atapi_read(   unsigned char drive,
     for (i = 0; i < numsects; i++) {
         ide_wait_irq();
 
-        if (err = ide_polling(channel, 1))
+        if (err == ide_polling(channel, 1))
             return err;
 
         asm("pushw %es");
@@ -597,14 +601,14 @@ unsigned char ide_atapi_read(   unsigned char drive,
    return 0;
 }
 
-int* package[];
-
 void ide_readSectors(   unsigned char drive, 
                         unsigned char numsects, 
                         unsigned int lba,
                         unsigned short es, 
                         unsigned int edi) {
  
+    int* package;
+
     if (drive > 3 || ide_devices[drive].Reserved == 0) {
         package[0] = 0x1;
     } else if (((lba + numsects) > ide_devices[drive].Size) && (ide_devices[drive].Type == IDE_ATA)) {
@@ -628,7 +632,8 @@ void ide_writeSectors(  unsigned char drive,
                         unsigned int lba,
                         unsigned short es, 
                         unsigned int edi) {
- 
+    int* package;
+    
     if (drive > 3 || ide_devices[drive].Reserved == 0) {
         package[0] = 0x1;
     } else if (((lba + numsects) > ide_devices[drive].Size) && (ide_devices[drive].Type == IDE_ATA)) {
@@ -647,11 +652,14 @@ void ide_writeSectors(  unsigned char drive,
 }
 
 void ide_atapi_eject(unsigned char drive) {
-    unsigned int   channel      = ide_devices[drive].Channel;
-    unsigned int   slavebit      = ide_devices[drive].Drive;
+    int* package;
+
+    unsigned int   channel  = ide_devices[drive].Channel;
+    unsigned int   slavebit = ide_devices[drive].Drive;
     unsigned int   bus      = channels[channel].base;
-    unsigned int   words      = 2048 / 2;               // Sector Size in Words.
-    unsigned char  err = 0;
+    //unsigned int   words    = 2048 / 2;
+    unsigned char  err      = 0;
+
     ide_irq_invoked = 0;
     
     if (drive > 3 || ide_devices[drive].Reserved == 0)
@@ -661,7 +669,7 @@ void ide_atapi_eject(unsigned char drive) {
     else {
         ide_write(channel, ATA_REG_CONTROL, channels[channel].nIEN = ide_irq_invoked = 0x0);
     
-        atapi_packet[ 0] = /*ATAPI_CMD_EJECT*/ 0x1B;
+        atapi_packet[ 0] = 0x1B;    /*ATAPI_CMD_EJECT*/ 
         atapi_packet[ 1] = 0x00;
         atapi_packet[ 2] = 0x00;
         atapi_packet[ 3] = 0x00;

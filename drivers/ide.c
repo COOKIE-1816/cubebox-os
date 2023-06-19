@@ -391,32 +391,39 @@ unsigned char ide_ata_access(   unsigned char direction,
 
     if (lba >= 0x10000000) {
         lba_mode  = 2;
+        
         lba_io[0] = (lba & 0x000000FF) >> 0;
         lba_io[1] = (lba & 0x0000FF00) >> 8;
         lba_io[2] = (lba & 0x00FF0000) >> 16;
         lba_io[3] = (lba & 0xFF000000) >> 24;
         lba_io[4] = 0;
         lba_io[5] = 0;
+
         head      = 0;
     } else if (ide_devices[drive].Capabilities & 0x200)  {
         lba_mode  = 1;
+
         lba_io[0] = (lba & 0x00000FF) >> 0;
         lba_io[1] = (lba & 0x000FF00) >> 8;
         lba_io[2] = (lba & 0x0FF0000) >> 16;
         lba_io[3] = 0;
         lba_io[4] = 0;
         lba_io[5] = 0;
+
         head      = (lba & 0xF000000) >> 24;
     } else {
         lba_mode  = 0;
+
         sect      = (lba % 63) + 1;
         cyl       = (lba + 1  - sect) / (16 * 63);
+
         lba_io[0] = sect;
         lba_io[1] = (cyl >> 0) & 0xFF;
         lba_io[2] = (cyl >> 8) & 0xFF;
         lba_io[3] = 0;
         lba_io[4] = 0;
         lba_io[5] = 0;
+
         head      = (lba + 1  - sect) % (16 * 63) / (63);
     }
 

@@ -2,33 +2,55 @@
 #include "kernel/common.h"
 #include "kernel/kdrivers.h"
 
-void pic_init() {
+#include <stdint.h>
+
+static uint16_t ocw1 = 0xFFFB;
+
+
+#define PIC_MASTER_CTRL 0x20
+#define PIC_MASTER_DATA 0x21
+#define PIC_SLAVE_CTRL  0xA0
+#define PIC_SLAVE_DATA  0xA1
+
+
+void pic_init(void) {
     kdriver pic;
-    pic.name = "Programmable Interval Controller (PIC)";
+    pic.name = "Programmable Interrupt Controller (PIC)";
 
     kdriver_statusMsg_create(pic);
 
-    outb(PIC1_COMMAND, ICW1);
-    outb(PIC2_COMMAND, ICW1);
+    outb(PIC_MASTER_CTRL, 0x11);
+    outb(PIC_SLAVE_CTRL, 0x11); 
+    
+    outb(PIC_MASTER_DATA, 0x20);
+    outb(PIC_SLAVE_DATA, 0x28); 
+    
+    outb(PIC_MASTER_DATA, 0x04);
+    outb(PIC_SLAVE_DATA, 0x02); 
+    
+    outb(PIC_MASTER_DATA, 0x01);
+    outb(PIC_SLAVE_DATA, 0x01); 
 
-    outb(PIC1_DATA, 0x20);
-    outb(PIC2_DATA, 0x28);
+    outb(PIC_MASTER_DATA, 0xFF);
+    outb(PIC_SLAVE_DATA, 0xFF);
 
-    outb(PIC1_DATA, 0x4);
-    outb(PIC2_DATA, 0x2);
-
-    outb(PIC1_DATA, 1);
-    outb(PIC2_DATA, 1);
-
-    outb(PIC1_DATA, 0);
-    outb(PIC2_DATA, 0);
+    __asm__ __volatile__("nop");
 
     kdriver_statusMsg_status(KDRIVERS_OK);
 }
 
-void pic_irq_ack(uint8_t __irq) {
-    if(__irq >= 0x28)
-        outb(PIC2, PIC_EOI);
+void irq_enable(uint8_t irq) {
+	ocw1 &= (uint16_t)~((1 << irq));
 
-    outb(PIC1, PIC_EOI);
+	if (irq < 8)
+		outb(PIC_MASTER_DATA, (uint8_t)(ocw1 & 0xFF));
+	else
+		outb(PIC_SLAVE_DATA, (uint8_t)(ocw1 >> 8));
+}
+
+void pic_ack(uint8_t irq) {
+    if ( irq > 7)
+        outb(PIC_SLAVE_CTRL, 0x20);
+
+    outb(PIC_MASTER_CTRL, 0x20);
 }

@@ -3,6 +3,7 @@
 #include "kernel/common.h"
 #include "kernel/tty.h"
 #include "drivers/rtc.h"
+#include "kernel/kdrivers.h"
 
 unsigned char ide_buf[2048] = {0};
 volatile unsigned static char ide_irq_invoked = 0;
@@ -203,6 +204,11 @@ void ide_init(  unsigned int BAR0,
                 unsigned int BAR3,
                 unsigned int BAR4) {
 
+    kdriver ide;
+    ide.name = "PCI IDE Controller";
+
+    kdriver_statusMsg_create(ide);
+
     int j, k, count = 0;
  
     channels[ATA_PRIMARY  ].base  = (BAR0 & 0xFFFFFFFC) + 0x1F0 * (!BAR0);
@@ -235,12 +241,15 @@ void ide_init(  unsigned int BAR0,
                 status = ide_read(i, ATA_REG_STATUS);
 
                 if((status & ATA_SR_ERROR)) {
+                    kdriver_statusMsg_status(KDRIVERS_FAIL);
                     err = 1; 
                     break;
                 }
 
-                if(!(status & ATA_SR_BUSY) && (status & ATA_SR_DRIVE_REQUEST_READY)) 
+                if(!(status & ATA_SR_BUSY) && (status & ATA_SR_DRIVE_REQUEST_READY)) {
+                    //kdriver_statusMsg_status(KDRIVERS_FAIL);
                     break;
+                }
             }
     
             if (err != 0) {
@@ -298,6 +307,8 @@ void ide_init(  unsigned int BAR0,
 
             // TODO: Make it print capacity.
         }
+        
+    kdriver_statusMsg_status(KDRIVERS_OK);
 }
 
    /* ATA/ATAPI Read/Write Modes:

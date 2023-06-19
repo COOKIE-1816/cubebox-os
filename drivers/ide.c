@@ -1,3 +1,34 @@
+/*
+============================================================= FILE INFORMATION =============================================================
+                 .@@@@@@@@@@@@@@@@@@@@@@@@@@%            
+                 .@@@@@@@@@@@@@@@@@@@@@@@@@@%               Product name:               CubeBox OS
+                 .@@@@@@@@@@@@@@@@@@@@@@@@@@%               Product version:            0.0.1.0a, Alpha stage - unstable
+                 .@@@@@@@@@@@@@@@@@@@@@@@@@@%               
+           @@@@@@@@@@@@@#             %@@@@@@@@@@@@@        File name & path:           /drivers/ide.c
+           @@@@@@@@@@@@@#             %@@@@@@@@@@@@@        Programming language:       C
+           @@@@@@@@@@@@@#             %@@@@@@@@@@@@@        File usage:                 An IDE driver
+           @@@@@@@@@@@@@#             %@@@@@@@@@@@@@                           
+    @@@@@@@@@@@@@&                          ,@@@@@@@        Last revision:              19-06-2023 11-32 UTC
+    @@@@@@@@@@@@@&                          ,@@@@@@@        
+    @@@@@@@@@@@@@&                          ,@@@@@@@                           
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                          File usage:                 
+    @@@@@@@@@@@@@&                                          Contributors:               Vaclav Hajsman
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                          Docs. reference:            
+    @@@@@@@@@@@@@&                                          Online reference:           
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                          Copyright (C) Vaclav Hajsman (A.K.A. COOKIE) 2023. All rights reserved.
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                          This file is licensed as a part of the project inself, and licensing information
+    @@@@@@@@@@@@@&                                          Can be found in LICENSE file in root directory of this project.
+============================================================================================================================================
+*/
+
 #include "drivers/ide.h"
 #include "drivers/ata/atadefs.h"
 #include "kernel/common.h"
@@ -6,7 +37,7 @@
 #include "kernel/kdrivers.h"
 
 unsigned char ide_buf[2048] = {0};
-volatile unsigned static char ide_irq_invoked = 0;
+static volatile unsigned char ide_irq_invoked = 0;
 
 struct ide_channelRegisters {
    unsigned short base;
@@ -222,7 +253,7 @@ void ide_init(  unsigned int BAR0,
     ide_write(ATA_SECONDARY, ATA_REG_CONTROL, 2);
 
     for (int i = 0; i < 2; i++)
-        for (j = 0; j < 2; j++) {
+        for (int j = 0; j < 2; j++) {
             unsigned char err = 0, type = IDE_ATA, status;
             ide_devices[count].Reserved = 0;
     
@@ -410,38 +441,49 @@ unsigned char ide_ata_access(   unsigned char direction,
 
     if (lba_mode == 0 && dma == 0 && direction == 0) 
         cmd = ATA_CMD_READ_PIO;
+
     if (lba_mode == 1 && dma == 0 && direction == 0) 
         cmd = ATA_CMD_READ_PIO;   
+
     if (lba_mode == 2 && dma == 0 && direction == 0) 
         cmd = ATA_CMD_READ_PIO_EXT;   
+
     if (lba_mode == 0 && dma == 1 && direction == 0) 
         cmd = ATA_CMD_READ_DMA;
+
     if (lba_mode == 1 && dma == 1 && direction == 0)
         cmd = ATA_CMD_READ_DMA;
+
     if (lba_mode == 2 && dma == 1 && direction == 0) 
         cmd = ATA_CMD_READ_DMA_EXT;
+
     if (lba_mode == 0 && dma == 0 && direction == 1) 
         cmd = ATA_CMD_WRITE_PIO;
+
     if (lba_mode == 1 && dma == 0 && direction == 1) 
         cmd = ATA_CMD_WRITE_PIO;
+
     if (lba_mode == 2 && dma == 0 && direction == 1) 
         cmd = ATA_CMD_WRITE_PIO_EXT;
+
     if (lba_mode == 0 && dma == 1 && direction == 1) 
         cmd = ATA_CMD_WRITE_DMA;
+
     if (lba_mode == 1 && dma == 1 && direction == 1) 
         cmd = ATA_CMD_WRITE_DMA;
+        
     if (lba_mode == 2 && dma == 1 && direction == 1)
         cmd = ATA_CMD_WRITE_DMA_EXT;
 
     ide_write(channel, ATA_REG_COMMAND, cmd);
 
-    if (dma)
+    //if (dma)
         // TODO: Complete DMA R/W
-        if (direction == 0);
+        /*if (direction == 0);
             // DMA Read.
         else;
-            // DMA Write.
-    else
+            // DMA Write.*/
+    //else
         if (direction == 0)
             // PIO Read.
         for (i = 0; i < numsects; i++) {

@@ -114,7 +114,7 @@ unsigned char ide_polling(unsigned char channel, unsigned int advanced_check) {
     return 0; // No Error.
 }
 
-unsigned char ide_print_error(unsigned int drive, unsigned char err) {
+unsigned char ide_printErr(unsigned int drive, unsigned char err) {
     if (err == 0)
         return err;
 
@@ -540,7 +540,7 @@ unsigned char ide_atapi_read(   unsigned char drive,
 
 int* package[];
 
-void ide_read_sectors(unsigned char drive, unsigned char numsects, unsigned int lba,
+void ide_readSectors(unsigned char drive, unsigned char numsects, unsigned int lba,
                       unsigned short es, unsigned int edi) {
  
     if (drive > 3 || ide_devices[drive].Reserved == 0) {
@@ -557,11 +557,11 @@ void ide_read_sectors(unsigned char drive, unsigned char numsects, unsigned int 
                 err = ide_atapi_read(drive, lba + i, 1, es, edi + (i*2048));
         }
 
-        package[0] = ide_print_error(drive, err);
+        package[0] = ide_printErr(drive, err);
     }
 }
 
-void ide_write_sectors(unsigned char drive, unsigned char numsects, unsigned int lba,
+void ide_writeSectors(unsigned char drive, unsigned char numsects, unsigned int lba,
                        unsigned short es, unsigned int edi) {
  
     if (drive > 3 || ide_devices[drive].Reserved == 0) {
@@ -577,7 +577,7 @@ void ide_write_sectors(unsigned char drive, unsigned char numsects, unsigned int
             err = 4;
         }
 
-        package[0] = ide_print_error(drive, err);
+        package[0] = ide_printErr(drive, err);
     }
 }
 
@@ -627,6 +627,6 @@ void ide_atapi_eject(unsigned char drive) {
                 err = 0;
         //}
 
-        package[0] = ide_print_error(drive, err);
+        package[0] = ide_printErr(drive, err);
     }
 }

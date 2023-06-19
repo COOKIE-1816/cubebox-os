@@ -191,8 +191,8 @@ unsigned char ide_printErr(unsigned int drive, unsigned char err) {
         }[ide_devices[drive].Drive]
     );
 
-    tty_writeString(" - ");
-    tty_writeString(ide_devices[drive].Model);
+    /*tty_writeString(" - ");
+    tty_writeString(ide_devices[drive].Model);*/
     tty_writeString("\n");
     
     return err;
@@ -255,6 +255,8 @@ void ide_init(  unsigned int BAR0,
             if (err != 0) {
                 unsigned char cl = ide_read(i, ATA_REG_LBA1);
                 unsigned char ch = ide_read(i, ATA_REG_LBA2);
+
+                ide_printErr(0, err);
     
                 if (cl == 0x14 && ch ==0xEB) {
                     type = IDE_ATAPI;

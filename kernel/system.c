@@ -8,8 +8,13 @@ void _fail() {
     tty_writeString("CPU halted.");
 }
 
+void _warn() {
+    tty_colored(15, "WARNING: System is going to shut down now!\n");
+}
+
 void shutdown() {
-    // Shutdown using ACPI
+    _warn();
+
     if(SCI_EN != 0) {
         acpi_enable();
 
@@ -28,6 +33,8 @@ void shutdown() {
 }
 
 void reboot() {
+    _warn();
+
     uint8_t good = 0x02;
     
     while (good & 0x02)

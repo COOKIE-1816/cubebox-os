@@ -10,6 +10,7 @@
 #include "kernel/sound/beep.h"
 #include "drivers/timer.h"
 #include "drivers/pic.h"
+#include "drivers/ide.h"
 //#include "drivers/floppy.h"
 //#include "stdlib.h"
 //#include "kernel/bootinfo.h"
@@ -67,6 +68,8 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
 
     keyboard_init(33);
     keyboard_leds_set(true, true, false);
+
+    ide_init(0x1F0, 0x3F6, 0x170, 0x376, 0x000);
 
     //floppy_init();
 

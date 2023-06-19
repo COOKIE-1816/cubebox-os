@@ -11,6 +11,8 @@
 #include "drivers/timer.h"
 #include "drivers/pic.h"
 #include "drivers/ide.h"
+#include "drivers/acpi.h"
+#include "kernel/system.h"
 //#include "drivers/floppy.h"
 //#include "stdlib.h"
 //#include "kernel/bootinfo.h"
@@ -63,9 +65,8 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
     //tty_writeString("CubeBox, kernel v0.0.1.0a - Alpha phase.\n\n");
     tty_colored(3, "CubeBox OS: kernel:v0.0.1.0a\n\n");
 
-    rtc_sleep(2);
-
     pic_init();
+    acpi_init();
 
     keyboard_init(33);
     keyboard_leds_set(true, true, false);

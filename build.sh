@@ -55,6 +55,8 @@ i686-elf-gcc -c drivers/floppy.c                -o build/obj/drivers/floppy.c.o 
 i686-elf-gcc -c kernel/interrupt/irq.c          -o build/obj/kernel/interrupt/irq.c.o       $gcc_flags
 i686-elf-gcc -c drivers/pci.c                   -o build/obj/drivers/pci.c.o                $gcc_flags
 i686-elf-gcc -c drivers/ide.c                   -o build/obj/drivers/ide.c.o                $gcc_flags
+i686-elf-gcc -c drivers/acpi.c                  -o build/obj/drivers/acpi.c.o               $gcc_flags
+i686-elf-gcc -c kernel/system.c                 -o build/obj/kernel/system.c.o              $gcc_flags
 #[addfile.py: c]
 
 
@@ -83,7 +85,9 @@ i686-elf-gcc -T $link_flags \
                 build/obj/drivers/pic.c.o \
                 build/obj/kernel/interrupt/irq.c.o \
                 build/obj/drivers/pci.c.o \
-                build/obj/drivers/ide.c.o 
+                build/obj/drivers/ide.c.o  \
+                build/obj/drivers/acpi.c.o \
+                build/obj/kernel/system.c.o
                 #build/obj/drivers/floppy.c.o
                 #[addfile.py: obj]
 

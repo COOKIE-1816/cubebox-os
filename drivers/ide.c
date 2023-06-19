@@ -540,8 +540,11 @@ unsigned char ide_atapi_read(   unsigned char drive,
 
 int* package[];
 
-void ide_readSectors(unsigned char drive, unsigned char numsects, unsigned int lba,
-                      unsigned short es, unsigned int edi) {
+void ide_readSectors(   unsigned char drive, 
+                        unsigned char numsects, 
+                        unsigned int lba,
+                        unsigned short es, 
+                        unsigned int edi) {
  
     if (drive > 3 || ide_devices[drive].Reserved == 0) {
         package[0] = 0x1;
@@ -561,8 +564,11 @@ void ide_readSectors(unsigned char drive, unsigned char numsects, unsigned int l
     }
 }
 
-void ide_writeSectors(unsigned char drive, unsigned char numsects, unsigned int lba,
-                       unsigned short es, unsigned int edi) {
+void ide_writeSectors(  unsigned char drive, 
+                        unsigned char numsects, 
+                        unsigned int lba,
+                        unsigned short es, 
+                        unsigned int edi) {
  
     if (drive > 3 || ide_devices[drive].Reserved == 0) {
         package[0] = 0x1;

@@ -1,5 +1,7 @@
 #include "kernel/memory.h"
 
+static block* head = NULL;
+
 void free(void* __ptr) {
     if(__ptr == NULL)
         return;

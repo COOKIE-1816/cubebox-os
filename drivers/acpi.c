@@ -1,5 +1,6 @@
 #include "drivers/acpi.h"
 #include "drivers/rtc.h"
+#include "kernel/tty.h"
 #include "kernel/common.h"
 #include "kernel/kdrivers.h"
 #include "stringt.h"
@@ -75,7 +76,7 @@ unsigned int *acpi_getRSDPtr(void) {
             return rsdp;
     }
 
-    int ebda = *((short *) 0x40E);
+    int ebda = ((int) 0x40E);
         ebda = ebda * 0x10 & 0x000FFFFF;
 
     for (addr = (unsigned int *) ebda; (int) addr<ebda+1024; addr+= 0x10/sizeof(addr)) {
@@ -159,9 +160,10 @@ int acpi_init(void) {
 
     unsigned int* (*ptr)(void) = &acpi_getRSDPtr;
 
-    if (ptr != NULL && acpi_checkHeader(ptr, "RSDT") == 0) {
-        int entrys = *(ptr + 1);
-        entrys = (entrys-36) /4;
+    if (ptr != NULL && acpi_checkHeader((unsigned int*) ptr, "RSDT") == 0) {
+        int entrys = (int) *(ptr + 1);
+        entrys = entrys - 36;
+        entrys = (int) entrys / 4;
 
         ptr += 36/4;
 

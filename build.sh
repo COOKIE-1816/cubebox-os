@@ -1,4 +1,4 @@
-#! bin/sh
+#! /bin/sh
 
 version=v0.0.1.0a
 phase=alpha

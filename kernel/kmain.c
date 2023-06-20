@@ -1,30 +1,16 @@
 #include "kernel/tty.h"
 #include "drivers/vga.h"
 #include "kernel/gdt/gdt.h"
-#include "kernel/gdt/gdtdef.h"
 #include "drivers/keyboard.h"
 #include "kernel/common.h"
 #include "stringt.h"
 #include "drivers/rtc.h"
 #include "kernel/kdrivers.h"
-#include "kernel/sound/beep.h"
 #include "drivers/timer.h"
 #include "drivers/pic.h"
-#include "drivers/ide.h"
 #include "drivers/acpi.h"
 #include "kernel/system.h"
-//#include "drivers/floppy.h"
-//#include "stdlib.h"
-//#include "kernel/bootinfo.h"
-
-//#define NULL 0x00
 #include <stddef.h>
-
-/*#ifndef KERNEL_REL_STABLE
-    String unstableWarning = "WARNING: UNSTABLE RELEASE, USE AT YOUR OWN RISK!\n";
-#else
-    String unstableWarning = "";
-#endif*/
 
 void drawLine() {
     for(size_t i = 0; i < VGA_WIDTH; i++)

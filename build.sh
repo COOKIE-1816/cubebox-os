@@ -35,7 +35,7 @@ comple_sources_fn (){
     #i686-elf-gcc $1 -c kernel/sound/beep.c             -o build/obj/kernel/sound/beep.c.o          $gcc_flags
     i686-elf-gcc $1 -c drivers/timer.c                 -o build/obj/drivers/timer.c.o              $gcc_flags
     i686-elf-gcc $1 -c drivers/pic.c                   -o build/obj/drivers/pic.c.o                $gcc_flags
-    i686-elf-gcc $1 -c drivers/floppy.c                -o build/obj/drivers/floppy.c.o             $gcc_flags
+    #i686-elf-gcc $1 -c drivers/floppy.c                -o build/obj/drivers/floppy.c.o             $gcc_flags
     i686-elf-gcc $1 -c kernel/interrupt/irq.c          -o build/obj/kernel/interrupt/irq.c.o       $gcc_flags
     i686-elf-gcc $1 -c drivers/pci.c                   -o build/obj/drivers/pci.c.o                $gcc_flags
     i686-elf-gcc $1 -c drivers/ide.c                   -o build/obj/drivers/ide.c.o                $gcc_flags

@@ -1,7 +1,7 @@
+#include "drivers/acpi.h"
 #include "kernel/system.h"
 #include "kernel/common.h"
 #include "kernel/tty.h"
-#include "drivers/acpi.h"
 
 void _fail() {
     tty_colored(3, "\nKernel was unable to shutdown or reset this machine. You can try shutting down or reseting the machine manually.\n");

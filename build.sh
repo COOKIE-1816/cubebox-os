@@ -17,6 +17,7 @@ gcc_flags="-std=gnu99 -ffreestanding -O2 -Wall -Wextra -m32 -I ./ -I libs"
 link_flags="linker.ld -o $binfile -ffreestanding -O2 -nostdlib -lgcc"
 
 mkdir -p build/obj/drivers/keyboard
+mkdir    build/obj/drivers/acpi
 mkdir -p build/obj/libs
 mkdir -p build/obj/kernel/crt
 mkdir    build/obj/kernel/gdt
@@ -57,6 +58,7 @@ i686-elf-gcc -c kernel/interrupt/irq.c          -o build/obj/kernel/interrupt/ir
 i686-elf-gcc -c drivers/pci.c                   -o build/obj/drivers/pci.c.o                $gcc_flags
 i686-elf-gcc -c drivers/ide.c                   -o build/obj/drivers/ide.c.o                $gcc_flags
 i686-elf-gcc -c drivers/acpi.c                  -o build/obj/drivers/acpi.c.o               $gcc_flags
+i686-elf-gcc -c drivers/acpi/shutdown.c         -o build/obj/drivers/acpi/shutdown.c.o      $gcc_flags
 i686-elf-gcc -c kernel/system.c                 -o build/obj/kernel/system.c.o              $gcc_flags
 i686-elf-gcc -c kernel/memory/free.c            -o build/obj/kernel/memory/free.c.o         $gcc_flags
 i686-elf-gcc -c kernel/memory/malloc.c          -o build/obj/kernel/memory/malloc.c.o       $gcc_flags
@@ -90,6 +92,7 @@ i686-elf-gcc -T $link_flags \
                 build/obj/drivers/pci.c.o \
                 build/obj/drivers/ide.c.o  \
                 build/obj/drivers/acpi.c.o \
+                build/obj/drivers/acpi/shutdown.c.o \
                 build/obj/kernel/system.c.o \
                 build/obj/kernel/memory/free.c.o \
                 build/obj/kernel/memory/malloc.c.o

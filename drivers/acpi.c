@@ -237,13 +237,3 @@ void _acpi_ensureEnabled() {
         acpi_enable();
 }
 
- int acpi_shutdown(void) {
-    _acpi_ensureEnabled();
-        
-    outb((unsigned int) PM1a_CNT, SLP_TYPa | SLP_EN );
-
-    if ( PM1b_CNT != 0 )
-        outb((unsigned int) PM1b_CNT, SLP_TYPb | SLP_EN );
-    
-    return 1;
-}

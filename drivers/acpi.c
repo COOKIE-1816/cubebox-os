@@ -5,16 +5,16 @@
 #include "stringt.h"
 #include <stdint.h>
 
-inline  dword *SMI_CMD = 0;
-inline  byte ACPI_ENABLE = 0;
-inline  byte ACPI_DISABLE = 0;
-inline  dword *PM1a_CNT = 0;
-inline  dword *PM1b_CNT = 0;
-inline word SLP_TYPa = 0;
-inline  word SLP_TYPb = 0;
-inline  word SLP_EN = 0;
-inline byte PM1_CNT_LEN = 0;
-inline word SCI_EN = 0;
+static dword *SMI_CMD = 0;
+static byte ACPI_ENABLE = 0;
+static byte ACPI_DISABLE = 0;
+static dword *PM1a_CNT = 0;
+static dword *PM1b_CNT = 0;
+static word SLP_TYPa = 0;
+static word SLP_TYPb = 0;
+static word SLP_EN = 0;
+static byte PM1_CNT_LEN = 0;
+static word SCI_EN = 0;
 
 
 struct RSDPtr {
@@ -234,4 +234,45 @@ int acpi_init(void) {
 
     kdriver_statusMsg_status(KDRIVERS_FAIL);
    return -1;
+}
+
+
+dword* get_SMI_CMD() {
+    return SMI_CMD;
+}
+
+byte get_ACPI_ENABLE() {
+    return ACPI_ENABLE;
+}
+
+byte get_ACPI_DISABLE() {
+    return ACPI_DISABLE;
+}
+
+dword* get_PM1a_CNT() {
+    return PM1a_CNT;
+}
+
+dword* get_PM1b_CNT() {
+    return PM1b_CNT;
+}
+
+word get_SLP_TYPa() {
+    return SLP_TYPa;
+}
+
+word get_SLP_TYPb() {
+    return SLP_TYPb;
+}
+
+word get_SLP_EN() {
+    return SLP_EN;
+}
+
+byte get_PM1_CNT_LEN() {
+    return PM1_CNT_LEN;
+}
+
+word get_SCI_EN() {
+    return SCI_EN;
 }

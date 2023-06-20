@@ -19,7 +19,7 @@
 // }
 
 int acpi_shutdown(void) {
-    if(get_SCI_EN != 0)
+    if(get_SCI_EN() != 0)
         acpi_enable();
         
     outb((unsigned int) get_PM1a_CNT(), get_SLP_TYPa() | get_SLP_EN() );

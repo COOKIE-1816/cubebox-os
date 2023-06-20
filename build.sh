@@ -23,6 +23,7 @@ mkdir    build/obj/kernel/gdt
 mkdir    build/obj/kernel/interrupt
 mkdir    build/obj/kernel/timing
 mkdir    build/obj/kernel/sound
+mkdir    build/obj/kernel/memory
 
 echo STEP 1: Assemble assembly files
 i686-elf-as  boot.s                                     -o build/obj/boot.s.o
@@ -57,6 +58,8 @@ i686-elf-gcc -c drivers/pci.c                   -o build/obj/drivers/pci.c.o    
 i686-elf-gcc -c drivers/ide.c                   -o build/obj/drivers/ide.c.o                $gcc_flags
 i686-elf-gcc -c drivers/acpi.c                  -o build/obj/drivers/acpi.c.o               $gcc_flags
 i686-elf-gcc -c kernel/system.c                 -o build/obj/kernel/system.c.o              $gcc_flags
+i686-elf-gcc -c kernel/memory/free.c            -o build/obj/kernel/memory/free.c.o         $gcc_flags
+i686-elf-gcc -c kernel/memory/malloc.c          -o build/obj/kernel/memory/malloc.c.o       $gcc_flags
 #[addfile.py: c]
 
 
@@ -87,7 +90,9 @@ i686-elf-gcc -T $link_flags \
                 build/obj/drivers/pci.c.o \
                 build/obj/drivers/ide.c.o  \
                 build/obj/drivers/acpi.c.o \
-                build/obj/kernel/system.c.o
+                build/obj/kernel/system.c.o \
+                build/obj/kernel/memory/free.c.o \
+                build/obj/kernel/memory/malloc.c.o
                 #build/obj/drivers/floppy.c.o
                 #[addfile.py: obj]
 

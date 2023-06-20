@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        "leds.h": "c",
-        "kdrivers.h": "c",
-        "acpi.h": "c",
-        "memory.h": "c"
-    }
-}

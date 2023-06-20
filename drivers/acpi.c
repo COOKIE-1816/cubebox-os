@@ -48,12 +48,11 @@ unsigned int *acpi_checkRSDPtr(unsigned int *ptr) {
 
    byte *bptr;
    byte check = 0;
-   int i;
 
    if (memcmp(sig, rsdp, 8) == 0) {
         bptr = (byte*) ptr;
 
-        for (i=0; i<sizeof(struct RSDPtr); i++){
+        for (unsigned long i = 0; i < sizeof(struct RSDPtr); i++){
             check += *bptr;
             bptr++;
         }
@@ -77,7 +76,7 @@ unsigned int *acpi_getRSDPtr(void) {
     }
 
     int ebda = *((short *) 0x40E);
-    ebda = ebda*0x10 &0x000FFFFF;
+        ebda = ebda * 0x10 & 0x000FFFFF;
 
     for (addr = (unsigned int *) ebda; (int) addr<ebda+1024; addr+= 0x10/sizeof(addr)) {
         rsdp = acpi_checkRSDPtr(addr);
@@ -146,11 +145,11 @@ int acpi_enable(void) {
     }
 }
 
-void _acpi_ensureEnabled() {
+/*void _acpi_ensureEnabled() {
 
     if(SCI_EN != 0)
         acpi_enable();
-}
+}*/
 
 int acpi_init(void) {
     kdriver acpi;
@@ -166,7 +165,7 @@ int acpi_init(void) {
 
         ptr += 36/4;
 
-        while (0<entrys--) {
+        while (0 < entrys - 1) {
             if (acpi_checkHeader((unsigned int *) *ptr, "FACP") == 0) {
                 entrys = -2;
 

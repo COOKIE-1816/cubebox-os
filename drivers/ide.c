@@ -36,6 +36,10 @@
 #include "drivers/rtc.h"
 #include "kernel/kdrivers.h"
 
+inline unsigned char atapi_packet[12] = {
+    0xA8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+};
+
 unsigned char ide_buf[2048] = {0};
 static volatile unsigned char ide_irq_invoked = 0;
 
@@ -61,7 +65,7 @@ struct ide_device {
 //ide_read(channel, ATA_REG_STATUS);
  
 unsigned char ide_read(unsigned char channel, unsigned char reg) {
-    unsigned char result;
+    unsigned char result = 0;
 
     if (reg > 0x07 && reg < 0x0C)
         ide_write(channel, ATA_REG_CONTROL, 0x80 | channels[channel].nIEN);
@@ -372,7 +376,7 @@ unsigned char ide_ata_access(   unsigned char direction,
                                 unsigned short selector, 
                                 unsigned int edi){
 
-    unsigned char err;
+    unsigned char err = 0;
     
     unsigned char   lba_mode,
                     dma, 
@@ -551,7 +555,7 @@ unsigned char ide_atapi_read(   unsigned char drive,
     unsigned int   slavebit = ide_devices[drive].Drive;
     unsigned int   bus      = channels[channel].base;
     unsigned int   words    = 1024;
-    unsigned char  err;
+    unsigned char  err      = 0;
 
     int i;
 
@@ -582,7 +586,9 @@ unsigned char ide_atapi_read(   unsigned char drive,
 
     ide_write(channel, ATA_REG_COMMAND, ATA_CMD_PACKET);
 
-    unsigned char p = ide_polling(channel, 1);
+    unsigned char p;
+    p = ide_polling(channel, 1);
+
     if (err == p)
         return err;
  
@@ -614,14 +620,14 @@ void ide_readSectors(   unsigned char drive,
                         unsigned short es, 
                         unsigned int edi) {
  
-    int* package;
+    int* package[10];
 
     if (drive > 3 || ide_devices[drive].Reserved == 0) {
         package[0] = 0x1;
     } else if (((lba + numsects) > ide_devices[drive].Size) && (ide_devices[drive].Type == IDE_ATA)) {
         package[0] = 0x2;
     } else {
-        unsigned char err;
+        unsigned char err = 0;
 
         if (ide_devices[drive].Type == IDE_ATA) {
             err = ide_ata_access(ATA_READ, drive, lba, numsects, es, edi);
@@ -639,14 +645,14 @@ void ide_writeSectors(  unsigned char drive,
                         unsigned int lba,
                         unsigned short es, 
                         unsigned int edi) {
-    int* package;
+    int* package[10];
     
     if (drive > 3 || ide_devices[drive].Reserved == 0) {
         package[0] = 0x1;
     } else if (((lba + numsects) > ide_devices[drive].Size) && (ide_devices[drive].Type == IDE_ATA)) {
         package[0] = 0x2;
     } else {
-        unsigned char err;
+        unsigned char err = 0;
 
         if (ide_devices[drive].Type == IDE_ATA) {
             err = ide_ata_access(ATA_WRITE, drive, lba, numsects, es, edi);

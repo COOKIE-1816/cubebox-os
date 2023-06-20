@@ -3,7 +3,6 @@
 
 extern void* isr_stubTable[];
 
-__attribute__((noreturn))
 extern void exceptionHandler(void);
 
 #endif

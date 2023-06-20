@@ -1,5 +1,6 @@
 #include "kernel/interrupt/isr.h"
 
-void exceptionHandler() {
+//__attribute__ ((noreturn))
+void exceptionHandler()  {
     __asm__ volatile ("cli; hlt");
-}
+};

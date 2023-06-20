@@ -15,14 +15,16 @@ void _warn() {
 void shutdown() {
     _warn();
 
-    if(SCI_EN != 0) {
+    /*if(SCI_EN != 0) {
         acpi_enable();
 
         outb((unsigned int) PM1a_CNT, SLP_TYPa | SLP_EN );
 
         if ( PM1b_CNT != 0 )
             outb((unsigned int) PM1b_CNT, SLP_TYPb | SLP_EN );
-    }
+    }*/
+
+    acpi_shutdown();
 
     // On emulators, use emulator-specific register to send shutdown command
     outb(0xB004, (uint8_t) 0x2000); // Shutdown QEMU < 2.0, BOCHS

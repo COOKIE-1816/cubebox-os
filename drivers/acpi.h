@@ -10,20 +10,21 @@ typedef uint8_t byte;
 typedef uint16_t word;
 typedef uint32_t dword;
 
-static dword *SMI_CMD;
-static byte ACPI_ENABLE;
-static byte ACPI_DISABLE;
-static dword *PM1a_CNT;
-static dword *PM1b_CNT;
-static word SLP_TYPa;
-static word SLP_TYPb;
-static word SLP_EN;
+extern  dword *SMI_CMD;
+extern  byte ACPI_ENABLE;
+extern  byte ACPI_DISABLE;
+extern  dword *PM1a_CNT;
+extern  dword *PM1b_CNT;
+extern  word SLP_TYPa;
+extern  word SLP_TYPb;
+extern  word SLP_EN;
+extern byte PM1_CNT_LEN;
+extern word SCI_EN;
 
-static byte PM1_CNT_LEN;
-
-static word SCI_EN;
 
 int acpi_enable(void);
 int acpi_init(void);
+
+int acpi_shutdown(void) ;// Performs a shut-down using ACPI
 
 #endif

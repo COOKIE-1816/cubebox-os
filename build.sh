@@ -1,4 +1,4 @@
-#! /bin/sh
+#! bin/sh
 
 version=v0.0.1.0a
 phase=alpha
@@ -18,7 +18,7 @@ link_flags="linker.ld -o $binfile -ffreestanding -O2 -nostdlib -lgcc"
 
 # Function Declerations
 
-function comple_sources_fn() {
+comple_sources_fn (){
     i686-elf-gcc $1 -c libs/stringt.c                  -o build/obj/libs/stringt.c.o               $gcc_flags
     i686-elf-gcc $1 -c drivers/vga.c                   -o build/obj/drivers/vga.c.o                $gcc_flags
     i686-elf-gcc $1 -c kernel/tty.c                    -o build/obj/kernel/tty.c.o                 $gcc_flags
@@ -46,7 +46,7 @@ function comple_sources_fn() {
     i686-elf-gcc $1 -c kernel/memory/malloc.c          -o build/obj/kernel/memory/malloc.c.o       $gcc_flags
 }
 
-function link_obj_fn(){
+link_obj_fn(){
     i686-elf-gcc $1 -T $link_flags \
                 build/obj/kernel/kdrivers.c.o \
                 build/obj/kernel/kmain.c.o \
@@ -101,7 +101,7 @@ nasm -felf32 kernel/gdt/gdt.asm                         -o build/obj/kernel/gdt/
 nasm -felf32 kernel/interrupt/isr.asm                   -o build/obj/kernel/interrupt/isr.asm.o
 nasm -felf32 drivers/keyboard/i86_keyboard_irq_asm.asm  -o build/obj/drivers/keyboard/i86_keyboard_irq_asm.asm.o
 #[addfile.py: assembly]
-if [[ "$1" != "no-war" ]]; 
+if [ "$1" != "no-war" ]; 
 then
     echo STEP 2: Compile sources
     comple_sources_fn "";

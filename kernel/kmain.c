@@ -52,6 +52,7 @@ void sh(String c) {
 
 
 void commandLine() {
+    char* buff;
     while(1) {
         //enum KEYCODE k = KEY_UNKNOWN;
 
@@ -66,7 +67,7 @@ void commandLine() {
         tty_writeString(key_ascii);
     }
 
-    sh();
+    sh(buff);
 }
 
 void kernel_main(/*multiboot_info* __boot_info*/ void) {

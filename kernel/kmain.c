@@ -45,29 +45,21 @@ enum KEYCODE getKey() {
     return k;
 }
 
-void sh(String c) {
-    tty_writeString(c);
-}
-
 
 
 void commandLine() {
     char* buff;
-    while(1) {
-        //enum KEYCODE k = KEY_UNKNOWN;
 
+    while(1) {
         tty_writeString("\n> ");
 
         enum KEYCODE key = getKey();
         if (key == KEY_KP_ENTER)
             continue;
 
-        char key_ascii   = keyboard_key2ascii(key);
-
-        tty_writeString(key_ascii);
+        char key_ascii = keyboard_key2ascii(key);
+        tty_putChar(key_ascii);
     }
-
-    sh(buff);
 }
 
 void kernel_main(/*multiboot_info* __boot_info*/ void) {

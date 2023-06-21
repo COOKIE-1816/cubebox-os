@@ -37,6 +37,8 @@
 uint8_t* vectors;
 InterruptDescriptor interruptVectorTable[IDT_MAX_DESCRIPTORS];
 
+static idtr_t idtr;
+
 void idt_setDescriptor(uint8_t vector, void* isr, uint8_t flags) {
     idt_entry_t* descriptor = &interruptVectorTable[vector];
  

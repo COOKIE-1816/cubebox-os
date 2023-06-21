@@ -45,28 +45,17 @@ enum KEYCODE getKey() {
     return k;
 }
 
-void kernel_main(/*multiboot_info* __boot_info*/ void) {
-    kernel_initializeKernelParticipals();
+void sh(String c) {
+    tty_writeString(c);
+}
 
-    //tty_writeString("CubeBox, kernel v0.0.1.0a - Alpha phase.\n\n");
-    tty_colored(3, "CubeBox OS: kernel:v0.0.1.0a\n\n");
 
-    pic_init();
-    acpi_init();
 
-    keyboard_init(33);
-    keyboard_leds_set(true, true, false);
-
-    shutdown();
-
-    //ide_init(0x1F0, 0x3F6, 0x170, 0x376, 0x000);
-
-    //floppy_init();
-
-    /*while(1) {
+void commandLine() {
+    while(1) {
         //enum KEYCODE k = KEY_UNKNOWN;
 
-        tty_writeString("\n > ");
+        tty_writeString("\n> ");
 
         enum KEYCODE key = getKey();
         if (key == KEY_KP_ENTER)
@@ -75,5 +64,28 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
         char key_ascii   = keyboard_key2ascii(key);
 
         tty_writeString(key_ascii);
-    }*/
+    }
+
+    sh();
+}
+
+void kernel_main(/*multiboot_info* __boot_info*/ void) {
+    kernel_initializeKernelParticipals();
+
+    //tty_writeString("CubeBox, kernel v0.0.1.0a - Alpha phase.\n\n");
+    tty_colored(3, "CubeBox OS: kernel:v0.0.1.0a\n\n");
+
+    pic_init();
+    //acpi_init();
+
+    keyboard_init(33);
+    keyboard_leds_set(true, false, false);
+
+    //shutdown();
+
+    //ide_init(0x1F0, 0x3F6, 0x170, 0x376, 0x000);
+
+    //floppy_init();
+
+    commandLine();
 }

@@ -49,6 +49,8 @@ bool _keyboard_diag_res =   false;
 bool _keyboard_resend_res = false;
 bool _keyboard_disable =    false;
 
+static bool _extended;
+
 uint8_t		keyboard_ctrl_readStatus ();
 void		keyboard_ctrl_sendCmd (uint8_t);
 uint8_t		keyboard_end_readBuffer ();
@@ -223,7 +225,7 @@ void i86_keyboard_irq (){
         "cli\n"
     );
 
-	static bool _extended = false;
+	_extended = false;
 	int code = 0;
 
 	if (keyboard_ctrl_readStatus () & keyboard_CTRL_STATS_MASK_OUT_BUF) {
@@ -470,7 +472,7 @@ inline void keyboard_init(int irq) {
 	kdriver_statusMsg_create(kbd);
 
 	InterruptHandler kbdhandler = i86_keyboard_irq;
-	setVect(irq, /*kbdhandler*/ &i86_keyboard_irq);
+	setVect(irq, kbdhandler);
 
 	_keyboard_bat_res = true;
 	_scancode = 0;

@@ -1,14 +1,15 @@
 #include "drivers/keyboard.h"
 #include "kernel/common.h"
+#include "kernel/tty.h"
 #include <stdint.h>
 #include <cboolean.h>
 
 #define KBD_KEYMAP_SIZE 512
 
-#define KBD_ENCORDER_INPUT_BUFF 0x60
-#define KBD_ENCODER_CMD_REG     0x60
-#define KBD_CTRL_STATS_REG      0x64
-#define KBD_CTRL_CMD_REG        0x64
+#define KBD_ENCORDER_INPUT_BUFF 0x60 // 
+#define KBD_ENCODER_CMD_REG     0x60 //
+#define KBD_CTRL_STATS_REG      0x64 //
+#define KBD_CTRL_CMD_REG        0x64 //
 
 #define KBD_CTRL_STATS_MASK_OUT_BUFF    0b00000001  // 1
 #define KBD_CTRL_STATS_MASK_IN_BUFF     0b00000010  // 2
@@ -112,6 +113,98 @@ void kbd:repRate(uint8_t __r) {
 #define KBD_ENCODER_RETURN_ECHO             0xEE
 #define KBD_ENCODER_RETURN_ACK              0xFA
 #define KBD_ENCODER_RETURN_BAT_FAIL         0xFC
-#define KBD_ENCODER_RETURN_RESEND_REQ       0xFE
+#define KBD_ENCODER_RETURN_RESEND_REQ       0xFE // This return code is returned to request resend
 #define KBD_ENCODER_RETURN_ERROR            0xFF
 
+bool kbd_return_isKeypress(uint8_t __return) {
+    // Returns a boolean. Boolean value depends on that if return code is a keypress return code.
+
+    return  (__return > 0x00 && __return < 0x59) || 
+            (__return > 0x80 && __return < 0xD9);
+
+    /*
+        ^^^^^^^^^^^^^
+        RETURN CODES EXPLANATION
+
+        The 0x01, ..., 0x58, 0x81 ..., 0xD8 are keyboard keypress return codes. They are return when
+        specific key is pressed. Thats what their values depends on.
+
+            Online ref.: http://www.brokenthorn.com/Resources/OSDev19.html
+        
+        0x00 because 0x01 - 0x01 is 0x00
+        0x59 because 0x58 + 0x01 is 0x59
+        0x80 because 0x81 - 0x01 is 0x80
+        0xD9 because 0xD8 + 0x01 is 0xD9
+    */
+}
+
+#define KBD_CTRL_CMD_READ_CMD_BYTE  0x20
+#define KBD_CTRL_CMD_WRITE_CMD_BYTE 0x60
+#define KBD_CTRL_CMD_SELF_TEST      0xAA
+#define KBD_CTRL_CMD_INTERFACE_TEST 0xAB
+#define KBD_CTRL_CMD_DISABLE        0xAD
+#define KBD_CTRL_CMD_ENABLE         0xAE
+#define KBD_CTRL_CMD_READ_IN        0xC0
+#define KBD_CTRL_CMD_READ_OUT       0xD0
+#define KBD_CTRL_CMD_WRITE_OUT      0xD1
+#define KBD_CTRL_CMD_READ_TEST_IN   0xE0
+#define KBD_CTRL_CMD_SYSTEM_RST     0xFE
+
+void kbd_ctrl_sendCmd(uint8_t __cmd) {
+    _kbd_io_wait();
+    outb(KBD_CTRL_CMD_REG, __cmd);
+}
+
+#define KBD_SELF_TEST_OK    true
+#define KBD_SELF_TEST_FAIL  false
+
+bool kbd_selfTest() {
+    // Performs a keyboard self test.
+
+    kbd_ctrl_sendCmd(KBD_CTRL_CMD_SELF_TEST);
+    _kbd_io_wait();
+
+    return kbd_encoder_readBuff() == 0x55;
+}
+
+
+#define KBD_INTERFACE_TEST_OK                   0x00
+#define KBD_INTERFACE_TEST_ERR_CLL_STUCK_LOW    0x01
+#define KBD_INTERFACE_TEST_ERR_CLL_STUCK_HIGH   0x02
+#define KBD_INTERFACE_TEST_ERR_DATAL_STUCK_HIGH 0x03
+#define KBD_INTERFACE_TEST_ERR_GENERAL          0xFF
+
+uint8_t kbd_interfaceTest() {
+    // Performs a keyboard interface test.
+
+    uint8_t result;
+
+    kbd_ctrl_sendCmd(KBD_CTRL_CMD_INTERFACE_TEST);
+    _kbd_io_wait();
+
+    result = kbd_encoder_readBuff();
+
+    switch (result) {
+        case KBD_INTERFACE_TEST_OK:
+            tty_writeString("Kbd: interface test: Interface test OK.\n");
+            break;
+        
+        case KBD_INTERFACE_TEST_ERR_CLL_STUCK_LOW:
+            tty_writeString("Kbd: interface test: err: Clock line stuck low.\n");
+            break;
+        
+        case KBD_INTERFACE_TEST_ERR_CLL_STUCK_HIGH:
+            tty_writeString("Kbd: interface test: err: Clock line stuck high.\n");
+            break;
+
+        case KBD_INTERFACE_TEST_ERR_DATAL_STUCK_HIGH:
+            tty_writeString("Kbd: interface test: err: Data line stuck high\n");
+            break;
+
+        default:
+            tty_writeString("Kbd: interface test: Unrecognized, unknown or general error.\n");
+            break;
+    }
+
+    return result;
+}

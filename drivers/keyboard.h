@@ -2,6 +2,7 @@
 #define _CB_KBD_H_
 
 #include <cboolean.h>
+#include <stdint.h>
 
 void kbd_setLeds(   bool __n, // NumLock LED
                     bool __c, // CapsLock LED
@@ -33,5 +34,7 @@ uint8_t kbd_interfaceTest();
 
 void kbd_setEnabled(bool __enable);
 uint8_t kbd_getLast();
+
+int kbd_init();
 
 #endif

@@ -28,7 +28,6 @@ comple_sources_fn (){
     i686-elf-gcc $1 -c kernel/interrupt/idt.c          -o build/obj/kernel/interrupt/idt.c.o       $gcc_flags
     i686-elf-gcc $1 -c kernel/common.c                 -o build/obj/kernel/common.c.o              $gcc_flags
     i686-elf-gcc $1 -c drivers/keyboard.c              -o build/obj/drivers/keyboard.c.o           $gcc_flags
-    i686-elf-gcc $1 -c drivers/keyboard/leds.c         -o build/obj/drivers/keyboard/leds.c.o      $gcc_flags
     i686-elf-gcc $1 -c drivers/rtc.c                   -o build/obj/drivers/rtc.c.o                $gcc_flags
     i686-elf-gcc $1 -c kernel/kdrivers.c               -o build/obj/kernel/kdrivers.c.o            $gcc_flags
     i686-elf-gcc $1 -c drivers/buzzer.c                -o build/obj/drivers/buzzer.c.o             $gcc_flags
@@ -63,8 +62,6 @@ link_obj_fn(){
                 build/obj/kernel/interrupt/isr.c.o \
                 build/obj/kernel/interrupt/idt.c.o \
                 build/obj/drivers/keyboard.c.o \
-                build/obj/drivers/keyboard/leds.c.o \
-                build/obj/drivers/keyboard/i86_keyboard_irq_asm.asm.o \
                 build/obj/drivers/rtc.c.o \
                 build/obj/drivers/buzzer.c.o \
                 build/obj/drivers/timer.c.o \
@@ -99,7 +96,6 @@ i686-elf-as  kernel/crt/crtn.s                          -o build/obj/kernel/crt/
 #nasm -felf32  kernel/probe.s                             -o build/obj/kernel/probe.s.o
 nasm -felf32 kernel/gdt/gdt.asm                         -o build/obj/kernel/gdt/gdt.asm.o
 nasm -felf32 kernel/interrupt/isr.asm                   -o build/obj/kernel/interrupt/isr.asm.o
-nasm -felf32 drivers/keyboard/i86_keyboard_irq_asm.asm  -o build/obj/drivers/keyboard/i86_keyboard_irq_asm.asm.o
 #[addfile.py: assembly]
 if [ "$1" != "no-war" ]; 
 then

@@ -4,7 +4,8 @@
 #include "kernel/common.h"
 #include "kernel/tty.h"
 #include "kernel/kdrivers.h"
-#include "kernel/interrupt/idt.h"
+//#include "kernel/interrupt/idt.h"
+#include "kernel/interrupt/irq.h"
 
 #include <stdint.h>
 #include <cboolean.h>
@@ -16,10 +17,10 @@ uint8_t kbdIRQ = 1;
 kdriver _kbd;
 
 
-#define KBD_ENCORDER_INPUT_BUFF 0x60 // 
-#define KBD_ENCODER_CMD_REG     0x60 //
-#define KBD_CTRL_STATS_REG      0x64 //
-#define KBD_CTRL_CMD_REG        0x64 //
+#define KBD_ENCORDER_INPUT_BUFF         0x60 // 
+#define KBD_ENCODER_CMD_REG             0x60 //
+#define KBD_CTRL_STATS_REG              0x64 //
+#define KBD_CTRL_CMD_REG                0x64 //
 
 #define KBD_CTRL_STATS_MASK_OUT_BUFF    0b00000001  // 1
 #define KBD_CTRL_STATS_MASK_IN_BUFF     0b00000010  // 2
@@ -40,6 +41,10 @@ enum kbd_ctrl_io {
     kbd_ctrl_cmdRegister    = 0x64
 };*/
 
+uint8_t kbd_ctrl_getStatus() {
+    return inb(KBD_CTRL_STATS_REG);
+}
+
 void _kbd_io_wait() {
     // This function waits for keyboards's input buffer to be clear.
 
@@ -50,9 +55,6 @@ void _kbd_io_wait() {
     
 }
 
-uint8_t kbd_ctrl_getStatus() {
-    return inb(KBD_CTRL_STATS_REG);
-}
 
 uint8_t kbd_encoder_readBuff() {
     return inb(KBD_ENCORDER_INPUT_BUFF);
@@ -109,14 +111,16 @@ typedef struct kbd_kbdState {
 
 kbd_kbdState kbd_state;
 
-bool* kbd_getLockKeys() {
-    bool* lockkeys[3];
 
-    lockkeys[0] = kbd_state.nl;
-    lockkeys[1] = kbd_state.cl;
-    lockkeys[2] = kbd_state.sl;
 
-    return lockkeys;
+bool *kbd_getLockKeys() {
+    static bool state[3];
+
+    state[0] = kbd_state.nl;
+    state[1] = kbd_state.cl;
+    state[2] = kbd_state.sl;
+
+    return  state;
 }
 
 bool kbd_getShift() {
@@ -319,6 +323,8 @@ uint8_t _kbd_scancode;
 void kbd_irqHandler() {
     _kbd_scancode = inb(KBD_ENCORDER_INPUT_BUFF);
 
+    tty_writeString("kbdIrq\n");
+
     switch (_kbd_scancode) {
         // === SHIFT KEYS ===
         case 0x2A:
@@ -358,8 +364,163 @@ void kbd_irqHandler() {
 }
 
 int kbd_init() {
+    _kbd.name = "Standard PS2 keyboard";
+    kdriver_statusMsg_create(_kbd);
+
+    irq_installHandler(33, kbd_irqHandler);
     
+    kbd_lastScancode = 0x00;
+
+    kbd_state.nl =      false;
+    kbd_state.cl =      false;
+    kbd_state.sl =      false;
+    kbd_state.alt =     false;
+    kbd_state.ctrl =    false;
+    kbd_state.shift =   false;
+    kbd_state.special = false;
+    kbd_state.pause =   false;
+
+    kbd_setLeds(        false, 
+                        false, 
+                        false
+    );
     
-    
+    kdriver_statusMsg_status(KDRIVERS_OK);
     return 0;
 }
+
+enum kbd_scancodes {
+    // Scancodes can be override if __E_KBD_OVERRIDE_SCANCODES
+    // is set by compiler.
+    #ifndef __E_KBD_OVERRIDE_SCANCODES
+
+            // Online ref.: https://www.win.tue.nl/~aeb/linux/kbd/scancodes-1.html
+            // Online ref.: https://wiki.osdev.org/PS2_Keyboard
+
+        K_UNKNOWN = 0x00,
+        K_ESCAPE = 0x01,
+
+        K_1, 
+        K_2, 
+        K_3, 
+        K_4, 
+        K_5, 
+        K_6, 
+        K_7, 
+        K_8, 
+        K_9, 
+        K_0,
+
+        K_DASH,
+        K_EQUAL,
+
+        K_TAB,
+
+        K_Q,
+        K_W, 
+        K_E, 
+        K_R, 
+        K_T,
+        
+        #ifndef __E_KBD_QWERTZ
+            K_Y,
+        #else
+            K_Z,
+        #endif
+
+        K_U, 
+        K_I, 
+        K_O, 
+        K_P,
+
+        K_SQBRACKETS_OPEN, 
+        K_SQBRACKETS_CLOSE,
+
+        K_ENTER,
+        K_LCTRL,
+
+        K_A, 
+        K_S, 
+        K_D, 
+        K_F, 
+        K_G, 
+        K_H, 
+        K_J, 
+        K_K, 
+        K_L,
+
+        K_SEMICOLON, 
+        K_COLON, 
+        K_SINGLE_QUOTE, 
+
+        K_BACK_TICK,
+        K_LSHIFT, 
+        K_BACKSLASH,
+
+        #ifndef __E_KBD_QWERTZ
+            K_Z,
+        #else
+            K_Y,
+        #endif
+
+        K_X, 
+        K_C, 
+        K_V, 
+        K_B, 
+        K_N, 
+        K_M,
+
+        K_LESS, 
+        K_GREATER, 
+        K_SLASH,
+        K_RSHIFT, 
+
+        K_ASTERISK,
+
+        K_LALT,
+        K_SPACE,
+        K_CAPSLOCK,
+
+        K_F1, 
+        K_F2, 
+        K_F3, 
+        K_F4, 
+        K_F5, 
+        K_F6, 
+        K_F7, 
+        K_F8, 
+        K_F9, 
+        K_F10,
+
+        K_NUMLOCK, 
+        K_SCROLLLOCK,
+
+        //#ifndef __E_KBD_NO_KEYPAD
+            K_KEYPAD_7,
+            K_KEYPAD_8,
+            K_KEYPAD_9,
+
+            K_KEYPAD_DASH,
+            
+            K_KEYPAD_4,
+            K_KEYPAD_5,
+            K_KEYPAD_6,
+
+            K_KEYPAD_PLUS,
+
+            K_KEYPAD_1,
+            K_KEYPAD_2,
+            K_KEYPAD_3,
+
+            K_KEYPAD_0,
+            K_KEYPAD_DOT,
+        //#endif
+
+        K_ALT,
+        K_FN,
+        K_SPECIAL,
+
+        K_F11,
+        K_F12
+    #endif
+};

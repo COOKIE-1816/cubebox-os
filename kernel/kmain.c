@@ -10,6 +10,7 @@
 #include "drivers/pic.h"
 #include "drivers/acpi.h"
 #include "kernel/system.h"
+#include "kernel/interrupt/irq.h"
 #include <stddef.h>
 
 void drawLine() {
@@ -19,10 +20,12 @@ void drawLine() {
 
 void kernel_initializeKernelParticipals() {
     tty_initialize();
+    irq_install();
+    
     kdriver_init();
 }
 
-/*unsigned char* stringMem(size_t __size) {
+unsigned char* stringMem(size_t __size) {
     unsigned char* memoryPtr = (unsigned char*) 0;
     unsigned char* currentPtr = memoryPtr;
 
@@ -33,7 +36,7 @@ void kernel_initializeKernelParticipals() {
     }
 
     return memoryPtr;
-}*/
+}
 
 /*enum KEYCODE getKey() {
     enum KEYCODE k = KEY_UNKNOWN;
@@ -71,6 +74,7 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
     tty_colored(3, "CubeBox OS: kernel:v0.0.1.0a\n\n");
 
     pic_init();
+    kbd_init();
     //acpi_init();
 
     /*keyboard_init(11);
@@ -82,5 +86,5 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
 
     //floppy_init();
 
-    commandLine();
+    //commandLine();
 }

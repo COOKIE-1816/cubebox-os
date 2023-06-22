@@ -108,12 +108,46 @@ typedef struct kbd_kbdState {
 
 kbd_kbdState kbd_state;
 
+bool* kbd_getLockKeys() {
+    bool* lockkeys[3];
+
+    lockkeys[0] = kbd_state.nl;
+    lockkeys[1] = kbd_state.cl;
+    lockkeys[2] = kbd_state.sl;
+
+    return lockkeys;
+}
+
+bool kbd_getShift() {
+    return kbd_state.shift;
+}
+
+bool kbd_getAlt() {
+    return kbd_state.alt;
+}
+
+bool kbd_getCtrl() {
+    return kbd_state.ctrl;
+}
+
+bool kbd_getSpecial() {
+    return kbd_state.special;
+}
+
+bool kbd_getPause() {
+    return kbd_state.pause;
+}
+
+
+
+
 
 void kbd_setLeds(   bool __n, // NumLock LED
                     bool __c, // CapsLock LED
                     bool __s  // ScrollLock LED
                 ) {
     // Sets keyboard LED indicators.
+    // * NOTE: Only changes indicator status. Does not toggle lock keys.
 
     uint8_t data;
 

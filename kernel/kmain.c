@@ -35,19 +35,21 @@ void kernel_initializeKernelParticipals() {
     return memoryPtr;
 }*/
 
-enum KEYCODE getKey() {
+/*enum KEYCODE getKey() {
     enum KEYCODE k = KEY_UNKNOWN;
 
     while(k == KEY_UNKNOWN)
         k = keyboard_getLastKey();
+
+    tty_writeString("Key pressed.");
     
     keyboard_discardLastKey();
     return k;
-}
+}*/
 
 
 
-void commandLine() {
+/*void commandLine() {
     char* buff;
 
     while(1) {
@@ -60,7 +62,7 @@ void commandLine() {
         char key_ascii = keyboard_key2ascii(key);
         tty_putChar(key_ascii);
     }
-}
+}*/
 
 void kernel_main(/*multiboot_info* __boot_info*/ void) {
     kernel_initializeKernelParticipals();
@@ -71,8 +73,8 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
     pic_init();
     //acpi_init();
 
-    keyboard_init(33);
-    keyboard_leds_set(true, false, false);
+    /*keyboard_init(11);
+    keyboard_leds_set(true, false, false);*/
 
     //shutdown();
 

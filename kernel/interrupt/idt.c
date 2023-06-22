@@ -30,6 +30,7 @@
 */
 
 #include "kernel/interrupt/idt.h"
+#include "kernel/tty.h"
 
 #define false 0
 #define true 1
@@ -73,6 +74,8 @@ inline void setVect(uint8_t __vector, InterruptHandler __handler) {
     _interruptDescriptor->reserved   = 0;
     _interruptDescriptor->attributes = 0x8E;
     _interruptDescriptor->isr_high   = (handler_address >> 16) & 0xFFFF;
+
+    tty_writeString("IDT: New descriptor.");
 }
 
 inline void idt_setGate(unsigned char num, 

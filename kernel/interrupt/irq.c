@@ -1,6 +1,7 @@
 //typedef void (*irq_handler_t) (struct regs *)
 
 #include "kernel/interrupt/irq.h"
+#include "kernel/interrupt/idt.h"
 #include "kernel/common.h"
 #include "stddef.h"
 
@@ -29,23 +30,42 @@ void irq_remap() {
 	outb(0xA1, 0x0);
 }
 
+void __irq0() {}
+void __irq1() {}
+void __irq2() {}
+void __irq3() {}
+void __irq4() {}
+void __irq5() {}
+void __irq6() {}
+void __irq7() {}
+void __irq8() {}
+void __irq9() {}
+void __irq10() {}
+void __irq11() {}
+void __irq12() {}
+void __irq13() {}
+void __irq14() {}
+void __irq15() {}
+
+
+
 void irq_gates() {
-	/*idt_setGate(32, (unsigned) _irq0,    0x08,   0x8E);
-	idt_setGate(33, (unsigned) _irq1,    0x08,   0x8E);
-	idt_setGate(34, (unsigned) _irq2,    0x08,   0x8E);
-	idt_setGate(35, (unsigned) _irq3,    0x08,   0x8E);
-	idt_setGate(36, (unsigned) _irq4,    0x08,   0x8E);
-	idt_setGate(37, (unsigned) _irq5,    0x08,   0x8E);
-	idt_setGate(38, (unsigned) _irq6,    0x08,   0x8E);
-	idt_setGate(39, (unsigned) _irq7,    0x08,   0x8E);
-	idt_setGate(40, (unsigned) _irq8,    0x08,   0x8E);
-	idt_setGate(41, (unsigned) _irq9,    0x08,   0x8E);
-	idt_setGate(42, (unsigned) _irq10,   0x08,   0x8E);
-	idt_setGate(43, (unsigned) _irq11,   0x08,   0x8E);
-	idt_setGate(44, (unsigned) _irq12,   0x08,   0x8E);
-	idt_setGate(45, (unsigned) _irq13,   0x08,   0x8E);
-	idt_setGate(46, (unsigned) _irq14,   0x08,   0x8E);
-	idt_setGate(47, (unsigned) _irq15,   0x08,   0x8E);*/
+	idt_setGate(32, (unsigned) __irq0,    0x08,   0x8E);
+	idt_setGate(33, (unsigned) __irq1,    0x08,   0x8E);
+	idt_setGate(34, (unsigned) __irq2,    0x08,   0x8E);
+	idt_setGate(35, (unsigned) __irq3,    0x08,   0x8E);
+	idt_setGate(36, (unsigned) __irq4,    0x08,   0x8E);
+	idt_setGate(37, (unsigned) __irq5,    0x08,   0x8E);
+	idt_setGate(38, (unsigned) __irq6,    0x08,   0x8E);
+	idt_setGate(39, (unsigned) __irq7,    0x08,   0x8E);
+	idt_setGate(40, (unsigned) __irq8,    0x08,   0x8E);
+	idt_setGate(41, (unsigned) __irq9,    0x08,   0x8E);
+	idt_setGate(42, (unsigned) __irq10,   0x08,   0x8E);
+	idt_setGate(43, (unsigned) __irq11,   0x08,   0x8E);
+	idt_setGate(44, (unsigned) __irq12,   0x08,   0x8E);
+	idt_setGate(45, (unsigned) __irq13,   0x08,   0x8E);
+	idt_setGate(46, (unsigned) __irq14,   0x08,   0x8E);
+	idt_setGate(47, (unsigned) __irq15,   0x08,   0x8E);
 }
 
 void irq_install() {

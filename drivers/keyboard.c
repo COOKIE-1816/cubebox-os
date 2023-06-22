@@ -367,8 +367,6 @@ int kbd_init() {
     _kbd.name = "Standard PS2 keyboard";
     kdriver_statusMsg_create(_kbd);
 
-    irq_installHandler(33, kbd_irqHandler);
-    
     kbd_lastScancode = 0x00;
 
     kbd_state.nl =      false;
@@ -379,6 +377,8 @@ int kbd_init() {
     kbd_state.shift =   false;
     kbd_state.special = false;
     kbd_state.pause =   false;
+
+    irq_installHandler(33, kbd_irqHandler);
 
     kbd_setLeds(        false, 
                         false, 

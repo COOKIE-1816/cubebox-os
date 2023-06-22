@@ -1,3 +1,4 @@
+#include "kernel/interrupt/idt.h"
 #include "kernel/tty.h"
 #include "drivers/vga.h"
 #include "kernel/gdt/gdt.h"
@@ -20,8 +21,11 @@ void drawLine() {
 
 void kernel_initializeKernelParticipals() {
     tty_initialize();
-    irq_install();
     
+    init_gdt();
+    idt_init();
+    irq_install();
+
     kdriver_init();
 }
 

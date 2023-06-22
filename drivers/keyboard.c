@@ -1,10 +1,19 @@
 #include "drivers/keyboard.h"
+#include "drivers/pci.h"
+
 #include "kernel/common.h"
 #include "kernel/tty.h"
+#include "kernel/kdrivers.h"
+
 #include <stdint.h>
 #include <cboolean.h>
 
 #define KBD_KEYMAP_SIZE 512
+
+uint8_t kbdIRQ = 1;
+
+kdriver _kbd;
+
 
 #define KBD_ENCORDER_INPUT_BUFF 0x60 // 
 #define KBD_ENCODER_CMD_REG     0x60 //
@@ -82,6 +91,22 @@ void kbd_encoder_sendPacket(uint8_t __cmd, uint8_t __data) {
 #define KBD_ENCODER_CMD_RESEND_LAST     0xFE
 #define KBD_ENCODER_CMD_RST_SELF_TEST   0xFF
 
+
+typedef struct kbd_kbdState {
+    bool nl; // ===========
+    bool cl; //    Lock keys status
+    bool sl; // ===========
+
+    bool shift;
+    bool alt;
+    bool ctrl;
+
+    bool special;
+
+    bool pause;
+} kbd_kbdState;
+
+kbd_kbdState kbd_state;
 
 
 void kbd_setLeds(   bool __n, // NumLock LED
@@ -207,4 +232,85 @@ uint8_t kbd_interfaceTest() {
     }
 
     return result;
+}
+
+bool _kbd_enabled;
+
+void kbd_enable() {
+    kbd_ctrl_sendCmd(KBD_CTRL_CMD_ENABLE);
+    _kbd_enabled = true;
+}
+
+void kbd_disable() {
+    kbd_ctrl_sendCmd(KBD_CTRL_CMD_DISABLE);
+    _kbd_enabled = false;
+}
+
+void kbd_setEnabled(bool __enable) {
+    if(__enable == _kbd_enabled)
+        return;
+    
+    if(__enable)
+        kbd_enable();
+    
+    kbd_disable();
+}
+
+
+uint8_t kbd_ctrl_readOutBuff() {
+    return inb(KBD_CTRL_STATS_MASK_OUT_BUFF);
+}
+
+
+
+void kbd_writeOutPort(uint8_t __value) {
+    outb(0x60, __value);
+}
+
+
+void kbd_resetSystem() {
+    kbd_ctrl_sendCmd(KBD_CTRL_CMD_SYSTEM_RST);
+    kbd_encoder_sendCmd(0xfe);
+}
+
+
+
+
+void kbd_irqHandler() {
+    uint8_t scancode = inb(KBD_ENCORDER_INPUT_BUFF);
+
+    switch (scancode) {
+        // === SHIFT KEYS ===
+        case 0x2A:
+        case 0x36:
+            kbd_state.shift = true;
+            break;
+        
+        case 0xAA:
+        case 0xB6:
+            kbd_state.shift = false;
+            break;
+
+        // === LOCK KEYS ===
+        case 0x3A:
+            kbd_state.cl = !kbd_state.cl;
+            break;
+        
+        case 0x45:
+            kbd_state.nl = !kbd_state.nl;
+            break;
+
+        /*case 0x46:
+            kbd_state.sl = !kbd_state.sl;
+            break;*/
+
+        // TODO: Implement pause break later. Only pause when printing on screen is in process.
+        // TODO: Implement other keys.
+
+        default:
+            break;
+    }
+
+    // * Send EOI signal to PIC
+    outb(0x20, 0x20);
 }

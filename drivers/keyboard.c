@@ -4,6 +4,7 @@
 #include "kernel/common.h"
 #include "kernel/tty.h"
 #include "kernel/kdrivers.h"
+#include "kernel/interrupt/idt.h"
 
 #include <stdint.h>
 #include <cboolean.h>
@@ -214,8 +215,8 @@ void kbd_ctrl_sendCmd(uint8_t __cmd) {
     outb(KBD_CTRL_CMD_REG, __cmd);
 }
 
-#define KBD_SELF_TEST_OK    true
-#define KBD_SELF_TEST_FAIL  false
+/*#define KBD_SELF_TEST_OK    true
+#define KBD_SELF_TEST_FAIL  false*/
 
 bool kbd_selfTest() {
     // Performs a keyboard self test.
@@ -227,11 +228,11 @@ bool kbd_selfTest() {
 }
 
 
-#define KBD_INTERFACE_TEST_OK                   0x00
+/*#define KBD_INTERFACE_TEST_OK                   0x00
 #define KBD_INTERFACE_TEST_ERR_CLL_STUCK_LOW    0x01
 #define KBD_INTERFACE_TEST_ERR_CLL_STUCK_HIGH   0x02
 #define KBD_INTERFACE_TEST_ERR_DATAL_STUCK_HIGH 0x03
-#define KBD_INTERFACE_TEST_ERR_GENERAL          0xFF
+#define KBD_INTERFACE_TEST_ERR_GENERAL          0xFF*/
 
 uint8_t kbd_interfaceTest() {
     // Performs a keyboard interface test.
@@ -307,13 +308,18 @@ void kbd_resetSystem() {
     kbd_encoder_sendCmd(0xfe);
 }
 
+uint8_t kbd_lastScancode;
 
+uint8_t kbd_getLast() {
+    return kbd_lastScancode;
+}
 
+uint8_t _kbd_scancode;
 
 void kbd_irqHandler() {
-    uint8_t scancode = inb(KBD_ENCORDER_INPUT_BUFF);
+    _kbd_scancode = inb(KBD_ENCORDER_INPUT_BUFF);
 
-    switch (scancode) {
+    switch (_kbd_scancode) {
         // === SHIFT KEYS ===
         case 0x2A:
         case 0x36:
@@ -345,6 +351,15 @@ void kbd_irqHandler() {
             break;
     }
 
+    kbd_lastScancode = _kbd_scancode;
+
     // * Send EOI signal to PIC
     outb(0x20, 0x20);
+}
+
+int kbd_init() {
+    
+    
+    
+    return 0;
 }

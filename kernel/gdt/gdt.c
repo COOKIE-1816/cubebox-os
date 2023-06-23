@@ -1,85 +1,59 @@
-/*
-============================================================= FILE INFORMATION =============================================================
-                 .@@@@@@@@@@@@@@@@@@@@@@@@@@%            
-                 .@@@@@@@@@@@@@@@@@@@@@@@@@@%               Product name:               CubeBox OS
-                 .@@@@@@@@@@@@@@@@@@@@@@@@@@%               Product version:            0.0.1.0a, Alpha stage - unstable
-                 .@@@@@@@@@@@@@@@@@@@@@@@@@@%               
-           @@@@@@@@@@@@@#             %@@@@@@@@@@@@@        File name & path:           /kernel/gdt/gdt.c
-           @@@@@@@@@@@@@#             %@@@@@@@@@@@@@        Programming language:       C
-           @@@@@@@@@@@@@#             %@@@@@@@@@@@@@        File usage:                 Global Descriptor Table (GDT) implementation
-           @@@@@@@@@@@@@#             %@@@@@@@@@@@@@                           
-    @@@@@@@@@@@@@&                          ,@@@@@@@        Last revision:              13-06-2023, 15-50 UTC
-    @@@@@@@@@@@@@&                          ,@@@@@@@        Last revision describtion:  
-    @@@@@@@@@@@@@&                          ,@@@@@@@                           
-    @@@@@@@@@@@@@&                                                             
-    @@@@@@@@@@@@@&                                                             
-    @@@@@@@@@@@@@&                                          File usage:                 
-    @@@@@@@@@@@@@&                                          Contributors:               Vaclav Hajsman
-    @@@@@@@@@@@@@&                                                             
-    @@@@@@@@@@@@@&                                                             
-    @@@@@@@@@@@@@&                                          Docs. reference:            
-    @@@@@@@@@@@@@&                                          Online reference:           
-    @@@@@@@@@@@@@&                                                             
-    @@@@@@@@@@@@@&                                                             
-    @@@@@@@@@@@@@&                                          Copyright (C) Vaclav Hajsman (A.K.A. COOKIE) 2023. All rights reserved.
-    @@@@@@@@@@@@@&                                                             
-    @@@@@@@@@@@@@&                                                             
-    @@@@@@@@@@@@@&                                          This file is licensed as a part of the project inself, and licensing information
-    @@@@@@@@@@@@@&                                          Can be found in LICENSE file in root directory of this project.
-============================================================================================================================================
-*/
-
-#include "kernel/gdt/gdt.h"
+#include "kernel/gdt.h"
 #include "kernel/tty.h"
-#include <stdint.h>
-//#include <cstdint>
 
-gdt_entry_t gdt_entries[5];
-gdt_ptr_t   gdt_ptr;
+typedef struct GDT {
+    uint32_t  base;
+    uint32_t  limit;
+    uint32_t  access;
+    uint16_t  flags;
+} GDT;
 
-void init_gdt() {
-   gdt_ptr.limit = (sizeof(gdt_entry_t) * 5) - 1;
-   gdt_ptr.base  = (uint32_t)&gdt_entries;
+void gdt_encodeEntry(uint8_t *__target, GDT __source) {
+    if(__source.limit > 0xFFFFF) {
+        tty_writeString("GDT: Err: Limit is to large to encode.\n");
+        return;
+    }
 
-   gdt_setGate(0, 0, 0, 0, 0);
-   gdt_setGate(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
-   gdt_setGate(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
-   gdt_setGate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF);
-   gdt_setGate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);
+    __target[0] = __source.limit &          0xFF;
+    __target[1] = (__source.limit >> 8) &   0xFF;
+    __target[6] = (__source.limit >> 16) &  0xFF;
 
-   gdt_flush((uint32_t) &gdt_ptr); // * NOTE: Defined in gdt.asm
+    __target[2] = __source.base & 0xFF;
+    __target[3] = (__source.base >> 8) & 0xFF;
+    __target[4] = (__source.base >> 16) & 0xFF;
+    __target[7] = (__source.base >> 24) & 0xFF;
+
+    __target[5] = __source.access;
+
+    __target[6] |= (__source.flags << 4);
 }
 
-void gdt_setGate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran) {
-   gdt_entries[num].base_low    = (base & 0xFFFF);
-   gdt_entries[num].base_middle = (base >> 16) & 0xFF;
-   gdt_entries[num].base_high   = (base >> 24) & 0xFF;
+/*void gdt_init() {
+    setGdt();
+    reloadSegments();
+}*/
 
-   gdt_entries[num].limit_low   = (limit & 0xFFFF);
-   gdt_entries[num].granularity = (limit >> 16) & 0x0F;
-
-   gdt_entries[num].granularity |= gran & 0xF0;
-   gdt_entries[num].access      = access;
-}
-
-void gdt_createDescriptor(uint32_t base, uint32_t limit, uint16_t flag) {
+void gdt_createDescriptor(uint32_t __base, uint32_t __limit, uint16_t __flag) {
     uint64_t descriptor;
  
-    descriptor  =  limit       & 0x000F0000;
-    descriptor |= (flag <<  8) & 0x00F0FF00;
-    descriptor |= (base >> 16) & 0x000000FF;
-    descriptor |=  base        & 0xFF000000;
+    // Create the high 32 bit segment
+    descriptor  =  __limit       & 0x000F0000;         // set limit bits 19:16
+    descriptor |= (__flag <<  8) & 0x00F0FF00;         // set type, p, dpl, s, g, d/b, l and avl fields
+    descriptor |= (__base >> 16) & 0x000000FF;         // set base bits 23:16
+    descriptor |=  __base        & 0xFF000000;         // set base bits 31:24
  
     descriptor <<= 32;
  
-    descriptor |= base  << 16;
-    descriptor |= limit  & 0x0000FFFF;
-
-    /*int v =  42;
-    printAddress(&v);*/
+    descriptor |= __base  << 16;                       // set base bits 15:0
+    descriptor |= __limit  & 0x0000FFFF;               // set limit bits 15:0
  
     //printf("0x%.16llX\n", descriptor);
-    /*tty_writeString("Descriptor: ");
-    printAddress(&descriptor);
-    tty_writeString("\n");*/
+}
+
+void gdt_install() {
+    gdt_createDescriptor(0, 0, 0);
+    gdt_createDescriptor(0, 0x000FFFFF, (GDT_CODE_PL0));
+    gdt_createDescriptor(0, 0x000FFFFF, (GDT_DATA_PL0));
+    gdt_createDescriptor(0, 0x000FFFFF, (GDT_CODE_PL3));
+    gdt_createDescriptor(0, 0x000FFFFF, (GDT_DATA_PL3));
 }

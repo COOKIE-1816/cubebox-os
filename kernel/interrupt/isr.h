@@ -1,8 +1,8 @@
-#ifndef _CB_ISR_H_
-#define _CB_ISR_H_
+#ifndef _CB_INTERRUPT_ISR_H_
+#define _CB_INTERRUPT_ISR_H_
 
-extern void* isr_stubTable[];
+void exception_handler(void);
 
-extern void exceptionHandler(void);
+extern void* isr_stub_table[];
 
 #endif

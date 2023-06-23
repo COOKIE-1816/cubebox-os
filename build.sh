@@ -51,7 +51,7 @@ link_obj_fn(){
                 build/obj/kernel/kmain.c.o \
                 build/obj/kernel/crt/crti.s.o \
                 build/obj/kernel/crt/crtn.s.o \
-                build/obj/kernel/gdt/gdt.asm.o \
+                build/obj/kernel/gdt/asm.s.o \
                 build/obj/kernel/common.c.o \
                 build/obj/libs/stringt.c.o \
                 build/obj/boot.s.o \
@@ -94,7 +94,7 @@ i686-elf-as  boot.s                                     -o build/obj/boot.s.o
 i686-elf-as  kernel/crt/crti.s                          -o build/obj/kernel/crt/crti.s.o
 i686-elf-as  kernel/crt/crtn.s                          -o build/obj/kernel/crt/crtn.s.o
 #nasm -felf32  kernel/probe.s                             -o build/obj/kernel/probe.s.o
-nasm -felf32 kernel/gdt/gdt.asm                         -o build/obj/kernel/gdt/gdt.asm.o
+nasm -felf32 kernel/gdt/asm.s                         -o build/obj/kernel/gdt/asm.s.o
 nasm -felf32 kernel/interrupt/isr.asm                   -o build/obj/kernel/interrupt/isr.asm.o
 #[addfile.py: assembly]
 if [ "$1" != "no-war" ]; 

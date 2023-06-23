@@ -1,7 +1,7 @@
 #ifndef _CB_TTY_H_
 #define _CB_TTY_H_
 
-#include "stringt.h"
+#include "libs/stringt.h"
 #include <stdint.h>
 #include <stddef.h>
 

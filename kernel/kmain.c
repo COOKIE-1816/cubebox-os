@@ -25,10 +25,12 @@ void drawLine() {
 
 void kernel_initializeKernelParticipals() {
     tty_initialize();
+
+    pic_init();
     
     gdt_init();
     gdt_install();
-    
+
     idt_init();
 
     kdriver_init();
@@ -82,7 +84,6 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
     //tty_writeString("CubeBox, kernel v0.0.1.0a - Alpha phase.\n\n");
     tty_colored(3, "CubeBox OS: kernel:v0.0.1.0a\n\n");
 
-    pic_init();
     kbd_init();
     //acpi_init();
 

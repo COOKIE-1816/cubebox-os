@@ -13,36 +13,36 @@ echo " -   Phase:           $phase"
 echo " -   ISO Location:    $isofile"
 echo "------------------------------------------------"
 
-gcc_flags="-std=gnu99 -ffreestanding -O2 -Wall -Wextra -m32 -I ./ -I libs"
-link_flags="linker.ld -o $binfile -ffreestanding -O2 -nostdlib -lgcc"
+gcc_flags="-std=gnu99 -ffreestanding -O2 -Wall -Wextra -m32 -I ./src/ -I ./src/libs"
+link_flags="src/linker.ld -o $binfile -ffreestanding -O2 -nostdlib -lgcc"
 
 # Function Declerations
 
 comple_sources_fn (){
-    i686-elf-gcc $1 -c libs/stringt.c                  -o build/obj/libs/stringt.c.o               $gcc_flags
-    i686-elf-gcc $1 -c drivers/vga.c                   -o build/obj/drivers/vga.c.o                $gcc_flags
-    i686-elf-gcc $1 -c kernel/tty.c                    -o build/obj/kernel/tty.c.o                 $gcc_flags
-    i686-elf-gcc $1 -c kernel/kmain.c                  -o build/obj/kernel/kmain.c.o               $gcc_flags
-    i686-elf-gcc $1 -c kernel/gdt/gdt.c                -o build/obj/kernel/gdt/gdt.c.o             $gcc_flags
-    i686-elf-gcc $1 -c kernel/interrupt/isr.c          -o build/obj/kernel/interrupt/isr.c.o       $gcc_flags
-    i686-elf-gcc $1 -c kernel/interrupt/idt.c          -o build/obj/kernel/interrupt/idt.c.o       $gcc_flags
-    i686-elf-gcc $1 -c kernel/common.c                 -o build/obj/kernel/common.c.o              $gcc_flags
-    i686-elf-gcc $1 -c drivers/keyboard.c              -o build/obj/drivers/keyboard.c.o           $gcc_flags
-    i686-elf-gcc $1 -c drivers/rtc.c                   -o build/obj/drivers/rtc.c.o                $gcc_flags
-    i686-elf-gcc $1 -c kernel/kdrivers.c               -o build/obj/kernel/kdrivers.c.o            $gcc_flags
-    i686-elf-gcc $1 -c drivers/buzzer.c                -o build/obj/drivers/buzzer.c.o             $gcc_flags
+    i686-elf-gcc $1 -c src/libs/stringt.c                  -o build/obj/libs/stringt.c.o               $gcc_flags
+    i686-elf-gcc $1 -c src/drivers/vga.c                   -o build/obj/drivers/vga.c.o                $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/tty.c                    -o build/obj/kernel/tty.c.o                 $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/kmain.c                  -o build/obj/kernel/kmain.c.o               $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/gdt/gdt.c                -o build/obj/kernel/gdt/gdt.c.o             $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/interrupt/isr.c          -o build/obj/kernel/interrupt/isr.c.o       $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/interrupt/idt.c          -o build/obj/kernel/interrupt/idt.c.o       $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/common.c                 -o build/obj/kernel/common.c.o              $gcc_flags
+    i686-elf-gcc $1 -c src/drivers/keyboard.c              -o build/obj/drivers/keyboard.c.o           $gcc_flags
+    i686-elf-gcc $1 -c src/drivers/rtc.c                   -o build/obj/drivers/rtc.c.o                $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/kdrivers.c               -o build/obj/kernel/kdrivers.c.o            $gcc_flags
+    i686-elf-gcc $1 -c src/drivers/buzzer.c                -o build/obj/drivers/buzzer.c.o             $gcc_flags
     #i686-elf-gcc $1 -c kernel/sound/beep.c             -o build/obj/kernel/sound/beep.c.o          $gcc_flags
-    i686-elf-gcc $1 -c drivers/timer.c                 -o build/obj/drivers/timer.c.o              $gcc_flags
-    i686-elf-gcc $1 -c drivers/pic.c                   -o build/obj/drivers/pic.c.o                $gcc_flags
+    i686-elf-gcc $1 -c src/drivers/timer.c                 -o build/obj/drivers/timer.c.o              $gcc_flags
+    i686-elf-gcc $1 -c src/drivers/pic.c                   -o build/obj/drivers/pic.c.o                $gcc_flags
     #i686-elf-gcc $1 -c drivers/floppy.c                -o build/obj/drivers/floppy.c.o             $gcc_flags
-    i686-elf-gcc $1 -c kernel/interrupt/irq.c          -o build/obj/kernel/interrupt/irq.c.o       $gcc_flags
-    i686-elf-gcc $1 -c drivers/pci.c                   -o build/obj/drivers/pci.c.o                $gcc_flags
-    i686-elf-gcc $1 -c drivers/ide.c                   -o build/obj/drivers/ide.c.o                $gcc_flags
-    i686-elf-gcc $1 -c drivers/acpi.c                  -o build/obj/drivers/acpi.c.o               $gcc_flags
-    i686-elf-gcc $1 -c drivers/acpi/shutdown.c         -o build/obj/drivers/acpi/shutdown.c.o      $gcc_flags
-    i686-elf-gcc $1 -c kernel/system.c                 -o build/obj/kernel/system.c.o              $gcc_flags
-    i686-elf-gcc $1 -c kernel/memory/free.c            -o build/obj/kernel/memory/free.c.o         $gcc_flags
-    i686-elf-gcc $1 -c kernel/memory/malloc.c          -o build/obj/kernel/memory/malloc.c.o       $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/interrupt/irq.c          -o build/obj/kernel/interrupt/irq.c.o       $gcc_flags
+    i686-elf-gcc $1 -c src/drivers/pci.c                   -o build/obj/drivers/pci.c.o                $gcc_flags
+    i686-elf-gcc $1 -c src/drivers/ide.c                   -o build/obj/drivers/ide.c.o                $gcc_flags
+    i686-elf-gcc $1 -c src/drivers/acpi.c                  -o build/obj/drivers/acpi.c.o               $gcc_flags
+    i686-elf-gcc $1 -c src/drivers/acpi/shutdown.c         -o build/obj/drivers/acpi/shutdown.c.o      $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/system.c                 -o build/obj/kernel/system.c.o              $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/memory/free.c            -o build/obj/kernel/memory/free.c.o         $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/memory/malloc.c          -o build/obj/kernel/memory/malloc.c.o       $gcc_flags
 }
 
 link_obj_fn(){
@@ -89,12 +89,12 @@ mkdir    build/obj/kernel/sound
 mkdir    build/obj/kernel/memory
 
 echo STEP 1: Assemble assembly files
-i686-elf-as  boot.s                                     -o build/obj/boot.s.o
-i686-elf-as  kernel/crt/crti.s                          -o build/obj/kernel/crt/crti.s.o
-i686-elf-as  kernel/crt/crtn.s                          -o build/obj/kernel/crt/crtn.s.o
+i686-elf-as  src/boot.s                                     -o build/obj/boot.s.o
+i686-elf-as  src/kernel/crt/crti.s                          -o build/obj/kernel/crt/crti.s.o
+i686-elf-as  src/kernel/crt/crtn.s                          -o build/obj/kernel/crt/crtn.s.o
 #nasm -felf32  kernel/probe.s                             -o build/obj/kernel/probe.s.o
-nasm -felf32 kernel/gdt/asm.s                         -o build/obj/kernel/gdt/asm.s.o
-nasm -felf32 kernel/interrupt/isr.asm                   -o build/obj/kernel/interrupt/isr.asm.o
+nasm -felf32 src/kernel/gdt/asm.s                         -o build/obj/kernel/gdt/asm.s.o
+nasm -felf32 src/kernel/interrupt/isr.asm                   -o build/obj/kernel/interrupt/isr.asm.o
 #[addfile.py: assembly]
 if [ "$1" != "no-war" ]; 
 then

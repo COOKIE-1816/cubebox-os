@@ -13,7 +13,7 @@
 void pic_sendEOI(unsigned char __irq);
 void pic_remap(int __offset1, int __offset2);
 
-void pic_disable();
+//void pic_disable();
 
 uint16_t pic_getIrr();
 uint16_t pic_getIsr();

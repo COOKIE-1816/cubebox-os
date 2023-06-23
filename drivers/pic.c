@@ -72,11 +72,11 @@ void pic_remap(int __offset1, int __offset2) {
 	outb(PIC2_DATA, a2);
 }
 
-void pic_disable() {
+/*void pic_disable() {
     asm ("mov al, 0xff");
     asm ("out 0xA1, al");
     asm ("out 0x21, al");
-}
+}*/
 
 
 #define PIC1_CMD                    0x20

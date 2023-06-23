@@ -1,7 +1,7 @@
 #include "kernel/interrupt/idt.h"
 #include "kernel/tty.h"
 #include "drivers/vga.h"
-#include "kernel/gdt/gdt.h"
+#include "kernel/gdt.h"
 #include "drivers/keyboard.h"
 #include "kernel/common.h"
 #include "stringt.h"
@@ -14,6 +14,10 @@
 #include "kernel/interrupt/irq.h"
 #include <stddef.h>
 
+#ifndef __E_ARCH_X64
+    #define __E_ARCH_X32
+#endif
+
 void drawLine() {
     for(size_t i = 0; i < VGA_WIDTH; i++)
         tty_writeString("-");
@@ -22,9 +26,10 @@ void drawLine() {
 void kernel_initializeKernelParticipals() {
     tty_initialize();
     
-    init_gdt();
+    gdt_init();
+    gdt_install();
+    
     idt_init();
-    irq_install();
 
     kdriver_init();
 }

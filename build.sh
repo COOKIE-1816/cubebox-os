@@ -58,7 +58,6 @@ link_obj_fn(){
                 build/obj/kernel/gdt/gdt.c.o \
                 build/obj/kernel/tty.c.o \
                 build/obj/drivers/vga.c.o \
-                build/obj/kernel/interrupt/isr.asm.o \
                 build/obj/kernel/interrupt/isr.c.o \
                 build/obj/kernel/interrupt/idt.c.o \
                 build/obj/drivers/keyboard.c.o \

@@ -8,7 +8,7 @@ typedef struct GDT {
     uint16_t  flags;
 } GDT;
 
-void gdt_encodeEntry(uint8_t *__target, GDT __source) {
+inline void gdt_encodeEntry(uint8_t *__target, GDT __source) {
     if(__source.limit > 0xFFFFF) {
         tty_writeString("GDT: Err: Limit is to large to encode.\n");
         return;
@@ -33,7 +33,7 @@ void gdt_encodeEntry(uint8_t *__target, GDT __source) {
     reloadSegments();
 }*/
 
-void gdt_createDescriptor(uint32_t __base, uint32_t __limit, uint16_t __flag) {
+inline void gdt_createDescriptor(uint32_t __base, uint32_t __limit, uint16_t __flag) {
     uint64_t descriptor;
  
     // Create the high 32 bit segment
@@ -50,7 +50,7 @@ void gdt_createDescriptor(uint32_t __base, uint32_t __limit, uint16_t __flag) {
     //printf("0x%.16llX\n", descriptor);
 }
 
-void gdt_install() {
+inline void gdt_install() {
     gdt_createDescriptor(0, 0, 0);
     gdt_createDescriptor(0, 0x000FFFFF, (GDT_CODE_PL0));
     gdt_createDescriptor(0, 0x000FFFFF, (GDT_DATA_PL0));

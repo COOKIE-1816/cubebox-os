@@ -4,9 +4,7 @@
 #include <stdint.h>
 
 
-
-//void gdt_encodeEntry(uint8_t *__target, GDT __source);
-void gdt_init();
+//extern void gdt_init();
 
 #define SEG_DESCTYPE(x)  ((x) << 0x04)
 #define SEG_PRES(x)      ((x) << 0x07)
@@ -46,8 +44,8 @@ void gdt_init();
                      SEG_LONG(0)     | SEG_SIZE(1) | SEG_GRAN(1) | \
                      SEG_PRIV(3)     | SEG_DATA_RDWR
 
-void gdt_createDescriptor(uint32_t __base, uint32_t __limit, uint16_t __flag);
+extern void gdt_createDescriptor(uint32_t __base, uint32_t __limit, uint16_t __flag);
 
-void gdt_install();
+extern void gdt_install();
 
 #endif

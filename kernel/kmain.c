@@ -25,10 +25,7 @@ void drawLine() {
 
 void kernel_initializeKernelParticipals() {
     tty_initialize();
-
-    pic_init();
     
-    gdt_init();
     gdt_install();
 
     idt_init();

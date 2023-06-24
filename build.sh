@@ -13,7 +13,7 @@ echo " -   Phase:           $phase"
 echo " -   ISO Location:    $isofile"
 echo "------------------------------------------------"
 
-gcc_flags="-std=gnu99 -ffreestanding -O2 -Wall -Wextra -m32 -I ./src/ -I ./src/libs"
+gcc_flags="-std=gnu99 -ffreestanding -O2 -Wall -Wextra -m32 -I ./src/include/ -I ./src/include/libs"
 link_flags="src/linker.ld -o $binfile -ffreestanding -O2 -nostdlib -lgcc"
 
 # Function Declerations

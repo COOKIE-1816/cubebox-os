@@ -1,6 +1,7 @@
 #include "drivers/timer.h"
 #include "kernel/interrupt/idt.h"
 #include "kernel/kdrivers.h"
+#include "kernel/common.h"
 #include <stdint.h>
 
 volatile uint32_t _ticks = 0;

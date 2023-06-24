@@ -22,15 +22,18 @@ void rtc_getTime(uint8_t* hours, uint8_t* minutes, uint8_t* seconds) {
     *hours =    rtc_readRegister(RTC_REG_HOURS);
 }
 
+static time _buff;
+
 time rtc_now() {
     uint8_t h, m, s;
-    time buff;
 
     rtc_getTime(&h, &m, &s);
 
-    buff.h = h;
-    buff.m = m;
-    buff.s = s;
+    _buff.h = h;
+    _buff.m = m;
+    _buff.s = s;
+
+    return _buff;
 }
 
 void rtc_sleep(uint8_t __seconds) {

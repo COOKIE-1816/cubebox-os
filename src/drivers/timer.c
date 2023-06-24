@@ -16,7 +16,7 @@ void timer_init() {
     outb(0x40, divisor & 0xFF);
     outb(0x40, (divisor >> 8) & 0xFF);
 
-    setVect(0x20, _timer_handler);
+    //setVect(0x20, _timer_handler);
 }
 
 uint32_t timer_getTicks() {

@@ -93,7 +93,7 @@ i686-elf-as  src/boot.s                                     -o build/obj/boot.s.
 i686-elf-as  src/kernel/crt/crti.s                          -o build/obj/kernel/crt/crti.s.o
 i686-elf-as  src/kernel/crt/crtn.s                          -o build/obj/kernel/crt/crtn.s.o
 #nasm -felf32  kernel/probe.s                             -o build/obj/kernel/probe.s.o
-nasm -felf32 src/kernel/gdt/asm.s                         -o build/obj/kernel/gdt/asm.s.o
+#nasm -felf32 src/kernel/gdt/asm.s                         -o build/obj/kernel/gdt/asm.s.o
 nasm -felf32 src/kernel/interrupt/isr.asm                   -o build/obj/kernel/interrupt/isr.asm.o
 #[addfile.py: assembly]
 if [ "$1" != "no-war" ]; 

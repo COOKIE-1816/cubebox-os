@@ -23,16 +23,6 @@ void drawLine() {
         tty_writeString("-");
 }
 
-void kernel_initializeKernelParticipals() {
-    tty_initialize();
-    
-    gdt_install();
-
-    idt_init();
-
-    kdriver_init();
-}
-
 unsigned char* stringMem(size_t __size) {
     unsigned char* memoryPtr = (unsigned char*) 0;
     unsigned char* currentPtr = memoryPtr;
@@ -76,10 +66,15 @@ unsigned char* stringMem(size_t __size) {
 }*/
 
 void kernel_main(/*multiboot_info* __boot_info*/ void) {
-    kernel_initializeKernelParticipals();
-
+    tty_initialize();
+    
     //tty_writeString("CubeBox, kernel v0.0.1.0a - Alpha phase.\n\n");
     tty_colored(3, "CubeBox OS: kernel:v0.0.1.0a\n\n");
+
+    gdt_install();
+    idt_init();
+
+    kdriver_init();
 
     kbd_init();
     //acpi_init();

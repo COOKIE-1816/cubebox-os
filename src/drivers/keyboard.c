@@ -378,7 +378,7 @@ int kbd_init() {
     kbd_state.special = false;
     kbd_state.pause =   false;
 
-    irq_installHandler(33, kbd_irqHandler);
+    //irq_installHandler(33, kbd_irqHandler);
 
     kbd_setLeds(        false, 
                         false, 

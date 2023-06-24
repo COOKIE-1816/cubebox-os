@@ -5,7 +5,7 @@
 
 #define IDT_MAX_DESCRIPTORS 256
 
-static void* isr_stub_table[];
+static void* isr_stub_table[IDT_MAX_DESCRIPTORS];
 
 __attribute__((aligned(0x10))) 
 static idt_entry_t IDT[IDT_MAX_DESCRIPTORS];

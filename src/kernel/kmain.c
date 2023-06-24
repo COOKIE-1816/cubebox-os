@@ -13,6 +13,7 @@
 #include "kernel/system.h"
 #include "kernel/interrupt/irq.h"
 #include <stddef.h>
+#include "text_ui/shapes.h"
 
 #ifndef __E_ARCH_X64
     #define __E_ARCH_X32
@@ -76,7 +77,17 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
 
     kdriver_init();
 
-    kbd_init();
+    Rectangle rectangle;
+
+    rectangle.a = 12;
+    rectangle.b = 4;
+    rectangle.x = 3;
+    rectangle.y = 3;
+    rectangle.borderColor = VGA_COLOR_BLUE;
+
+    drawRect(rectangle);
+
+    //kbd_init();
     //acpi_init();
 
     /*keyboard_init(11);

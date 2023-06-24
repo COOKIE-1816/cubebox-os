@@ -37,12 +37,13 @@ comple_sources_fn (){
     #i686-elf-gcc $1 -c drivers/floppy.c                -o build/obj/drivers/floppy.c.o             $gcc_flags
     i686-elf-gcc $1 -c src/kernel/interrupt/irq.c          -o build/obj/kernel/interrupt/irq.c.o       $gcc_flags
     i686-elf-gcc $1 -c src/drivers/pci.c                   -o build/obj/drivers/pci.c.o                $gcc_flags
-    i686-elf-gcc $1 -c src/drivers/ide.c                   -o build/obj/drivers/ide.c.o                $gcc_flags
+    #i686-elf-gcc $1 -c src/drivers/ide.c                   -o build/obj/drivers/ide.c.o                $gcc_flags
     i686-elf-gcc $1 -c src/drivers/acpi.c                  -o build/obj/drivers/acpi.c.o               $gcc_flags
     i686-elf-gcc $1 -c src/drivers/acpi/shutdown.c         -o build/obj/drivers/acpi/shutdown.c.o      $gcc_flags
     i686-elf-gcc $1 -c src/kernel/system.c                 -o build/obj/kernel/system.c.o              $gcc_flags
     i686-elf-gcc $1 -c src/kernel/memory/free.c            -o build/obj/kernel/memory/free.c.o         $gcc_flags
     i686-elf-gcc $1 -c src/kernel/memory/malloc.c          -o build/obj/kernel/memory/malloc.c.o       $gcc_flags
+    i686-elf-gcc $1 -c src/text_ui/shapes.c                -o build/obj/text_ui/shapes.c.o             $gcc_flags
 }
 
 link_obj_fn(){
@@ -72,7 +73,8 @@ link_obj_fn(){
                 build/obj/drivers/acpi/shutdown.c.o \
                 build/obj/kernel/system.c.o \
                 build/obj/kernel/memory/free.c.o \
-                build/obj/kernel/memory/malloc.c.o
+                build/obj/kernel/memory/malloc.c.o \
+                build/obj/text_ui/shapes.c.o
                 #build/obj/drivers/floppy.c.o
                 #[addfile.py: obj]
 
@@ -87,6 +89,7 @@ mkdir    build/obj/kernel/interrupt
 mkdir    build/obj/kernel/timing
 mkdir    build/obj/kernel/sound
 mkdir    build/obj/kernel/memory
+mkdir    build/obj/text_ui
 
 echo STEP 1: Assemble assembly files
 i686-elf-as  src/boot.s                                     -o build/obj/boot.s.o

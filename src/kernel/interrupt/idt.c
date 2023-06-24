@@ -1,9 +1,19 @@
 #include "kernel/interrupt/idt.h"
 #include "kernel/interrupt/isr.h"
+
 #include <cboolean.h>
 
+#define IDT_MAX_DESCRIPTORS 256
+
+static void* isr_stub_table[];
+
+__attribute__((aligned(0x10))) 
+static idt_entry_t IDT[IDT_MAX_DESCRIPTORS];
+
+static idtr_t IDTR;
+
 void idt_setDescriptor(uint8_t __vector, void* __isr, uint8_t __flags) {
-    idt_entry_t* descriptor = &IDT[__vector];
+    idt_entry_t *descriptor = &IDT[__vector];
 
     #ifndef __E_ARCH_X64
         descriptor->isr_low        = (uint32_t) __isr & 0xFFFF;
@@ -19,10 +29,9 @@ void idt_setDescriptor(uint8_t __vector, void* __isr, uint8_t __flags) {
         descriptor->isr_mid        = ((uint64_t) __isr >> 16) & 0xFFFF;
         descriptor->isr_high       = ((uint64_t) __isr >> 32) & 0xFFFFFFFF;
         descriptor->reserved       = 0;
-    #endif  
+    #endif 
 }
 
-#define IDT_MAX_DESCRIPTORS 256
 
 static bool vectors[IDT_MAX_DESCRIPTORS];
 
@@ -30,11 +39,13 @@ void idt_init() {
     IDTR.base = (uintptr_t) &IDT[0];
     IDTR.limit = (uint16_t) sizeof(idt_entry_t) * IDT_MAX_DESCRIPTORS - 1;
  
-    for (uint8_t vector = 0; vector < 32; vector++) {
-        idt_setDescriptor(vector, isr_stub_table[vector], 0x8E);
-        vectors[vector] = true;
+    uint8_t vect;
+
+    for (vect = 0; vect < 32; vect++) {
+        idt_setDescriptor(vect, isr_stub_table[vect], 0x8E);
+        vectors[vect] = true;
     }
  
-    __asm__ volatile ("lidt %0" : : "m"(IDTR));
+    __asm__ volatile ("lidt %0" : : "m"(vect));
     __asm__ volatile ("sti");
 }

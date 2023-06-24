@@ -3,6 +3,6 @@
 
 void exception_handler(void);
 
-static void* isr_stub_table[];
+//static void* isr_stub_table[256];
 
 #endif

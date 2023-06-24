@@ -23,8 +23,7 @@
     } __attribute__((packed)) idt_entry_t;
 #endif
 
-__attribute__((aligned(0x10))) 
-static idt_entry_t IDT[256];
+
 
 #ifndef __E_ARCH_X64
     typedef struct {
@@ -37,8 +36,6 @@ static idt_entry_t IDT[256];
         uint64_t	base;
     } __attribute__((packed)) idtr_t;
 #endif
-
-static idtr_t IDTR;
 
 
 void idt_setDescriptor(uint8_t __vector, void* __isr, uint8_t __flags);

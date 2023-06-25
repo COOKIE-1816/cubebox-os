@@ -17,6 +17,7 @@ typedef struct Box {
     String title;
 
     String body;
+    //uint8_t color;
 
     bool dropShadow;
 } Box;

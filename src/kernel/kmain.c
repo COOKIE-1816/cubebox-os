@@ -77,7 +77,7 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
 
     kdriver_init();
 
-    Rectangle rectangle;
+    /*Rectangle rectangle;
 
     rectangle.a = 12;
     rectangle.b = 4;
@@ -85,19 +85,7 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
     rectangle.y = 3;
     rectangle.borderColor = VGA_COLOR_BLUE;
 
-    drawRect(rectangle);
+    drawRect(rectangle);*/
 
-    //kbd_init();
-    //acpi_init();
-
-    /*keyboard_init(11);
-    keyboard_leds_set(true, false, false);*/
-
-    //shutdown();
-
-    //ide_init(0x1F0, 0x3F6, 0x170, 0x376, 0x000);
-
-    //floppy_init();
-
-    //commandLine();
+    kbd_init();
 }

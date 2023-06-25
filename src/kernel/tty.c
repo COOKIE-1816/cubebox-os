@@ -38,7 +38,7 @@
 size_t tty_row;
 size_t tty_column;
 uint8_t tty_color;
-uint16_t* tty_buffer;
+static uint16_t* tty_buffer;
 
 char* allowed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/*-+.\n,<>?:_\";'!\\|[]{}()` ";
 
@@ -49,6 +49,26 @@ int isAllowed(char c) {
 	}
 
 	return 0;
+}
+
+//static uint16_t* _img;
+tty_img tty_image() {
+    tty_img img;
+
+    img.tty_row = tty_row;
+    img.tty_column = tty_column;
+    img.tty_color = tty_color;
+    img.tty_buffer = tty_buffer;
+
+    tty_writeString("TTY: Successfully created screen image.\n");
+    return img;
+}
+
+void tty_restore(tty_img __image) {
+    tty_row = __image.tty_row;
+    tty_column = __image.tty_column;
+    tty_color = __image.tty_color;
+    tty_buffer = __image.tty_buffer;
 }
  
 void tty_scroll(int rowsAmount) {

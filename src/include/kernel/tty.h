@@ -5,6 +5,15 @@
 #include <stdint.h>
 #include <stddef.h>
 
+typedef struct tty_img {
+    size_t tty_row;
+    size_t tty_column;
+    uint8_t tty_color;
+    uint16_t* tty_buffer;
+} tty_img;
+
+tty_img tty_image();
+void tty_restore(tty_img __image);
 
 extern void tty_initialize(void);
 extern void tty_setColor(uint8_t color);

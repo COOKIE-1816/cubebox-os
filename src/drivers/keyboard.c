@@ -160,7 +160,9 @@ void kbd_setLeds(   bool __n, // NumLock LED
     data = (__n) ? (__n  | 2) : (__n  & 2);
     data = (__c) ? (__n  | 4) : (__n  & 4);
 
-    kbd_encoder_sendPacket(KBD_ENCODER_CMD_SET_LEDS, data);
+    // kbd_encoder_sendPacket(KBD_ENCODER_CMD_SET_LEDS, data);
+    kbd_encoder_sendCmd(KBD_ENCODER_CMD_SET_LEDS);
+    kbd_encoder_sendCmd(data);
 }
 
 /*void kbd_setAlternateScancodeSet() {
@@ -380,10 +382,12 @@ int kbd_init() {
 
     //irq_installHandler(33, kbd_irqHandler);
 
-    kbd_setLeds(        false, 
+    /*kbd_setLeds(        false, 
                         false, 
                         false
-    );
+    );*/
+
+    kbd_enable();
     
     kdriver_statusMsg_status(KDRIVERS_OK);
     return 0;

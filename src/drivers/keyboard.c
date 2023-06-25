@@ -431,6 +431,8 @@ int kbd_init() {
                         false
     );*/
 
+    irq_installHandler(33, kbd_irqHandler);
+
     kbd_enable();
     
     kdriver_statusMsg_status(KDRIVERS_OK);

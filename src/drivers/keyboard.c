@@ -1,14 +1,56 @@
+/*
+============================================================= FILE INFORMATION =============================================================
+                 .@@@@@@@@@@@@@@@@@@@@@@@@@@%            
+                 .@@@@@@@@@@@@@@@@@@@@@@@@@@%               Product name:               CubeBox OS
+                 .@@@@@@@@@@@@@@@@@@@@@@@@@@%               Product version:            0.0.1.0a, Alpha stage - unstable
+                 .@@@@@@@@@@@@@@@@@@@@@@@@@@%               
+           @@@@@@@@@@@@@#             %@@@@@@@@@@@@@        File name & path:           /src/drivers/keyboard.c
+           @@@@@@@@@@@@@#             %@@@@@@@@@@@@@        Programming language:       C
+           @@@@@@@@@@@@@#             %@@@@@@@@@@@@@        File usage:                 Standard PS/2 keyboard driver
+           @@@@@@@@@@@@@#             %@@@@@@@@@@@@@                           
+    @@@@@@@@@@@@@&                          ,@@@@@@@        Last revision:              
+    @@@@@@@@@@@@@&                          ,@@@@@@@        
+    @@@@@@@@@@@@@&                          ,@@@@@@@                           
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                          File usage:                 
+    @@@@@@@@@@@@@&                                          Contributors:               Vaclav Hajsman
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                          Docs. reference:            
+    @@@@@@@@@@@@@&                                          Online reference:           
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                          Copyright (C) Vaclav Hajsman (A.K.A. COOKIE) 2023. All rights reserved.
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                                             
+    @@@@@@@@@@@@@&                                          This file is licensed as a part of the project inself, and licensing information
+    @@@@@@@@@@@@@&                                          Can be found in LICENSE file in root directory of this project.
+============================================================================================================================================
+*/
+
 #include "drivers/keyboard.h"
 #include "drivers/pci.h"
 
 #include "kernel/common.h"
 #include "kernel/tty.h"
 #include "kernel/kdrivers.h"
-//#include "kernel/interrupt/idt.h"
 #include "kernel/interrupt/irq.h"
 
 #include <stdint.h>
 #include <cboolean.h>
+
+/*
+    This module (device driver) provides support for PS/2 Keyboards.
+    
+    Basic features provided by this module:
+        - Sending command to keyboard encoder and controller,
+        - Read keyboard input or output buffers,
+        - Receive keyboard input,
+        - Turn keyboard LED indicators on and off.
+    
+    For more information, please read the docs.
+*/
 
 #define KBD_KEYMAP_SIZE 512
 
@@ -31,15 +73,18 @@ kdriver _kbd;
 #define KBD_CTRL_STATS_MASK_TIMEOUT     0b01000000  // 64
 #define KBD_CTRL_STATS_MASK_PARITY      0b10000000  // 128
 
-/*enum kbd_encoder_io {
-    kbd_encoder_inputBuff   = 0x60,
-    kbd_encoder_cmdRegister = 0x60
-};
+#ifndef __E_KBD_QWERTZ
+    /*
+        Set keyboard layout based on compiler defines.
 
-enum kbd_ctrl_io {
-    kbd_ctrl_statsRegister  = 0x64,
-    kbd_ctrl_cmdRegister    = 0x64
-};*/
+        __E_KBD_QWERTZ              Sets keyboard layout to QWERTZ.
+        __E_KBD_QWERTY (default)    Sets keyboard layout to QWERTY.
+
+        ! Mixing these defines will probably result in QWERTZ layout.
+    */
+
+    #define __E_KBD_QWERTY
+#endif
 
 uint8_t kbd_ctrl_getStatus() {
     return inb(KBD_CTRL_STATS_REG);
@@ -54,6 +99,7 @@ void _kbd_io_wait() {
     }
     
 }
+
 
 
 uint8_t kbd_encoder_readBuff() {
@@ -96,10 +142,6 @@ void kbd_encoder_sendPacket(uint8_t __cmd, uint8_t __data) {
 
 
 typedef struct kbd_kbdState {
-    bool nl; // ===========
-    bool cl; //    Lock keys status
-    bool sl; // ===========
-
     bool shift;
     bool alt;
     bool ctrl;
@@ -107,11 +149,14 @@ typedef struct kbd_kbdState {
     bool special;
 
     bool pause;
+
+    // ===== LOCK KEYS =====
+    bool nl;
+    bool cl;
+    bool sl;
 } kbd_kbdState;
 
 kbd_kbdState kbd_state;
-
-
 
 bool *kbd_getLockKeys() {
     static bool state[3];
@@ -152,7 +197,7 @@ void kbd_setLeds(   bool __n, // NumLock LED
                     bool __s  // ScrollLock LED
                 ) {
     // Sets keyboard LED indicators.
-    // * NOTE: Only changes indicator status. Does not toggle lock keys.
+    // NOTE: Only changes indicator status. Does not toggle lock keys.
 
     uint8_t data;
 
@@ -268,7 +313,7 @@ uint8_t kbd_interfaceTest() {
             break;
 
         default:
-            tty_writeString("Kbd: interface test: Unrecognized, unknown or general error.\n");
+            tty_writeString("Kbd: interface test: err: Unrecognized, unknown or general error.\n");
             break;
     }
 
@@ -361,8 +406,7 @@ void kbd_irqHandler() {
 
     kbd_lastScancode = _kbd_scancode;
 
-    // * Send EOI signal to PIC
-    outb(0x20, 0x20);
+    outb(0x20, 0x20);   // send End Of Interrupt (EOI) signal to PIC
 }
 
 int kbd_init() {
@@ -396,6 +440,7 @@ int kbd_init() {
 enum kbd_scancodes {
     // Scancodes can be override if __E_KBD_OVERRIDE_SCANCODES
     // is set by compiler.
+
     #ifndef __E_KBD_OVERRIDE_SCANCODES
 
             // Online ref.: https://www.win.tue.nl/~aeb/linux/kbd/scancodes-1.html

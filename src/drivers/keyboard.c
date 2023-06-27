@@ -55,8 +55,9 @@
 #define KBD_KEYMAP_SIZE 512
 
 uint8_t kbdIRQ = 1;
-
 kdriver _kbd;
+
+void kbd_irqHandler();
 
 
 #define KBD_ENCORDER_INPUT_BUFF         0x60 // 
@@ -141,20 +142,7 @@ void kbd_encoder_sendPacket(uint8_t __cmd, uint8_t __data) {
 #define KBD_ENCODER_CMD_RST_SELF_TEST   0xFF
 
 
-typedef struct kbd_kbdState {
-    bool shift;
-    bool alt;
-    bool ctrl;
 
-    bool special;
-
-    bool pause;
-
-    // ===== LOCK KEYS =====
-    bool nl;
-    bool cl;
-    bool sl;
-} kbd_kbdState;
 
 kbd_kbdState kbd_state;
 
@@ -566,6 +554,12 @@ void kbd_irqHandler() {
 
     kbd_lastScancode = _kbd_scancode;
 
+    kbd_setLeds(
+        kbd_state.nl,
+        kbd_state.cl,
+        kbd_state.sl
+    );
+
     outb(0x20, 0x20);   // send End Of Interrupt (EOI) signal to PIC
 }
 
@@ -592,15 +586,15 @@ static char kbd_chars[89][3] = {
     {'?', '0', '?'},    // 0
 
     {'-', '%', '\\'},
-    {'=', 'ˇ', '¯'},
+    {'=', '?', '%'},
 
     {' ', ' ', ' '},
 
     {'q', 'Q', '\\'},
     {'w', 'W', '|'},
-    {'e', 'E', '€'},
-    {'r', 'R', '¶'},
-    {'t', 'T', 'ŧ'},
+    {'e', 'E', '?'},
+    {'r', 'R', '?'},
+    {'t', 'T', '?'},
     
     {
         #ifndef __E_KBD_QWERTZ
@@ -609,13 +603,13 @@ static char kbd_chars[89][3] = {
             'z', 'Z',
         #endif
 
-        '←'
+        '?'
     },
 
-    {'u', 'U', '↓'},
-    {'i', 'I', '→'},
-    {'o', 'O', 'ø'},
-    {'p', 'P', 'þ'},
+    {'u', 'U', '?'},
+    {'i', 'I', '?'},
+    {'o', 'O', '?'},
+    {'p', 'P', '?'},
     {'[', '{', '/'},
     {']', '}', '('},
 
@@ -623,18 +617,18 @@ static char kbd_chars[89][3] = {
     {' ', ' ', ' '},
 
     {'a', 'A', '~'},
-    {'s', 'S', 'đ'},
-    {'d', 'D', 'Đ'},
+    {'s', 'S', '?'},
+    {'d', 'D', '?'},
     {'f', 'F', '['},
     {'g', 'G', ']'},
     {'h', 'H', '`'},
     {'j', 'J', '\''},
-    {'k', 'K', 'ł'},
-    {'l', 'L', 'Ł'},
+    {'k', 'K', '?'},
+    {'l', 'L', '?'},
 
     {';', '"', ';'},
-    {':', '§', '\''},
-    {'\'', '¨', '|'},
+    {':', '?', '\''},
+    {'\'', '?', '|'},
 
     {'`', ';', '~'},
     {' ', ' ', ' '},
@@ -647,7 +641,7 @@ static char kbd_chars[89][3] = {
             'y', 'Y',
         #endif
 
-        '°'
+        '?'
     },
 
     {'x', 'X', '#'},
@@ -663,18 +657,18 @@ static char kbd_chars[89][3] = {
     {' ', ' ', ' '},
 
     {' ', ' ', ' '},
-    {'ǒ', ' ', ' '},
-    {'ó', ' ', ' '},
-    {'ů', ' ', ' '},
-    {'ě', ' ', ' '},
-    {'š', ' ', ' '},
-    {'č', ' ', ' '},
-    {'ř', ' ', ' '},
-    {'ž', ' ', ' '},
-    {'ý', ' ', ' '},
-    {'á', ' ', ' '},
-    {'í', ' ', ' '},
-    {'é', ' ', ' '},
+    {' ', ' ', ' '},
+    {' ', ' ', ' '},
+    {' ', ' ', ' '},
+    {' ', ' ', ' '},
+    {' ', ' ', ' '},
+    {' ', ' ', ' '},
+    {' ', ' ', ' '},
+    {' ', ' ', ' '},
+    {' ', ' ', ' '},
+    {' ', ' ', ' '},
+    {' ', ' ', ' '},
+    {' ', ' ', ' '},
     {' ', ' ', ' '},
     {' ', ' ', ' '},
 

@@ -4,6 +4,21 @@
 #include <cboolean.h>
 #include <stdint.h>
 
+typedef struct kbd_kbdState {
+    bool shift;
+    bool alt;
+    bool ctrl;
+
+    bool special;
+
+    bool pause;
+
+    // ===== LOCK KEYS =====
+    bool nl;
+    bool cl;
+    bool sl;
+} kbd_kbdState;
+
 void kbd_setLeds(   bool __n, // NumLock LED
                     bool __c, // CapsLock LED
                     bool __s  // ScrollLock LED
@@ -36,5 +51,6 @@ void kbd_setEnabled(bool __enable);
 uint8_t kbd_getLast();
 
 int kbd_init();
+char kbd_toChar(uint8_t __scancode, kbd_kbdState __kbdStatea);
 
 #endif

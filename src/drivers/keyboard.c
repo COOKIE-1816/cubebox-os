@@ -367,48 +367,6 @@ uint8_t kbd_getLast() {
 
 uint8_t _kbd_scancode;
 
-void kbd_irqHandler() {
-    _kbd_scancode = inb(KBD_ENCORDER_INPUT_BUFF);
-
-    tty_writeString("kbdIrq\n");
-
-    switch (_kbd_scancode) {
-        // === SHIFT KEYS ===
-        case 0x2A:
-        case 0x36:
-            kbd_state.shift = true;
-            break;
-        
-        case 0xAA:
-        case 0xB6:
-            kbd_state.shift = false;
-            break;
-
-        // === LOCK KEYS ===
-        case 0x3A:
-            kbd_state.cl = !kbd_state.cl;
-            break;
-        
-        case 0x45:
-            kbd_state.nl = !kbd_state.nl;
-            break;
-
-        /*case 0x46:
-            kbd_state.sl = !kbd_state.sl;
-            break;*/
-
-        // TODO: Implement pause break later. Only pause when printing on screen is in process.
-        // TODO: Implement other keys.
-
-        default:
-            break;
-    }
-
-    kbd_lastScancode = _kbd_scancode;
-
-    outb(0x20, 0x20);   // send End Of Interrupt (EOI) signal to PIC
-}
-
 int kbd_init() {
     _kbd.name = "Standard PS2 keyboard";
     kdriver_statusMsg_create(_kbd);
@@ -575,3 +533,196 @@ enum kbd_scancodes {
         K_F12
     #endif
 };
+
+void kbd_irqHandler() {
+    _kbd_scancode = inb(KBD_ENCORDER_INPUT_BUFF);
+
+    tty_writeString("kbdIrq\n");
+
+    switch (_kbd_scancode) {
+        // === SHIFT KEYS ===
+        case 0x2A:
+        case 0x36:
+            kbd_state.shift = true;
+            break;
+        
+        case 0xAA:
+        case 0xB6:
+            kbd_state.shift = false;
+            break;
+
+        // === LOCK KEYS ===
+        case K_CAPSLOCK:
+            kbd_state.cl = !kbd_state.cl;
+            break;
+        
+        case K_NUMLOCK:
+            kbd_state.nl = !kbd_state.nl;
+            break;
+
+        default:
+            break;
+    }
+
+    kbd_lastScancode = _kbd_scancode;
+
+    outb(0x20, 0x20);   // send End Of Interrupt (EOI) signal to PIC
+}
+
+
+static char kbd_chars[89][3] = {
+    /*
+        0: Key only
+        1: Key w/ shift
+        2: Key w/ alt gr
+    */
+
+    //{'?', '?', '?'},    // 0x00 Unknown
+    //{'?', '?', '?'},    // 0x01 ESC
+
+    {'+', '1', '!'},    // 1
+    {'?', '2', '#'},    // 2
+    {'?', '3', '$'},    // 3 
+    {'?', '4', '%'},    // 4
+    {'?', '5', '^'},    // 5
+    {'?', '6', '&'},    // 6
+    {'?', '7', '*'},    // 7
+    {'?', '8', '('},    // 8
+    {'?', '9', ')'},    // 9
+    {'?', '0', '?'},    // 0
+
+    {'-', '%', '\\'},
+    {'=', 'ˇ', '¯'},
+
+    {' ', ' ', ' '},
+
+    {'q', 'Q', '\\'},
+    {'w', 'W', '|'},
+    {'e', 'E', '€'},
+    {'r', 'R', '¶'},
+    {'t', 'T', 'ŧ'},
+    
+    {
+        #ifndef __E_KBD_QWERTZ
+            'y', 'Y',
+        #else
+            'z', 'Z',
+        #endif
+
+        '←'
+    },
+
+    {'u', 'U', '↓'},
+    {'i', 'I', '→'},
+    {'o', 'O', 'ø'},
+    {'p', 'P', 'þ'},
+    {'[', '{', '/'},
+    {']', '}', '('},
+
+    {'\n', '\n', '\n'},
+    {' ', ' ', ' '},
+
+    {'a', 'A', '~'},
+    {'s', 'S', 'đ'},
+    {'d', 'D', 'Đ'},
+    {'f', 'F', '['},
+    {'g', 'G', ']'},
+    {'h', 'H', '`'},
+    {'j', 'J', '\''},
+    {'k', 'K', 'ł'},
+    {'l', 'L', 'Ł'},
+
+    {';', '"', ';'},
+    {':', '§', '\''},
+    {'\'', '¨', '|'},
+
+    {'`', ';', '~'},
+    {' ', ' ', ' '},
+    {'\\', '\'', '|'},
+    
+    {
+        #ifndef __E_KBD_QWERTZ
+            'z', 'Z',
+        #else
+            'y', 'Y',
+        #endif
+
+        '°'
+    },
+
+    {'x', 'X', '#'},
+    {'c', 'C', '&'},
+    {'v', 'V', '@'},
+    {'b', 'B', '{'},
+    {'n', 'N', '}'},
+    {'m', 'M', '^'},
+    
+    {'<', '?', ','},
+    {'>', ':', '.'},
+    {'/', '_', '-'},
+    {' ', ' ', ' '},
+
+    {' ', ' ', ' '},
+    {'ǒ', ' ', ' '},
+    {'ó', ' ', ' '},
+    {'ů', ' ', ' '},
+    {'ě', ' ', ' '},
+    {'š', ' ', ' '},
+    {'č', ' ', ' '},
+    {'ř', ' ', ' '},
+    {'ž', ' ', ' '},
+    {'ý', ' ', ' '},
+    {'á', ' ', ' '},
+    {'í', ' ', ' '},
+    {'é', ' ', ' '},
+    {' ', ' ', ' '},
+    {' ', ' ', ' '},
+
+
+    {'7', ' ', ' '},
+    {'8', ' ', ' '},
+    {'9', ' ', ' '},
+
+    {'-', ' ', ' '},
+
+    {'4', ' ', ' '},
+    {'5', ' ', ' '},
+    {'6', ' ', ' '},
+
+    {'+', ' ', ' '},
+
+    {'1', ' ', ' '},
+    {'2', ' ', ' '},
+    {'3', ' ', ' '},
+
+    {'0', ' ', ' '},
+    {'.', ' ', ' '},
+
+    /*
+    {' ', ' ', ' '},
+    {' ', ' ', ' '},
+    {' ', ' ', ' '},
+
+    {' ', ' ', ' '},
+    {' ', ' ', ' '},
+    */
+};
+
+char kbd_toChar(uint8_t __scancode, kbd_kbdState __kbdState) {
+    int s = 0;
+
+    if(!(__scancode > K_ESCAPE && __scancode < K_ALT))
+        return '\0';
+    
+    if(__scancode > K_SCROLLLOCK && __scancode < K_KEYPAD_DOT && !__kbdState.nl)
+        return '\0';
+
+    //__scancode = __scancode - 2;
+
+    if(__kbdState.shift)
+        s = 1;
+    if(__kbdState.alt)
+        s = 2;
+
+    return kbd_chars[__scancode][s];
+}

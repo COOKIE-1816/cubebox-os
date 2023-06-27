@@ -60,7 +60,7 @@ void *irq_routines[16] = {
 };
 
 
-void irq_installHandler(int __irq, void (*__handler)(struct regs *__reg)) {
+void irq_installHandler(int __irq, void (*__handler)/*(struct regs *__reg)*/) {
     irq_routines[__irq] = __handler;
 }
 
@@ -103,7 +103,7 @@ void irq_init() {
     idt_setGate(47, (unsigned)irq15, 0x08, 0x8E);*/
 }
 
-void irq_handler(struct regs *r) {
+void irq_handler(regs *r) {
     void (*handler)(struct regs *r);
 
     handler = irq_routines[r->int_no - 32];

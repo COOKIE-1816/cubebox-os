@@ -37,55 +37,18 @@ unsigned char* stringMem(size_t __size) {
     return memoryPtr;
 }
 
-/*enum KEYCODE getKey() {
-    enum KEYCODE k = KEY_UNKNOWN;
-
-    while(k == KEY_UNKNOWN)
-        k = keyboard_getLastKey();
-
-    tty_writeString("Key pressed.");
-    
-    keyboard_discardLastKey();
-    return k;
-}*/
-
-
-
-/*void commandLine() {
-    char* buff;
-
-    while(1) {
-        tty_writeString("\n> ");
-
-        enum KEYCODE key = getKey();
-        if (key == KEY_KP_ENTER)
-            continue;
-
-        char key_ascii = keyboard_key2ascii(key);
-        tty_putChar(key_ascii);
-    }
-}*/
-
 void kernel_main(/*multiboot_info* __boot_info*/ void) {
     tty_initialize();
     
     //tty_writeString("CubeBox, kernel v0.0.1.0a - Alpha phase.\n\n");
-    tty_colored(3, "CubeBox OS: kernel:v0.0.1.0a\n\n");
+    tty_colored(3, "CubeBox OS: kernel:v0.0.1.0a\n");
+    tty_writeString("https://github.com/COOKIE-1816/cubebox-os\n");
+    tty_writeString("http://czechcookie.euweb.cz/projects/cubebox-os\n\n");
 
     gdt_install();
     idt_init();
 
     kdriver_init();
-
-    /*Rectangle rectangle;
-
-    rectangle.a = 12;
-    rectangle.b = 4;
-    rectangle.x = 3;
-    rectangle.y = 3;
-    rectangle.borderColor = VGA_COLOR_BLUE;
-
-    drawRect(rectangle);*/
 
     kbd_init();
 }

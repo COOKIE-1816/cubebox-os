@@ -1,5 +1,6 @@
 #include "kernel/interrupt/irq.h"
 #include "kernel/interrupt/idt.h"
+#include "kernel/tty.h"
 #include "kernel/common.h"
 #include "kernel/system.h"
 #include "drivers/pic.h"
@@ -62,6 +63,8 @@ void *irq_routines[16] = {
 
 void irq_installHandler(int __irq, void (*__handler)/*(struct regs *__reg)*/) {
     irq_routines[__irq] = __handler;
+    tty_writeString("IRQ: Handler installed.\n");
+    
 }
 
 void irq_uninstallHandler(int __irq) {
@@ -114,6 +117,7 @@ void irq_handler(regs *r) {
         outb(0xA0, 0x20);
     }
 
+    // END OF INTERRUPT
     outb(0x20, 0x20);
 }
 

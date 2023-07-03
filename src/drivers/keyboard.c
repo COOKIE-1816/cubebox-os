@@ -49,21 +49,210 @@
         - Receive keyboard input,
         - Turn keyboard LED indicators on and off.
     
+    NOTE: The exact details depends on keyboard specific type and
+          model. Only converting a generic 102 key keyboard here.
+
     For more information, please read the docs.
 */
 
 #define KBD_KEYMAP_SIZE 512
 
-uint8_t kbdIRQ = 1;
 kdriver _kbd;
+//void kbd_irqHandler();
 
-void kbd_irqHandler();
+bool _kbd_enabled;
+uint8_t _kbd_scancode;
+kbd_kbdState kbd_state;
+uint8_t kbd_lastScancode;
 
+enum kbd_scancodes {
+    // Scancodes can be override if __E_KBD_OVERRIDE_SCANCODES
+    // is set by compiler.
+
+    #ifndef __E_KBD_OVERRIDE_SCANCODES
+
+            // Online ref.: https://www.win.tue.nl/~aeb/linux/kbd/scancodes-1.html
+            // Online ref.: https://wiki.osdev.org/PS2_Keyboard
+
+        K_UNKNOWN = 0x00,
+        K_ESCAPE = 0x01,
+
+        K_1, 
+        K_2, 
+        K_3, 
+        K_4, 
+        K_5, 
+        K_6, 
+        K_7, 
+        K_8, 
+        K_9, 
+        K_0,
+
+        K_DASH,
+        K_EQUAL,
+
+        K_TAB,
+
+        K_Q,
+        K_W, 
+        K_E, 
+        K_R, 
+        K_T,
+        
+        #ifndef __E_KBD_QWERTZ
+            K_Y,
+        #else
+            K_Z,
+        #endif
+
+        K_U, 
+        K_I, 
+        K_O, 
+        K_P,
+
+        K_SQBRACKETS_OPEN, 
+        K_SQBRACKETS_CLOSE,
+
+        K_ENTER,
+        K_LCTRL,
+
+        K_A, 
+        K_S, 
+        K_D, 
+        K_F, 
+        K_G, 
+        K_H, 
+        K_J, 
+        K_K, 
+        K_L,
+
+        K_SEMICOLON, 
+        K_COLON, 
+        K_SINGLE_QUOTE, 
+
+        K_BACK_TICK,
+        K_LSHIFT, 
+        K_BACKSLASH,
+
+        #ifndef __E_KBD_QWERTZ
+            K_Z,
+        #else
+            K_Y,
+        #endif
+
+        K_X, 
+        K_C, 
+        K_V, 
+        K_B, 
+        K_N, 
+        K_M,
+
+        K_LESS, 
+        K_GREATER, 
+        K_SLASH,
+        K_RSHIFT, 
+
+        K_ASTERISK,
+
+        K_LALT,
+        K_SPACE,
+        K_CAPSLOCK,
+
+        K_F1, 
+        K_F2, 
+        K_F3, 
+        K_F4, 
+        K_F5, 
+        K_F6, 
+        K_F7, 
+        K_F8, 
+        K_F9, 
+        K_F10,
+
+        K_NUMLOCK, 
+        K_SCROLLLOCK,
+
+        //#ifndef __E_KBD_NO_KEYPAD
+            K_KEYPAD_7,
+            K_KEYPAD_8,
+            K_KEYPAD_9,
+
+            K_KEYPAD_DASH,
+            
+            K_KEYPAD_4,
+            K_KEYPAD_5,
+            K_KEYPAD_6,
+
+            K_KEYPAD_PLUS,
+
+            K_KEYPAD_1,
+            K_KEYPAD_2,
+            K_KEYPAD_3,
+
+            K_KEYPAD_0,
+            K_KEYPAD_DOT,
+        //#endif
+
+        K_ALT,
+        K_FN,
+        K_SPECIAL,
+
+        K_F11,
+        K_F12
+    #endif
+};
 
 #define KBD_ENCORDER_INPUT_BUFF         0x60 // 
 #define KBD_ENCODER_CMD_REG             0x60 //
 #define KBD_CTRL_STATS_REG              0x64 //
 #define KBD_CTRL_CMD_REG                0x64 //
+
+
+
+void kbd_irqHandler() {
+    _kbd_scancode = inb(KBD_ENCORDER_INPUT_BUFF);
+
+    tty_writeString("KBD: Interrupt.\n");
+
+    switch (_kbd_scancode) {
+        // === SHIFT KEYS ===
+        case 0x2A:
+        case 0x36:
+            kbd_state.shift = true;
+            break;
+        
+        case 0xAA:
+        case 0xB6:
+            kbd_state.shift = false;
+            break;
+
+        // === LOCK KEYS ===
+        case K_CAPSLOCK:
+            kbd_state.cl = !kbd_state.cl;
+            break;
+        
+        case K_NUMLOCK:
+            kbd_state.nl = !kbd_state.nl;
+            break;
+
+        default:
+            break;
+    }
+
+    kbd_lastScancode = _kbd_scancode;
+
+    kbd_setLeds(
+        kbd_state.nl,
+        kbd_state.cl,
+        kbd_state.sl
+    );
+
+    outb(0x20, 0x20);   // send End Of Interrupt (EOI) signal to PIC
+}
+
+
+
+
 
 #define KBD_CTRL_STATS_MASK_OUT_BUFF    0b00000001  // 1
 #define KBD_CTRL_STATS_MASK_IN_BUFF     0b00000010  // 2
@@ -94,10 +283,12 @@ uint8_t kbd_ctrl_getStatus() {
 void _kbd_io_wait() {
     // This function waits for keyboards's input buffer to be clear.
 
-    while (1) {
+    /*while (1) {
         if((kbd_ctrl_getStatus() & KBD_CTRL_STATS_MASK_IN_BUFF) == 0x00)
             break;
-    }
+    }*/
+
+    while((kbd_ctrl_getStatus() & KBD_CTRL_STATS_MASK_IN_BUFF) != 0x00);
     
 }
 
@@ -144,7 +335,7 @@ void kbd_encoder_sendPacket(uint8_t __cmd, uint8_t __data) {
 
 
 
-kbd_kbdState kbd_state;
+
 
 bool *kbd_getLockKeys() {
     static bool state[3];
@@ -308,16 +499,20 @@ uint8_t kbd_interfaceTest() {
     return result;
 }
 
-bool _kbd_enabled;
+//bool _kbd_enabled;
 
 void kbd_enable() {
     kbd_ctrl_sendCmd(KBD_CTRL_CMD_ENABLE);
     _kbd_enabled = true;
+
+    tty_writeString("KBD: Enabled.\n");
 }
 
 void kbd_disable() {
     kbd_ctrl_sendCmd(KBD_CTRL_CMD_DISABLE);
     _kbd_enabled = false;
+
+    tty_writeString("KBD: Disabled.\n");
 }
 
 void kbd_setEnabled(bool __enable) {
@@ -347,13 +542,12 @@ void kbd_resetSystem() {
     kbd_encoder_sendCmd(0xfe);
 }
 
-uint8_t kbd_lastScancode;
+
 
 uint8_t kbd_getLast() {
     return kbd_lastScancode;
 }
 
-uint8_t _kbd_scancode;
 
 int kbd_init() {
     _kbd.name = "Standard PS2 keyboard";
@@ -370,192 +564,14 @@ int kbd_init() {
     kbd_state.special = false;
     kbd_state.pause =   false;
 
-    irq_installHandler(33, kbd_irqHandler);
-
     kbd_enable();
-    kbd_setLeds(false, false, false);
-    
+    irq_installHandler(1, kbd_irqHandler);
+
     kdriver_statusMsg_status(KDRIVERS_OK);
     return 0;
 }
 
-enum kbd_scancodes {
-    // Scancodes can be override if __E_KBD_OVERRIDE_SCANCODES
-    // is set by compiler.
 
-    #ifndef __E_KBD_OVERRIDE_SCANCODES
-
-            // Online ref.: https://www.win.tue.nl/~aeb/linux/kbd/scancodes-1.html
-            // Online ref.: https://wiki.osdev.org/PS2_Keyboard
-
-        K_UNKNOWN = 0x00,
-        K_ESCAPE = 0x01,
-
-        K_1, 
-        K_2, 
-        K_3, 
-        K_4, 
-        K_5, 
-        K_6, 
-        K_7, 
-        K_8, 
-        K_9, 
-        K_0,
-
-        K_DASH,
-        K_EQUAL,
-
-        K_TAB,
-
-        K_Q,
-        K_W, 
-        K_E, 
-        K_R, 
-        K_T,
-        
-        #ifndef __E_KBD_QWERTZ
-            K_Y,
-        #else
-            K_Z,
-        #endif
-
-        K_U, 
-        K_I, 
-        K_O, 
-        K_P,
-
-        K_SQBRACKETS_OPEN, 
-        K_SQBRACKETS_CLOSE,
-
-        K_ENTER,
-        K_LCTRL,
-
-        K_A, 
-        K_S, 
-        K_D, 
-        K_F, 
-        K_G, 
-        K_H, 
-        K_J, 
-        K_K, 
-        K_L,
-
-        K_SEMICOLON, 
-        K_COLON, 
-        K_SINGLE_QUOTE, 
-
-        K_BACK_TICK,
-        K_LSHIFT, 
-        K_BACKSLASH,
-
-        #ifndef __E_KBD_QWERTZ
-            K_Z,
-        #else
-            K_Y,
-        #endif
-
-        K_X, 
-        K_C, 
-        K_V, 
-        K_B, 
-        K_N, 
-        K_M,
-
-        K_LESS, 
-        K_GREATER, 
-        K_SLASH,
-        K_RSHIFT, 
-
-        K_ASTERISK,
-
-        K_LALT,
-        K_SPACE,
-        K_CAPSLOCK,
-
-        K_F1, 
-        K_F2, 
-        K_F3, 
-        K_F4, 
-        K_F5, 
-        K_F6, 
-        K_F7, 
-        K_F8, 
-        K_F9, 
-        K_F10,
-
-        K_NUMLOCK, 
-        K_SCROLLLOCK,
-
-        //#ifndef __E_KBD_NO_KEYPAD
-            K_KEYPAD_7,
-            K_KEYPAD_8,
-            K_KEYPAD_9,
-
-            K_KEYPAD_DASH,
-            
-            K_KEYPAD_4,
-            K_KEYPAD_5,
-            K_KEYPAD_6,
-
-            K_KEYPAD_PLUS,
-
-            K_KEYPAD_1,
-            K_KEYPAD_2,
-            K_KEYPAD_3,
-
-            K_KEYPAD_0,
-            K_KEYPAD_DOT,
-        //#endif
-
-        K_ALT,
-        K_FN,
-        K_SPECIAL,
-
-        K_F11,
-        K_F12
-    #endif
-};
-
-void kbd_irqHandler() {
-    _kbd_scancode = inb(KBD_ENCORDER_INPUT_BUFF);
-
-    tty_writeString("kbdIrq\n");
-
-    switch (_kbd_scancode) {
-        // === SHIFT KEYS ===
-        case 0x2A:
-        case 0x36:
-            kbd_state.shift = true;
-            break;
-        
-        case 0xAA:
-        case 0xB6:
-            kbd_state.shift = false;
-            break;
-
-        // === LOCK KEYS ===
-        case K_CAPSLOCK:
-            kbd_state.cl = !kbd_state.cl;
-            break;
-        
-        case K_NUMLOCK:
-            kbd_state.nl = !kbd_state.nl;
-            break;
-
-        default:
-            break;
-    }
-
-    kbd_lastScancode = _kbd_scancode;
-
-    kbd_setLeds(
-        kbd_state.nl,
-        kbd_state.cl,
-        kbd_state.sl
-    );
-
-    outb(0x20, 0x20);   // send End Of Interrupt (EOI) signal to PIC
-}
 
 
 static char kbd_chars[89][3] = {

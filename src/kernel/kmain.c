@@ -47,6 +47,7 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
 
     gdt_install();
     idt_init();
+    irq_init();
 
     kdriver_init();
 

@@ -370,16 +370,10 @@ int kbd_init() {
     kbd_state.special = false;
     kbd_state.pause =   false;
 
-    //irq_installHandler(33, kbd_irqHandler);
-
-    /*kbd_setLeds(        false, 
-                        false, 
-                        false
-    );*/
-
     irq_installHandler(33, kbd_irqHandler);
 
     kbd_enable();
+    kbd_setLeds(false, false, false);
     
     kdriver_statusMsg_status(KDRIVERS_OK);
     return 0;

@@ -6,6 +6,9 @@ phase=alpha
 binfile=build/bin/cb_bin.bin
 isofile=build/cubebox-$version-$phase.iso
 
+cat ./cb_ascii.txt
+
+echo ""
 echo "------------------------------------------------"
 echo "CubeBox Build script"
 echo " -   CubeBox version: $version"
@@ -80,16 +83,16 @@ link_obj_fn(){
 
 } 
 
-mkdir -p build/obj/drivers/keyboard
-mkdir    build/obj/drivers/acpi
-mkdir -p build/obj/libs
-mkdir -p build/obj/kernel/crt
-mkdir    build/obj/kernel/gdt
-mkdir    build/obj/kernel/interrupt
-mkdir    build/obj/kernel/timing
-mkdir    build/obj/kernel/sound
-mkdir    build/obj/kernel/memory
-mkdir    build/obj/text_ui
+mkdir -p build/obj/drivers/keyboard         2> /dev/null
+mkdir    build/obj/drivers/acpi             2> /dev/null
+mkdir -p build/obj/libs                     2> /dev/null
+mkdir -p build/obj/kernel/crt               2> /dev/null
+mkdir    build/obj/kernel/gdt               2> /dev/null
+mkdir    build/obj/kernel/interrupt         2> /dev/null
+mkdir    build/obj/kernel/timing            2> /dev/null
+mkdir    build/obj/kernel/sound             2> /dev/null
+mkdir    build/obj/kernel/memory            2> /dev/null
+mkdir    build/obj/text_ui                  2> /dev/null
 
 echo STEP 1: Assemble assembly files
 i686-elf-as  src/boot.s                                     -o build/obj/boot.s.o
@@ -97,7 +100,7 @@ i686-elf-as  src/kernel/crt/crti.s                          -o build/obj/kernel/
 i686-elf-as  src/kernel/crt/crtn.s                          -o build/obj/kernel/crt/crtn.s.o
 #nasm -felf32  kernel/probe.s                             -o build/obj/kernel/probe.s.o
 #nasm -felf32 src/kernel/gdt/asm.s                         -o build/obj/kernel/gdt/asm.s.o
-nasm -felf32 src/kernel/interrupt/isr.asm                   -o build/obj/kernel/interrupt/isr.asm.o
+#nasm -felf32 src/kernel/interrupt/isr.asm                   -o build/obj/kernel/interrupt/isr.asm.o
 #[addfile.py: assembly]
 if [ "$1" != "no-war" ]; 
 then
@@ -119,7 +122,7 @@ fi
 
 echo STEP 4: Verify multiboot
 if grub-file --is-x86-multiboot $binfile; then
-    echo MB Confirmed.
+    echo "-> Multiboot confirmed. Continuing to build an ISO file with GRUB."
     echo STEP 5: Create bootable ISO image
 
     mkdir -p build/iso/boot/grub
@@ -130,5 +133,20 @@ if grub-file --is-x86-multiboot $binfile; then
 
     grub-mkrescue -o $isofile build/iso
 else
-    echo MB not confirmed.
+    echo "-> Multiboot not confirmed. ISO file will not be create."
 fi
+
+echo ""
+
+echo "+-------------------------------------------+"
+echo "| Thank you for patiently building CubeBox! |"
+echo "|        We really appreciate that!         |"
+echo "|                                           |"
+echo "|    Hope you are going to enjoy using      |"
+echo "| CubeBox. If there is a problem, or there  |"
+echo "| was an error while building,  please let  |"
+echo "|                us know.                   |"
+echo "+-------------------------------------------+"
+
+echo ""
+echo "Copyright (C) Vaclav Hajsman (AKA COOKIE) 2023."

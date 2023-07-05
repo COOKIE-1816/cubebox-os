@@ -133,7 +133,7 @@ if grub-file --is-x86-multiboot $binfile; then
 
     grub-mkrescue -o $isofile build/iso
 else
-    echo "-> Multiboot not confirmed. ISO file will not be create."
+    echo "-> Multiboot not confirmed. ISO file will not build."
 fi
 
 echo ""

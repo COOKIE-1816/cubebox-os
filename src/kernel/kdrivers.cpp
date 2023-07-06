@@ -4,12 +4,14 @@
 #include "stringt.h"
 #include "stddef.h"
 
+using namespace VGA;
+
 size_t _line;
 
-kdriver driversloaded[1024];
+Kernel::Kdrivers::kdriver driversloaded[1024];
 bool driversaddressesusage[1024];
 
-void kdriver_statusMsg_create(kdriver __drv) {
+void Kernel::Kdrivers::statusMsg_create(kdriver __drv) {
     _line = tty_getRow();
     String driver_name = __drv.name;
 
@@ -17,16 +19,16 @@ void kdriver_statusMsg_create(kdriver __drv) {
     tty_colored(15, driver_name);
     tty_writeString("\n");
 
-    kdriver_statusMsg_status(KDRIVERS_PENDING);
+    Kernel::Kdrivers::statusMsg_status(KDRIVERS_PENDING);
 
     uint8_t ec = vga_entryColor(VGA_COLOR_WHITE, VGA_COLOR_MAGENTA);
     tty_putEntryAt('D', ec, 0, _line);
 }
 
-void kdriver_statusMsg_status(/*kdriver */ const int __status) {
+void Kernel::Kdrivers::statusMsg_status(/*kdriver */ const int __status) {
     char* status;
     //enum VGA_COLOR color;
-    int color;
+    enum vga_color color;
 
     switch (__status) {
         case KDRIVERS_PENDING:
@@ -62,7 +64,7 @@ void kdriver_statusMsg_status(/*kdriver */ const int __status) {
         tty_writeString("\n");*/
 }
 
-void kdriver_init() {
+void Kernel::Kdrivers::init() {
     for(int i = 0; i < 1024; i++) {
         driversaddressesusage[i] = false;
     }

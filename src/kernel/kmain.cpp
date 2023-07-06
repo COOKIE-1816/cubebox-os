@@ -15,6 +15,8 @@
 #include <stddef.h>
 #include "text_ui/shapes.h"
 
+using namespace Kernel;
+
 #ifndef __E_ARCH_X64
     #define __E_ARCH_X32
 #endif
@@ -37,7 +39,7 @@ unsigned char* stringMem(size_t __size) {
     return memoryPtr;
 }
 
-void kernel_main(/*multiboot_info* __boot_info*/ void) {
+extern "C" void kernel_main(/*multiboot_info* __boot_info*/ void) {
     tty_initialize();
     
     //tty_writeString("CubeBox, kernel v0.0.1.0a - Alpha phase.\n\n");
@@ -49,7 +51,7 @@ void kernel_main(/*multiboot_info* __boot_info*/ void) {
     idt_init();
     irq_init();
 
-    kdriver_init();
+    Kdrivers::init();
 
     kbd_init();
 }

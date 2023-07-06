@@ -33,31 +33,36 @@
 #define _CB_KDRIVERS_H_
 
 #include "stringt.h"
-#include "cboolean.h"
 
 #define KDRIVERS_PENDING 0
 #define KDRIVERS_FAIL 1
 #define KDRIVERS_OK 2
 
-typedef int (*fnPtr_int)  (int[3]);
-typedef void (*fnPtr_void)(int[3]);
+namespace Kernel {
+    namespace Kdrivers {
+        typedef int (*fnPtr_int)  (int[3]);
+        typedef void (*fnPtr_void)(int[3]);
 
-typedef struct kdriver {
-    bool used;
-    String name;
+        typedef struct kdriver {
+            bool used;
+            String name;
 
-    int attributes[3];
+            int attributes[3];
 
-    fnPtr_int load;
-    fnPtr_int load_auto;
-    fnPtr_void unload;
-} kdriver;
+            fnPtr_int load;
+            fnPtr_int load_auto;
+            fnPtr_void unload;
+        } kdriver;
 
-/*kdriver driversloaded[1024];
-bool driversaddressesusage[1024];*/
+        /*kdriver driversloaded[1024];
+        bool driversaddressesusage[1024];*/
 
-void kdriver_statusMsg_create(kdriver __drv);
-void kdriver_statusMsg_status(/*kdriver __drv, */ const int __status);
-void kdriver_init();
+        void statusMsg_create(kdriver __drv);
+        void statusMsg_status(/*kdriver __drv, */ const int __status);
+        void init();
+    };
+};
+
+
 
 #endif

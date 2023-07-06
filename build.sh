@@ -16,68 +16,68 @@ echo " -   Phase:           $phase"
 echo " -   ISO Location:    $isofile"
 echo "------------------------------------------------"
 
-gcc_flags="-std=gnu99 -ffreestanding -O2 -Wall -Wextra -m32 -I ./include/ -I ./include/libs"
+gcc_flags="-ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -m32 -I ./include/ -I ./include/libs"
 link_flags="src/linker.ld -o $binfile -ffreestanding -O2 -nostdlib -lgcc"
 
 # Function Declerations
 
 comple_sources_fn (){
-    i686-elf-gcc $1 -c src/libs/stringt.c                  -o build/obj/libs/stringt.c.o               $gcc_flags
-    i686-elf-gcc $1 -c src/drivers/vga.c                   -o build/obj/drivers/vga.c.o                $gcc_flags
-    i686-elf-gcc $1 -c src/kernel/tty.c                    -o build/obj/kernel/tty.c.o                 $gcc_flags
-    i686-elf-gcc $1 -c src/kernel/kmain.c                  -o build/obj/kernel/kmain.c.o               $gcc_flags
-    i686-elf-gcc $1 -c src/kernel/gdt/gdt.c                -o build/obj/kernel/gdt/gdt.c.o             $gcc_flags
-    i686-elf-gcc $1 -c src/kernel/interrupt/isr.c          -o build/obj/kernel/interrupt/isr.c.o       $gcc_flags
-    i686-elf-gcc $1 -c src/kernel/interrupt/idt.c          -o build/obj/kernel/interrupt/idt.c.o       $gcc_flags
-    i686-elf-gcc $1 -c src/kernel/common.c                 -o build/obj/kernel/common.c.o              $gcc_flags
-    i686-elf-gcc $1 -c src/drivers/keyboard.c              -o build/obj/drivers/keyboard.c.o           $gcc_flags
-    i686-elf-gcc $1 -c src/drivers/rtc.c                   -o build/obj/drivers/rtc.c.o                $gcc_flags
-    i686-elf-gcc $1 -c src/kernel/kdrivers.c               -o build/obj/kernel/kdrivers.c.o            $gcc_flags
-    i686-elf-gcc $1 -c src/drivers/buzzer.c                -o build/obj/drivers/buzzer.c.o             $gcc_flags
+    i686-elf-gcc $1 -c src/libs/stringt.cpp                  -o build/obj/libs/stringt.cpp.o               $gcc_flags
+    i686-elf-gcc $1 -c src/drivers/vga.cpp                   -o build/obj/drivers/vga.cpp.o                $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/tty.cpp                    -o build/obj/kernel/tty.cpp.o                 $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/kmain.cpp                -o build/obj/kernel/kmain.cpp.o               $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/gdt/gdt.cpp                -o build/obj/kernel/gdt/gdt.cpp.o             $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/interrupt/isr.cpp          -o build/obj/kernel/interrupt/isr.cpp.o       $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/interrupt/idt.cpp          -o build/obj/kernel/interrupt/idt.cpp.o       $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/common.cpp                 -o build/obj/kernel/common.cpp.o              $gcc_flags
+    i686-elf-gcc $1 -c src/drivers/keyboard.cpp              -o build/obj/drivers/keyboard.cpp.o           $gcc_flags
+    i686-elf-gcc $1 -c src/drivers/rtc.cpp                   -o build/obj/drivers/rtc.cpp.o                $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/kdrivers.cpp               -o build/obj/kernel/kdrivers.cpp.o            $gcc_flags
+    i686-elf-gcc $1 -c src/drivers/buzzer.cpp                -o build/obj/drivers/buzzer.cpp.o             $gcc_flags
     #i686-elf-gcc $1 -c kernel/sound/beep.c             -o build/obj/kernel/sound/beep.c.o          $gcc_flags
-    i686-elf-gcc $1 -c src/drivers/timer.c                 -o build/obj/drivers/timer.c.o              $gcc_flags
-    i686-elf-gcc $1 -c src/drivers/pic.c                   -o build/obj/drivers/pic.c.o                $gcc_flags
+    i686-elf-gcc $1 -c src/drivers/timer.cpp                 -o build/obj/drivers/timer.cpp.o              $gcc_flags
+    i686-elf-gcc $1 -c src/drivers/pic.cpp                   -o build/obj/drivers/pic.cpp.o                $gcc_flags
     #i686-elf-gcc $1 -c drivers/floppy.c                -o build/obj/drivers/floppy.c.o             $gcc_flags
-    i686-elf-gcc $1 -c src/kernel/interrupt/irq.c          -o build/obj/kernel/interrupt/irq.c.o       $gcc_flags
-    i686-elf-gcc $1 -c src/drivers/pci.c                   -o build/obj/drivers/pci.c.o                $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/interrupt/irq.cpp          -o build/obj/kernel/interrupt/irq.cpp.o       $gcc_flags
+    i686-elf-gcc $1 -c src/drivers/pci.cpp                   -o build/obj/drivers/pci.cpp.o                $gcc_flags
     #i686-elf-gcc $1 -c src/drivers/ide.c                   -o build/obj/drivers/ide.c.o                $gcc_flags
-    i686-elf-gcc $1 -c src/drivers/acpi.c                  -o build/obj/drivers/acpi.c.o               $gcc_flags
-    i686-elf-gcc $1 -c src/drivers/acpi/shutdown.c         -o build/obj/drivers/acpi/shutdown.c.o      $gcc_flags
-    i686-elf-gcc $1 -c src/kernel/system.c                 -o build/obj/kernel/system.c.o              $gcc_flags
-    i686-elf-gcc $1 -c src/kernel/memory/free.c            -o build/obj/kernel/memory/free.c.o         $gcc_flags
-    i686-elf-gcc $1 -c src/kernel/memory/malloc.c          -o build/obj/kernel/memory/malloc.c.o       $gcc_flags
-    i686-elf-gcc $1 -c src/text_ui/shapes.c                -o build/obj/text_ui/shapes.c.o             $gcc_flags
+    i686-elf-gcc $1 -c src/drivers/acpi.cpp                  -o build/obj/drivers/acpi.cpp.o               $gcc_flags
+    i686-elf-gcc $1 -c src/drivers/acpi/shutdown.cpp         -o build/obj/drivers/acpi/shutdown.cpp.o      $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/system.cpp                 -o build/obj/kernel/system.cpp.o              $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/memory/free.cpp            -o build/obj/kernel/memory/free.cpp.o         $gcc_flags
+    i686-elf-gcc $1 -c src/kernel/memory/malloc.cpp          -o build/obj/kernel/memory/malloc.cpp.o       $gcc_flags
+    i686-elf-gcc $1 -c src/text_ui/shapes.cpp                -o build/obj/text_ui/shapes.cpp.o             $gcc_flags
 }
 
 link_obj_fn(){
     i686-elf-gcc $1 -T $link_flags \
-                build/obj/kernel/kdrivers.c.o \
-                build/obj/kernel/kmain.c.o \
+                build/obj/kernel/kdrivers.cpp.o \
+                build/obj/kernel/kmain.cpp.o \
                 build/obj/kernel/crt/crti.s.o \
                 build/obj/kernel/crt/crtn.s.o \
                 build/obj/kernel/gdt/asm.s.o \
-                build/obj/kernel/common.c.o \
-                build/obj/libs/stringt.c.o \
+                build/obj/kernel/common.cpp.o \
+                build/obj/libs/stringt.cpp.o \
                 build/obj/boot.s.o \
-                build/obj/kernel/gdt/gdt.c.o \
-                build/obj/kernel/tty.c.o \
-                build/obj/drivers/vga.c.o \
-                build/obj/kernel/interrupt/isr.c.o \
-                build/obj/kernel/interrupt/idt.c.o \
-                build/obj/drivers/keyboard.c.o \
-                build/obj/drivers/rtc.c.o \
-                build/obj/drivers/buzzer.c.o \
-                build/obj/drivers/timer.c.o \
-                build/obj/drivers/pic.c.o \
-                build/obj/kernel/interrupt/irq.c.o \
-                build/obj/drivers/pci.c.o \
-                build/obj/drivers/ide.c.o  \
-                build/obj/drivers/acpi.c.o \
-                build/obj/drivers/acpi/shutdown.c.o \
-                build/obj/kernel/system.c.o \
-                build/obj/kernel/memory/free.c.o \
-                build/obj/kernel/memory/malloc.c.o \
-                build/obj/text_ui/shapes.c.o
+                build/obj/kernel/gdt/gdt.cpp.o \
+                build/obj/kernel/tty.cpp.o \
+                build/obj/drivers/vga.cpp.o \
+                build/obj/kernel/interrupt/isr.cpp.o \
+                build/obj/kernel/interrupt/idt.cpp.o \
+                build/obj/drivers/keyboard.cpp.o \
+                build/obj/drivers/rtc.cpp.o \
+                build/obj/drivers/buzzer.cpp.o \
+                build/obj/drivers/timer.cpp.o \
+                build/obj/drivers/pic.cpp.o \
+                build/obj/kernel/interrupt/irq.cpp.o \
+                build/obj/drivers/pci.cpp.o \
+                build/obj/drivers/ide.cpp.o  \
+                build/obj/drivers/acpi.cpp.o \
+                build/obj/drivers/acpi/shutdown.cpp.o \
+                build/obj/kernel/system.cpp.o \
+                build/obj/kernel/memory/free.cpp.o \
+                build/obj/kernel/memory/malloc.cpp.o \
+                build/obj/text_ui/shapes.cpp.o
                 #build/obj/drivers/floppy.c.o
                 #[addfile.py: obj]
 

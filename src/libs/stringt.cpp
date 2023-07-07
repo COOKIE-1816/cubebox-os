@@ -39,7 +39,7 @@ void* memset(void* bufptr, int value, size_t size) {
 	return bufptr;
 }
 
-void* memcpy(void* restrict dstptr, const void* restrict srcptr, size_t size) {
+void* memcpy(void* dstptr, const void* srcptr, size_t size) {
 	unsigned char* dst = (unsigned char*) dstptr;
 	const unsigned char* src = (const unsigned char*) srcptr;
 

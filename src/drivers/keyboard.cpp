@@ -57,6 +57,10 @@
 
 #define KBD_KEYMAP_SIZE 512
 
+using namespace Kernel::Kdrivers;
+using namespace Kernel::IRQ;
+using namespace Kernel::TTY;
+
 kdriver _kbd;
 //void kbd_irqHandler();
 
@@ -212,7 +216,7 @@ enum kbd_scancodes {
 void kbd_irqHandler() {
     _kbd_scancode = inb(KBD_ENCORDER_INPUT_BUFF);
 
-    tty_writeString("KBD: Interrupt.\n");
+    writeString("KBD: Interrupt.\n");
 
     switch (_kbd_scancode) {
         // === SHIFT KEYS ===
@@ -476,23 +480,23 @@ uint8_t kbd_interfaceTest() {
 
     switch (result) {
         case KBD_INTERFACE_TEST_OK:
-            tty_writeString("Kbd: interface test: Interface test OK.\n");
+            writeString("Kbd: interface test: Interface test OK.\n");
             break;
         
         case KBD_INTERFACE_TEST_ERR_CLL_STUCK_LOW:
-            tty_writeString("Kbd: interface test: err: Clock line stuck low.\n");
+            writeString("Kbd: interface test: err: Clock line stuck low.\n");
             break;
         
         case KBD_INTERFACE_TEST_ERR_CLL_STUCK_HIGH:
-            tty_writeString("Kbd: interface test: err: Clock line stuck high.\n");
+            writeString("Kbd: interface test: err: Clock line stuck high.\n");
             break;
 
         case KBD_INTERFACE_TEST_ERR_DATAL_STUCK_HIGH:
-            tty_writeString("Kbd: interface test: err: Data line stuck high\n");
+            writeString("Kbd: interface test: err: Data line stuck high\n");
             break;
 
         default:
-            tty_writeString("Kbd: interface test: err: Unrecognized, unknown or general error.\n");
+            writeString("Kbd: interface test: err: Unrecognized, unknown or general error.\n");
             break;
     }
 
@@ -505,14 +509,14 @@ void kbd_enable() {
     kbd_ctrl_sendCmd(KBD_CTRL_CMD_ENABLE);
     _kbd_enabled = true;
 
-    tty_writeString("KBD: Enabled.\n");
+    writeString("KBD: Enabled.\n");
 }
 
 void kbd_disable() {
     kbd_ctrl_sendCmd(KBD_CTRL_CMD_DISABLE);
     _kbd_enabled = false;
 
-    tty_writeString("KBD: Disabled.\n");
+    writeString("KBD: Disabled.\n");
 }
 
 void kbd_setEnabled(bool __enable) {
@@ -551,7 +555,7 @@ uint8_t kbd_getLast() {
 
 int kbd_init() {
     _kbd.name = "Standard PS2 keyboard";
-    kdriver_statusMsg_create(_kbd);
+    statusMsg_create(_kbd);
 
     kbd_lastScancode = 0x00;
 
@@ -565,9 +569,9 @@ int kbd_init() {
     kbd_state.pause =   false;
 
     kbd_enable();
-    irq_installHandler(1, kbd_irqHandler);
+    installHandler(1, kbd_irqHandler);
 
-    kdriver_statusMsg_status(KDRIVERS_OK);
+    statusMsg_status(KDRIVERS_OK);
     return 0;
 }
 

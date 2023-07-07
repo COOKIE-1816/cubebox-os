@@ -6,6 +6,9 @@
 #include "stringt.h"
 #include <stdint.h>
 
+using namespace Kernel::TTY;
+using namespace Kernel::Kdrivers;
+
 static dword *SMI_CMD = 0;
 static byte ACPI_ENABLE = 0;
 static byte ACPI_DISABLE = 0;
@@ -131,14 +134,14 @@ int acpi_enable(void) {
             }
 
             if (i<300) {
-                tty_writeString("ACPI: Enabled.\n");
+                writeString("ACPI: Enabled.\n");
                 return 0;
             } else {
-                tty_writeString("ACPI: Err: could not enable ACPI.\n");
+                writeString("ACPI: Err: could not enable ACPI.\n");
                 return -1;
             }
         } else {
-            tty_writeString("ACPI: Err: could not enable ACPI.\n");
+            writeString("ACPI: Err: could not enable ACPI.\n");
             return -1;
         }
     } else {
@@ -156,7 +159,7 @@ int acpi_init(void) {
     kdriver acpi;
     acpi.name = "ACPI";
 
-    kdriver_statusMsg_create(acpi);
+    statusMsg_create(acpi);
 
     unsigned int* (*ptr)(void) = &acpi_getRSDPtr;
 
@@ -213,29 +216,30 @@ int acpi_init(void) {
                         SLP_EN = 1<<13;
                         SCI_EN = 1;
 
-                        kdriver_statusMsg_status(KDRIVERS_OK);
+                        statusMsg_status(KDRIVERS_OK);
                         return 0;
                     } else {
-                        tty_writeString("ACPI: Err: _S5 parse error.\n");
+                        writeString("ACPI: Err: _S5 parse error.\n");
                     }
                 } else {
-                    tty_writeString("ACPI: Err: _S5 not present.\n");
+                    writeString("ACPI: Err: _S5 not present.\n");
                 }
             } else {
-                tty_writeString("ACPI: Err: DSDT invalid.\n");
+                writeString("ACPI: Err: DSDT invalid.\n");
             }
-         }
+        }
 
-         ptr++;
-      }
+        // Not sure why, but this is the only way it works :)
+        ptr = ptr + 1;
+    }
 
-        tty_writeString("ACPI: Err: no valid FACP present.\n");
-   } else {
-        tty_writeString("ACPI: Err: error.\n");
-   }
+        writeString("ACPI: Err: no valid FACP present.\n");
+    } else {
+        writeString("ACPI: Err: error.\n");
+    }
 
-    kdriver_statusMsg_status(KDRIVERS_FAIL);
-   return -1;
+    statusMsg_status(KDRIVERS_FAIL);
+    return -1;
 }
 
 

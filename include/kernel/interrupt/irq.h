@@ -18,7 +18,7 @@ namespace Kernel {
         void setMask(unsigned char IRQline);
         void clearMask(unsigned char IRQline);
 
-        void installHandler(int __irq, void (*__handler)/*(struct regs *__reg)*/);
+        void installHandler(int __irq, irqHandler_t __handler);
         void uninstallHandler(int __irq);
 
         void remap();

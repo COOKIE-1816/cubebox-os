@@ -7,7 +7,9 @@
 #include <stdint.h>
 
 using namespace Kernel::IDT;
+using namespace Kernel::IRQ;
 using namespace Kernel::System;
+using namespace Kernel::TTY;
 //using namespace Kernel::IRQ;
 
 extern "C" void irq0();
@@ -65,9 +67,9 @@ static Kernel::IRQ::irqHandler_t irq_routines[16] = {
 };
 
 
-void Kernel::IRQ::installHandler(int __irq, Kernel::IRQ::irqHandler_t __handler) {
+void Kernel::IRQ::installHandler(int __irq, irqHandler_t __handler) {
     irq_routines[__irq] = __handler;
-    tty_writeString("IRQ: Handler installed.\n");
+    writeString("IRQ: Handler installed.\n");
 }
 
 void Kernel::IRQ::uninstallHandler(int __irq) {

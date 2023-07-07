@@ -163,7 +163,7 @@ void Kernel::TTY::writeString(String data) {
 	Kernel::TTY::write(data, strlen(data));
 }
 
-void tty_colored(uint8_t color, String data) {
+void Kernel::TTY::colored(uint8_t color, String data) {
     uint8_t prc = tty_color;
 
     Kernel::TTY::setColor(color);

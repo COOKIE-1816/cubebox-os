@@ -42,8 +42,7 @@ extern const size_t VGA_WIDTH;
 extern const size_t VGA_HEIGHT;
 extern uint16_t* const VGA_MEMORY;
 
-namespace VGA {
-    enum vga_color {
+enum vga_color {
         VGA_COLOR_BLACK = 0,
         VGA_COLOR_BLUE = 1,
         VGA_COLOR_GREEN = 2,
@@ -61,6 +60,9 @@ namespace VGA {
         VGA_COLOR_LIGHT_BROWN = 14,
         VGA_COLOR_WHITE = 15,
     };
+
+namespace VGA {
+    
 
     extern uint8_t entryColor(enum vga_color fg, enum vga_color bg);
     extern uint16_t entry(uc _uc, uint8_t color);

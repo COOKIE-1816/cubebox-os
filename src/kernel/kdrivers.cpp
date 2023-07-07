@@ -6,6 +6,7 @@
 
 using namespace VGA;
 using namespace Kernel::TTY;
+using namespace Kernel::Kdrivers;
 
 size_t _line;
 

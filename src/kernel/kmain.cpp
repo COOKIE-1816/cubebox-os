@@ -25,10 +25,10 @@ using namespace Kernel::TTY;
     #define __E_ARCH_X32
 #endif
 
-void drawLine() {
+/*void drawLine() {
     for(size_t i = 0; i < VGA_WIDTH; i++)
         writeString("-");
-}
+}*/
 
 unsigned char* stringMem(size_t __size) {
     unsigned char* memoryPtr = (unsigned char*) 0;

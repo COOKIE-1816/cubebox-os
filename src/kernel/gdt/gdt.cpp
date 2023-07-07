@@ -1,6 +1,8 @@
 #include "kernel/gdt.h"
 #include "kernel/tty.h"
 
+using namespace Kernel::TTY;
+
 typedef struct _GDT {
     uint32_t  base;
     uint32_t  limit;
@@ -10,7 +12,7 @@ typedef struct _GDT {
 
 inline void gdt_encodeEntry(uint8_t *__target, _GDT __source) {
     if(__source.limit > 0xFFFFF) {
-        tty_writeString("GDT: Err: Limit is to large to encode.\n");
+        writeString("GDT: Err: Limit is to large to encode.\n");
         return;
     }
 

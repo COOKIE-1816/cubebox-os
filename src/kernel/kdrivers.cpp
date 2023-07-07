@@ -5,6 +5,7 @@
 #include "stddef.h"
 
 using namespace VGA;
+using namespace Kernel::TTY;
 
 size_t _line;
 
@@ -12,17 +13,17 @@ Kernel::Kdrivers::kdriver driversloaded[1024];
 bool driversaddressesusage[1024];
 
 void Kernel::Kdrivers::statusMsg_create(kdriver __drv) {
-    _line = tty_getRow();
+    _line = getRow();
     String driver_name = __drv.name;
 
-    tty_writeString("      Load driver: ");
-    tty_colored(15, driver_name);
-    tty_writeString("\n");
+    writeString("      Load driver: ");
+    colored(15, driver_name);
+    writeString("\n");
 
     Kernel::Kdrivers::statusMsg_status(KDRIVERS_PENDING);
 
     uint8_t ec = entryColor(VGA_COLOR_WHITE, VGA_COLOR_MAGENTA);
-    tty_putEntryAt('D', ec, 0, _line);
+    putEntryAt('D', ec, 0, _line);
 }
 
 void Kernel::Kdrivers::statusMsg_status(/*kdriver */ const int __status) {
@@ -54,11 +55,11 @@ void Kernel::Kdrivers::statusMsg_status(/*kdriver */ const int __status) {
     uint8_t ec = entryColor(VGA_COLOR_WHITE, color);
 
     for(size_t i = 0; i < 4; i++) {
-        tty_putEntryAt(status[i], ec, i + 1, _line);
+        putEntryAt(status[i], ec, i + 1, _line);
     }
 
     ec = entryColor(VGA_COLOR_WHITE, VGA_COLOR_MAGENTA);
-    tty_putEntryAt('D', ec, 0, _line);
+    putEntryAt('D', ec, 0, _line);
 
     /*if(__status != KDRIVERS_PENDING)
         tty_writeString("\n");*/

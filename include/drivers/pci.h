@@ -3,54 +3,60 @@
 
 #include <stdint.h>
 
-struct pci_driver;
+//struct pci_driver;
 
-typedef struct {
-	uint32_t            vendor;
-	uint32_t            device;
-	uint32_t            func;
-	struct pci_driver   *driver;
-} pci_device;
+namespace PCI {
+	struct pci_driver_s;
+	struct pci_device_s;
 
-typedef struct {
-	uint32_t vendor;
-	uint32_t device;
-	uint32_t func;
-} pci_device_id;
+	typedef struct {
+		uint32_t            vendor;
+		uint32_t            device;
+		uint32_t            func;
+		struct pci_driver_s *driver;
+	} pci_device;
 
-typedef struct __pci_driver {
-	pci_device_id*          table;
-	char*                   name;
-	uint8_t (*init_one)     (pci_device *);
-	uint8_t (*init_driver)  (void);
-	uint8_t (*exit_driver)  (void);
-} pci_driver;
+	typedef struct {
+		uint32_t vendor;
+		uint32_t device;
+		uint32_t func;
+	} pci_device_id;
 
-uint16_t pci_readWord(      uint16_t __bus, 
-                            uint16_t __slot, 
-                            uint16_t __func, 
-                            uint16_t __offset);
+	typedef struct __pci_driver {
+		pci_device_id*          table;
+		char*                   name;
+		uint8_t (*init_one)     (pci_device *);
+		uint8_t (*init_driver)  (void);
+		uint8_t (*exit_driver)  (void);
+	} pci_driver;
 
-//uint16_t pci_checkVendor(uint8_t __bus, uint8_t __slot);
+	uint16_t readWord(      uint16_t __bus, 
+							uint16_t __slot, 
+							uint16_t __func, 
+							uint16_t __offset);
 
-void pci_addDevice(pci_device __device);
+	//uint16_t pci_checkVendor(uint8_t __bus, uint8_t __slot);
 
-uint16_t pci_getVendor(     uint16_t __bus, 
-                            uint16_t __device, 
-                            uint16_t __function);
+	void addDevice(pci_device __device);
 
-uint16_t pci_getDeviceId(   uint16_t __bus, 
-                            uint16_t __device, 
-                            uint16_t __function);
+	uint16_t getVendor(     uint16_t __bus, 
+							uint16_t __device, 
+							uint16_t __function);
 
-uint16_t pci_getClassId(    uint16_t __bus,
-                            uint16_t __device,
-                            uint16_t __function);
+	uint16_t getDeviceId(   uint16_t __bus, 
+							uint16_t __device, 
+							uint16_t __function);
 
-uint16_t pci_getSubClassId( uint16_t __bus,
-                            uint16_t __device,
-                            uint16_t __function);
+	uint16_t getClassId(    uint16_t __bus,
+							uint16_t __device,
+							uint16_t __function);
 
-void pci_init();
+	uint16_t getSubClassId( uint16_t __bus,
+							uint16_t __device,
+							uint16_t __function);
+
+	void pci_init();
+
+};
 
 #endif

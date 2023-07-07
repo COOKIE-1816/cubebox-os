@@ -2,13 +2,16 @@
 #include "kernel/common.h"
 #include "kernel/kdrivers.h"
 
+using namespace PCI;
+using namespace Kernel::Kdrivers;
+
 pci_device *pci_devices = 0;
 uint32_t devs = 0;
 
 pci_driver *pci_drivers = 0;
 uint32_t drivs = 0;
 
-uint16_t pci_readWord(      uint16_t __bus, 
+uint16_t PCI::readWord(      uint16_t __bus, 
                             uint16_t __slot, 
                             uint16_t __func, 
                             uint16_t __offset) {
@@ -30,42 +33,42 @@ uint16_t pci_readWord(      uint16_t __bus,
     return (tmp);
 }
 
-void pci_addDevice(pci_device __device) {
+void PCI::addDevice(pci_device __device) {
     pci_devices[devs] = __device;
     devs++;
 
     //return;
 }
 
-uint16_t pci_getVendor( uint16_t __bus, 
+uint16_t PCI::getVendor( uint16_t __bus, 
                         uint16_t __device, 
                         uint16_t __function) {
 
-    uint32_t r0 = pci_readWord(__bus, __device, __function, 0);
+    uint32_t r0 = readWord(__bus, __device, __function, 0);
     return r0;
 }
 
-uint16_t pci_getDeviceId(   uint16_t __bus, 
+uint16_t PCI::getDeviceId(   uint16_t __bus, 
                             uint16_t __device, 
                             uint16_t __function) {
     
-    uint32_t r0 = pci_readWord(__bus, __device, __function, 2);
+    uint32_t r0 = readWord(__bus, __device, __function, 2);
     return r0;
 }
 
-uint16_t pci_getClassId(    uint16_t __bus,
+uint16_t PCI::getClassId(    uint16_t __bus,
                             uint16_t __device,
                             uint16_t __function) {
 
-    uint32_t r0 = pci_readWord(__bus, __device, __function, 0xA);
+    uint32_t r0 = readWord(__bus, __device, __function, 0xA);
     return (r0 & ~0x00FF) >> 8;
 }
 
-uint16_t pci_getSubClassId( uint16_t __bus,
+uint16_t PCI::getSubClassId( uint16_t __bus,
                             uint16_t __device,
                             uint16_t __function) {
     
-    uint32_t r0 = pci_readWord(__bus, __device, __function, 0xA);
+    uint32_t r0 = readWord(__bus, __device, __function, 0xA);
     return (r0 & ~0x00FF);
 }
 
@@ -108,7 +111,7 @@ void pci_init() {
     kdriver pci;
     pci.name = "PCI BUS";
 
-    kdriver_statusMsg_create(pci);
+    statusMsg_create(pci);
 
     devs = drivs = 0;
 
@@ -117,5 +120,5 @@ void pci_init() {
 	
     //pci_probe();
 
-    kdriver_statusMsg_status(KDRIVERS_OK);
+    statusMsg_status(KDRIVERS_OK);
 }

@@ -570,7 +570,7 @@ int kbd_init() {
     kbd_state.pause =   false;
 
     kbd_enable();
-    installHandler(1, (irqHandler_t) kbd_irqHandler);
+    installHandler(33, (irqHandler_t) kbd_irqHandler);
 
     statusMsg_status(KDRIVERS_OK);
     return 0;

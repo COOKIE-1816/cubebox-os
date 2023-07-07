@@ -35,6 +35,8 @@
 #include <stddef.h> 
 //static uint16_t* const VGA_MEMORY = (uint16_t*) 0xB8000;
 
+using namespace VGA;
+
 size_t tty_row;
 size_t tty_column;
 uint8_t tty_color;
@@ -52,26 +54,26 @@ int isAllowed(char c) {
 }
 
 //static uint16_t* _img;
-tty_img tty_image() {
-    tty_img img;
+Kernel::TTY::tty_img tty_image() {
+    Kernel::TTY::tty_img img;
 
     img.tty_row = tty_row;
     img.tty_column = tty_column;
     img.tty_color = tty_color;
     img.tty_buffer = tty_buffer;
 
-    tty_writeString("TTY: Successfully created screen image.\n");
+    Kernel::TTY::writeString("TTY: Successfully created screen image.\n");
     return img;
 }
 
-void tty_restore(tty_img __image) {
+void Kernel::TTY::tty_restore(tty_img __image) {
     tty_row = __image.tty_row;
     tty_column = __image.tty_column;
     tty_color = __image.tty_color;
     tty_buffer = __image.tty_buffer;
 }
  
-void tty_scroll(int rowsAmount) {
+void Kernel::TTY::scroll(int rowsAmount) {
     for(int i = 0; i < rowsAmount; i++) {
         for (size_t row = 1; row < VGA_HEIGHT; ++row) {
             for (size_t col = 0; col < VGA_WIDTH; ++col) {
@@ -95,81 +97,81 @@ void tty_scroll(int rowsAmount) {
     }
 }
 
-void tty_breakLine() {
+void Kernel::TTY::breakLine() {
     tty_column = 0;
 
     if(tty_row == VGA_HEIGHT) {
-        tty_scroll(1);
+        Kernel::TTY::scroll(1);
         return;
     }
 
     tty_row++;
 }
 
-void tty_initialize(void) {
+void Kernel::TTY::tty_init(void) {
 	tty_row = 0;
 	tty_column = 0;
 
-	tty_color = vga_entryColor(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
+	tty_color = entryColor(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
 	tty_buffer = (uint16_t*) 0xB8000;
 
 	for (size_t y = 0; y < VGA_HEIGHT; y++) {
 		for (size_t x = 0; x < VGA_WIDTH; x++) {
 			const size_t index = y * VGA_WIDTH + x;
-			tty_buffer[index] = vga_entry(' ', tty_color);
+			tty_buffer[index] = entry(' ', tty_color);
 		}
 	}
 }
  
-void tty_setColor(uint8_t color) {
+void Kernel::TTY::setColor(uint8_t color) {
 	tty_color = color;
 }
  
-void tty_putEntryAt(char c, uint8_t color, size_t x, size_t y) {
+void Kernel::TTY::putEntryAt(char c, uint8_t color, size_t x, size_t y) {
 	const size_t index = y * VGA_WIDTH + x;
-	tty_buffer[index] = vga_entry(c, color);
+	tty_buffer[index] = entry(c, color);
 }
  
-void tty_putChar(char c) {
+void Kernel::TTY::putChar(char c) {
 	if(!isAllowed(c))
 		c = '?';
 
     if(c == '\n') {
-        tty_breakLine();
+        Kernel::TTY::breakLine();
         return;
     }
 
-	tty_putEntryAt(c, tty_color, tty_column, tty_row);
+	Kernel::TTY::putEntryAt(c, tty_color, tty_column, tty_row);
 
 	if (tty_row == VGA_HEIGHT) {
-        tty_scroll(1);
+        Kernel::TTY::scroll(1);
     }
 
 	if (++tty_column == VGA_WIDTH) {
-		tty_breakLine();
+		Kernel::TTY::breakLine();
 
 	}
 	
 }
  
-void tty_write(String data, size_t size) {
+void Kernel::TTY::write(String data, size_t size) {
 	for (size_t i = 0; i < size; i++)
-		tty_putChar(data[i]);
+		Kernel::TTY::putChar(data[i]);
 }
  
-void tty_writeString(String data) {
-	tty_write(data, strlen(data));
+void Kernel::TTY::writeString(String data) {
+	Kernel::TTY::write(data, strlen(data));
 }
 
 void tty_colored(uint8_t color, String data) {
     uint8_t prc = tty_color;
 
-    tty_setColor(color);
-    tty_writeString(data);
+    Kernel::TTY::setColor(color);
+    Kernel::TTY::writeString(data);
 
-    tty_setColor(prc);
+    Kernel::TTY::setColor(prc);
 }
 
-size_t tty_getRow() {
+size_t Kernel::TTY::getRow() {
     return tty_row;
 }

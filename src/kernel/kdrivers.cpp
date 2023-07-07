@@ -21,7 +21,7 @@ void Kernel::Kdrivers::statusMsg_create(kdriver __drv) {
 
     Kernel::Kdrivers::statusMsg_status(KDRIVERS_PENDING);
 
-    uint8_t ec = vga_entryColor(VGA_COLOR_WHITE, VGA_COLOR_MAGENTA);
+    uint8_t ec = entryColor(VGA_COLOR_WHITE, VGA_COLOR_MAGENTA);
     tty_putEntryAt('D', ec, 0, _line);
 }
 
@@ -51,13 +51,13 @@ void Kernel::Kdrivers::statusMsg_status(/*kdriver */ const int __status) {
             break;
     }
 
-    uint8_t ec = vga_entryColor(VGA_COLOR_WHITE, color);
+    uint8_t ec = entryColor(VGA_COLOR_WHITE, color);
 
     for(size_t i = 0; i < 4; i++) {
         tty_putEntryAt(status[i], ec, i + 1, _line);
     }
 
-    ec = vga_entryColor(VGA_COLOR_WHITE, VGA_COLOR_MAGENTA);
+    ec = entryColor(VGA_COLOR_WHITE, VGA_COLOR_MAGENTA);
     tty_putEntryAt('D', ec, 0, _line);
 
     /*if(__status != KDRIVERS_PENDING)

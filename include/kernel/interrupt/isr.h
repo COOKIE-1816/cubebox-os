@@ -1,7 +1,11 @@
 #ifndef _CB_INTERRUPT_ISR_H_
 #define _CB_INTERRUPT_ISR_H_
 
-void exception_handler(void);
+namespace Kernel {
+    namespace ISR {
+        void exception_handler(void);
+    };
+};
 
 //static void* isr_stub_table[256];
 

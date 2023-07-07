@@ -16,6 +16,10 @@
 #include "text_ui/shapes.h"
 
 using namespace Kernel;
+using namespace Kernel::IRQ;
+using namespace Kernel::IDT;
+using namespace Kernel::GDT;
+using namespace Kernel::TTY;
 
 #ifndef __E_ARCH_X64
     #define __E_ARCH_X32
@@ -23,7 +27,7 @@ using namespace Kernel;
 
 void drawLine() {
     for(size_t i = 0; i < VGA_WIDTH; i++)
-        tty_writeString("-");
+        writeString("-");
 }
 
 unsigned char* stringMem(size_t __size) {
@@ -40,12 +44,12 @@ unsigned char* stringMem(size_t __size) {
 }
 
 extern "C" void kernel_main(/*multiboot_info* __boot_info*/ void) {
-    tty_initialize();
+    tty_init();
     
     //tty_writeString("CubeBox, kernel v0.0.1.0a - Alpha phase.\n\n");
-    tty_colored(3, "CubeBox OS: kernel:v0.0.1.0a\n");
-    tty_writeString("https://github.com/COOKIE-1816/cubebox-os\n");
-    tty_writeString("http://czechcookie.euweb.cz/projects/cubebox-os\n\n");
+    colored(3, "CubeBox OS: kernel:v0.0.1.0a\n");
+    writeString("https://github.com/COOKIE-1816/cubebox-os\n");
+    writeString("http://czechcookie.euweb.cz/projects/cubebox-os\n\n");
 
     gdt_install();
     idt_init();

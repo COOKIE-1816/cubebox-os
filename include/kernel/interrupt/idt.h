@@ -4,41 +4,17 @@
 #include <stdint.h>
 
 #ifndef __E_ARCH_X64
-    typedef struct {
-        uint16_t    isr_low;
-        uint16_t    kernel_cs;
-        uint8_t     reserved;
-        uint8_t     attributes;
-        uint16_t    isr_high;
-    } __attribute__((packed)) idt_entry_t;
+    #include "kernel/interrupt/target/idt-x32.h"
 #else
-    typedef struct {
-        uint16_t    isr_low;
-        uint16_t    kernel_cs;
-        uint8_t	    ist;
-        uint8_t     attributes;
-        uint16_t    isr_mid;
-        uint32_t    isr_high;
-        uint32_t    reserved;
-    } __attribute__((packed)) idt_entry_t;
+    #include "kernel/interrupt/target/idt-x64.h"
 #endif
 
+namespace Kernel {
+    namespace IDT {
+        void setDescriptor(uint8_t __vector, void* __isr, uint8_t __flags);
+        void idt_init();
+    };
+};
 
-
-#ifndef __E_ARCH_X64
-    typedef struct {
-        uint16_t	limit;
-        uint32_t	base;
-    } __attribute__((packed)) idtr_t;
-#else
-    typedef struct {
-        uint16_t	limit;
-        uint64_t	base;
-    } __attribute__((packed)) idtr_t;
-#endif
-
-
-void idt_setDescriptor(uint8_t __vector, void* __isr, uint8_t __flags);
-void idt_init();
 
 #endif

@@ -1,14 +1,14 @@
 #include "kernel/gdt.h"
 #include "kernel/tty.h"
 
-typedef struct GDT {
+typedef struct _GDT {
     uint32_t  base;
     uint32_t  limit;
     uint32_t  access;
     uint16_t  flags;
-} GDT;
+} _GDT;
 
-inline void gdt_encodeEntry(uint8_t *__target, GDT __source) {
+inline void gdt_encodeEntry(uint8_t *__target, _GDT __source) {
     if(__source.limit > 0xFFFFF) {
         tty_writeString("GDT: Err: Limit is to large to encode.\n");
         return;
@@ -33,7 +33,7 @@ inline void gdt_encodeEntry(uint8_t *__target, GDT __source) {
     reloadSegments();
 }*/
 
-inline void gdt_createDescriptor(uint32_t __base, uint32_t __limit, uint16_t __flag) {
+inline void Kernel::GDT::createDescriptor(uint32_t __base, uint32_t __limit, uint16_t __flag) {
     uint64_t descriptor;
  
     // Create the high 32 bit segment
@@ -50,10 +50,10 @@ inline void gdt_createDescriptor(uint32_t __base, uint32_t __limit, uint16_t __f
     //printf("0x%.16llX\n", descriptor);
 }
 
-inline void gdt_install() {
-    gdt_createDescriptor(0, 0, 0);
-    gdt_createDescriptor(0, 0x000FFFFF, (GDT_CODE_PL0));
-    gdt_createDescriptor(0, 0x000FFFFF, (GDT_DATA_PL0));
-    gdt_createDescriptor(0, 0x000FFFFF, (GDT_CODE_PL3));
-    gdt_createDescriptor(0, 0x000FFFFF, (GDT_DATA_PL3));
+inline void Kernel::GDT::gdt_install() {
+    createDescriptor(0, 0, 0);
+    createDescriptor(0, 0x000FFFFF, (GDT_CODE_PL0));
+    createDescriptor(0, 0x000FFFFF, (GDT_DATA_PL0));
+    createDescriptor(0, 0x000FFFFF, (GDT_CODE_PL3));
+    createDescriptor(0, 0x000FFFFF, (GDT_DATA_PL3));
 }

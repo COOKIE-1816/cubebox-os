@@ -62,8 +62,8 @@ namespace VGA {
         VGA_COLOR_WHITE = 15,
     };
 
-    extern uint8_t vga_entryColor(enum vga_color fg, enum vga_color bg);
-    extern uint16_t vga_entry(uc _uc, uint8_t color);
+    extern uint8_t entryColor(enum vga_color fg, enum vga_color bg);
+    extern uint16_t entry(uc _uc, uint8_t color);
 }
 
 

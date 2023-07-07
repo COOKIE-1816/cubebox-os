@@ -44,8 +44,12 @@
                      SEG_LONG(0)     | SEG_SIZE(1) | SEG_GRAN(1) | \
                      SEG_PRIV(3)     | SEG_DATA_RDWR
 
-extern void gdt_createDescriptor(uint32_t __base, uint32_t __limit, uint16_t __flag);
+namespace Kernel {
+    namespace GDT {
+        extern void createDescriptor(uint32_t __base, uint32_t __limit, uint16_t __flag);
+        extern void gdt_install();
+    };
+};
 
-extern void gdt_install();
 
 #endif

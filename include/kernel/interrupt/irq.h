@@ -4,13 +4,29 @@
 #include "kernel/common.h"
 #include "kernel/system.h"
 
-void irq_setMask(unsigned char IRQline);
-void irq_clearMask(unsigned char IRQline);
+extern unsigned int __irq_sem;
 
-void irq_installHandler(int __irq, void (*__handler)/*(struct regs *__reg)*/);
-void irq_uninstallHandler(int __irq);
-void irq_remap();
-void irq_init();
-void irq_handler(regs *r);
+#define IRQ_OFF { asm volatile ("cli"); }
+#define IRQ_RES { asm volatile ("sti"); }
+#define IRQS_ON_AND_PAUSE { asm volatile ("sti\nhlt\ncli"); }
+
+//using namespace Kernel::System;
+
+namespace Kernel {
+    namespace IRQ {
+        typedef void (*irqHandler_t) (struct Kernel::System::regs *r);
+        void setMask(unsigned char IRQline);
+        void clearMask(unsigned char IRQline);
+
+        void installHandler(int __irq, void (*__handler)/*(struct regs *__reg)*/);
+        void uninstallHandler(int __irq);
+
+        void remap();
+        void irq_init();
+
+        extern "C" void irq_handler(Kernel::System::regs *r);
+    };
+};
+
 
 #endif

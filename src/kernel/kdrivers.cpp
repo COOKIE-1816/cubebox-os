@@ -27,7 +27,7 @@ void Kernel::Kdrivers::statusMsg_create(kdriver __drv) {
 }
 
 void Kernel::Kdrivers::statusMsg_status(/*kdriver */ const int __status) {
-    char* status;
+    String status;
     //enum VGA_COLOR color;
     enum vga_color color;
 

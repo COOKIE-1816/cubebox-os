@@ -213,6 +213,7 @@ enum kbd_scancodes {
 
 
 
+extern "C" 
 void kbd_irqHandler() {
     _kbd_scancode = inb(KBD_ENCORDER_INPUT_BUFF);
 
@@ -569,7 +570,7 @@ int kbd_init() {
     kbd_state.pause =   false;
 
     kbd_enable();
-    installHandler(1, kbd_irqHandler);
+    installHandler(1, (void*) kbd_irqHandler);
 
     statusMsg_status(KDRIVERS_OK);
     return 0;

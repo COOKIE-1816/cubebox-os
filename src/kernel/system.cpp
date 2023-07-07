@@ -3,13 +3,15 @@
 #include "kernel/common.h"
 #include "kernel/tty.h"
 
+using namespace Kernel::TTY;
+
 void _fail() {
-    tty_colored(3, "\nKernel was unable to shutdown or reset this machine. You can try shutting down or reseting the machine manually.\n");
-    tty_writeString("CPU halted.");
+    colored(3, "\nKernel was unable to shutdown or reset this machine. You can try shutting down or reseting the machine manually.\n");
+    writeString("CPU halted.");
 }
 
 void _warn() {
-    tty_colored(15, "WARNING: System is going to shut down now!\n");
+    colored(15, "WARNING: System is going to shut down now!\n");
 }
 
 void shutdown() {

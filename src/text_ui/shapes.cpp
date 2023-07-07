@@ -2,21 +2,24 @@
 #include "drivers/vga.h"
 #include "text_ui/shapes.h"
 
+using namespace VGA;
+using namespace Kernel::TTY;
+
 uint8_t _ec;
 
-void drawLineH(size_t __start, size_t __end, size_t __y, uint8_t __color) {
-    _ec = vga_entryColor(__color, __color);
+void drawLineH(size_t __start, size_t __end, size_t __y, enum vga_color __color) {
+    _ec = entryColor(__color, __color);
 
     for(size_t i = __start; i < __start + __end - 2; i++) {
-        tty_putEntryAt('/', _ec, i, __y);
+        putEntryAt('/', _ec, i, __y);
     }
 }
 
-void drawLineV(size_t __start, size_t __end, size_t __x, uint8_t __color) {
-    _ec = vga_entryColor(__color, __color);
+void drawLineV(size_t __start, size_t __end, size_t __x, enum vga_color __color) {
+    _ec = entryColor(__color, __color);
 
     for(size_t i = __start; i < __start + __end - 2; i++) {
-        tty_putEntryAt('/', _ec, __x, i);
+        putEntryAt('/', _ec, __x, i);
     }
 }
 

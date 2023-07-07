@@ -19,6 +19,8 @@ echo "------------------------------------------------"
 gcc_flags="-ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -m32 -I ./include/ -I ./include/libs"
 link_flags="src/linker.ld -o $binfile -ffreestanding -O2 -nostdlib -lgcc"
 
+rm -f $(find build/obj -name "*.o")
+
 # Function Declerations
 
 comple_sources_fn (){
@@ -55,7 +57,6 @@ link_obj_fn(){
                 build/obj/kernel/kmain.cpp.o \
                 build/obj/kernel/crt/crti.s.o \
                 build/obj/kernel/crt/crtn.s.o \
-                build/obj/kernel/gdt/asm.s.o \
                 build/obj/kernel/common.cpp.o \
                 build/obj/libs/stringt.cpp.o \
                 build/obj/boot.s.o \
@@ -71,7 +72,6 @@ link_obj_fn(){
                 build/obj/drivers/pic.cpp.o \
                 build/obj/kernel/interrupt/irq.cpp.o \
                 build/obj/drivers/pci.cpp.o \
-                build/obj/drivers/ide.cpp.o  \
                 build/obj/drivers/acpi.cpp.o \
                 build/obj/drivers/acpi/shutdown.cpp.o \
                 build/obj/kernel/system.cpp.o \

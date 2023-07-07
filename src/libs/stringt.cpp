@@ -49,7 +49,7 @@ void* memcpy(void* dstptr, const void* srcptr, size_t size) {
 	return dstptr;
 }
 
-inline size_t strlen(String str) {
+size_t strlen(String str) {
 	size_t len = 0;
 
 	while (str[len])

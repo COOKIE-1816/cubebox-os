@@ -38,6 +38,19 @@
 #define KDRIVERS_FAIL 1
 #define KDRIVERS_OK 2
 
+/*
+    This module can be used for loading drivers
+    (kind of modules).
+    
+    Now it has these features:
+        - Printing status messages (failed, okay, wait)
+        
+    Also, the futhurer goals are to 
+    load drivers dynamically.
+    
+    For more information, read the docs.
+*/
+
 namespace Kernel {
     namespace Kdrivers {
         typedef int (*fnPtr_int)  (int[3]);

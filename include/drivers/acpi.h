@@ -21,22 +21,22 @@ extern  word SLP_EN;
 extern byte PM1_CNT_LEN;
 extern word SCI_EN;*/
 
+namespace ACPI {
+    int acpi_enable(void);
+    int acpi_init(void);
 
-int acpi_enable(void);
-int acpi_init(void);
+    dword* get_SMI_CMD();
+    byte get_ACPI_ENABLE();
+    byte get_ACPI_DISABLE();
+    dword* get_PM1a_CNT();
+    dword* get_PM1b_CNT();
+    word get_SLP_TYPa();
+    word get_SLP_TYPb();
+    word get_SLP_EN();
+    byte get_PM1_CNT_LEN();
+    word get_SCI_EN();
 
-int acpi_shutdown(void) ;// Performs a shut-down using ACPI
-
-
-dword* get_SMI_CMD();
-byte get_ACPI_ENABLE();
-byte get_ACPI_DISABLE();
-dword* get_PM1a_CNT();
-dword* get_PM1b_CNT();
-word get_SLP_TYPa();
-word get_SLP_TYPb();
-word get_SLP_EN();
-byte get_PM1_CNT_LEN();
-word get_SCI_EN();
+    int acpi_shutdown(void) ;// Performs a shut-down using ACPI
+};
 
 #endif

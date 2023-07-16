@@ -9,16 +9,18 @@
 using namespace Kernel::TTY;
 using namespace Kernel::Kdrivers;
 
-static dword *SMI_CMD = 0;
-static byte ACPI_ENABLE = 0;
-static byte ACPI_DISABLE = 0;
-static dword *PM1a_CNT = 0;
-static dword *PM1b_CNT = 0;
-static word SLP_TYPa = 0;
-static word SLP_TYPb = 0;
-static word SLP_EN = 0;
-static byte PM1_CNT_LEN = 0;
-static word SCI_EN = 0;
+using namespace ACPI;
+
+static dword* SMI_CMD = 0;
+static byte   ACPI_ENABLE = 0;
+static byte   ACPI_DISABLE = 0;
+static dword* PM1a_CNT = 0;
+static dword* PM1b_CNT = 0;
+static word   SLP_TYPa = 0;
+static word   SLP_TYPb = 0;
+static word   SLP_EN = 0;
+static byte   PM1_CNT_LEN = 0;
+static word   SCI_EN = 0;
 
 
 struct RSDPtr {
@@ -110,7 +112,7 @@ int acpi_checkHeader(unsigned int *ptr, char *sig) {
     return -1;
 }
 
-int acpi_enable(void) {
+int ACPI::acpi_enable(void) {
     if((inb((unsigned int) PM1a_CNT) &SCI_EN) == 0 ) {
         if (SMI_CMD != 0 && ACPI_ENABLE != 0) {
             outb((unsigned int) SMI_CMD, ACPI_ENABLE);
@@ -155,7 +157,7 @@ int acpi_enable(void) {
         acpi_enable();
 }*/
 
-int acpi_init(void) {
+int ACPI::acpi_init(void) {
     kdriver acpi;
     acpi.name = "ACPI";
 
@@ -243,42 +245,42 @@ int acpi_init(void) {
 }
 
 
-dword* get_SMI_CMD() {
+dword* ACPI::get_SMI_CMD() {
     return SMI_CMD;
 }
 
-byte get_ACPI_ENABLE() {
+byte ACPI::get_ACPI_ENABLE() {
     return ACPI_ENABLE;
 }
 
-byte get_ACPI_DISABLE() {
+byte ACPI::get_ACPI_DISABLE() {
     return ACPI_DISABLE;
 }
 
-dword* get_PM1a_CNT() {
+dword* ACPI::get_PM1a_CNT() {
     return PM1a_CNT;
 }
 
-dword* get_PM1b_CNT() {
+dword* ACPI::get_PM1b_CNT() {
     return PM1b_CNT;
 }
 
-word get_SLP_TYPa() {
+word ACPI::get_SLP_TYPa() {
     return SLP_TYPa;
 }
 
-word get_SLP_TYPb() {
+word ACPI::get_SLP_TYPb() {
     return SLP_TYPb;
 }
 
-word get_SLP_EN() {
+word ACPI::get_SLP_EN() {
     return SLP_EN;
 }
 
-byte get_PM1_CNT_LEN() {
+byte ACPI::get_PM1_CNT_LEN() {
     return PM1_CNT_LEN;
 }
 
-word get_SCI_EN() {
+word ACPI::get_SCI_EN() {
     return SCI_EN;
 }

@@ -1,6 +1,8 @@
 #include "drivers/acpi.h"
 #include "kernel/common.h"
 
+using namespace ACPI;
+
 // inline  dword *SMI_CMD = 0;
 // inline  byte ACPI_ENABLE = 0;
 // inline  byte ACPI_DISABLE = 0;
@@ -18,7 +20,7 @@
 //         acpi_enable();
 // }
 
-int acpi_shutdown(void) {
+int ACPI::acpi_shutdown(void) {
     if(get_SCI_EN() != 0)
         acpi_enable();
         

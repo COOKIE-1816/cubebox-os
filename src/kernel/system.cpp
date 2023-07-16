@@ -4,6 +4,7 @@
 #include "kernel/tty.h"
 
 using namespace Kernel::TTY;
+using namespace ACPI;
 
 void _fail() {
     colored(3, "\nKernel was unable to shutdown or reset this machine. You can try shutting down or reseting the machine manually.\n");

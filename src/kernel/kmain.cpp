@@ -1,6 +1,7 @@
 #include "kernel/tty.h"
 #include "drivers/vga.h"
 #include "drivers/pit.h"
+#include "kernel/cursor.h"
 #include <stddef.h>
 
 #ifndef __E_VGATEST
@@ -27,6 +28,7 @@
 
 using namespace Kernel;
 using namespace Kernel::TTY;
+using namespace Kernel::Cursor;
 
 #ifndef __E_ARCH_X64
     #define __E_ARCH_X32
@@ -52,6 +54,8 @@ unsigned char* stringMem(size_t __size) {
 
 extern "C" void kernel_main(/*multiboot_info* __boot_info*/ void) {
     tty_init();
+
+    cursor_disable();
 
     colored(3, "CubeBox OS: kernel:v0.0.1.0a\n");
     writeString("https://github.com/COOKIE-1816/cubebox-os\n");

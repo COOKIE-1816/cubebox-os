@@ -22,9 +22,6 @@ void Kernel::Kdrivers::statusMsg_create(kdriver __drv) {
     writeString("\n");
 
     Kernel::Kdrivers::statusMsg_status(KDRIVERS_PENDING);
-
-    uint8_t ec = entryColor(VGA_COLOR_WHITE, VGA_COLOR_MAGENTA);
-    putEntryAt('D', ec, 0, _line);
 }
 
 void Kernel::Kdrivers::statusMsg_status(/*kdriver */ const int __status) {
@@ -35,7 +32,7 @@ void Kernel::Kdrivers::statusMsg_status(/*kdriver */ const int __status) {
     switch (__status) {
         case KDRIVERS_PENDING:
             status = "WAIT";
-            color = VGA_COLOR_BLUE; //TODO: Fix the color-related glitch and make this yellow
+            color = VGA_COLOR_RED;
 
             break;
         
@@ -53,14 +50,12 @@ void Kernel::Kdrivers::statusMsg_status(/*kdriver */ const int __status) {
             break;
     }
 
-    uint8_t ec = entryColor(VGA_COLOR_WHITE, color);
+    uint8_t ec = entryColor(color, VGA_COLOR_BLACK);
 
     for(size_t i = 0; i < 4; i++) {
         putEntryAt(status[i], ec, i + 1, _line);
     }
 
-    ec = entryColor(VGA_COLOR_WHITE, VGA_COLOR_MAGENTA);
-    putEntryAt('D', ec, 0, _line);
 
     /*if(__status != KDRIVERS_PENDING)
         tty_writeString("\n");*/

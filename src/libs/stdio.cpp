@@ -1,12 +1,14 @@
 #include "kernel/tty.h"
 
-#include "cstdiolib.h"
+#include "stdio.h"
 #include "stringt.h"
 #include "cboolean.h"
 
+using namespace Kernel::TTY;
+
 int putchar(int ic) {
     char c = (char) ic;
-    tty_write(&c, sizeof(c));
+    write(&c, sizeof(c));
 
     return ic;
 }
@@ -22,7 +24,7 @@ static bool print(String data, size_t length) {
 	return true;
 }
 
-int printf(const char* restrict format, ...) {
+int printf(const char* format, ...) {
 	va_list parameters;
 	va_start(parameters, format);
  

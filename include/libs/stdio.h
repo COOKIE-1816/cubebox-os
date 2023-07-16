@@ -7,6 +7,6 @@
 
 #define EOVERFLOW 0x02
 
-int printf(String __restrict, ...);
+int printf(String);
 
 #endif

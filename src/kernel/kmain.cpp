@@ -55,6 +55,10 @@ unsigned char* stringMem(size_t __size) {
 extern "C" void kernel_main(/*multiboot_info* __boot_info*/ void) {
     tty_init();
 
+    /*asm("mov ax,1112h");
+    asm("xor bl,bl");
+    asm("int 10h");*/
+
     cursor_disable();
 
     colored(3, "CubeBox OS: kernel:v0.0.1.0a\n");

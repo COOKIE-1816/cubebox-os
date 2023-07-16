@@ -39,7 +39,7 @@ comple_sources_fn (){
     i686-elf-c++ $1 -c src/kernel/kdrivers.cpp               -o build/obj/kernel/kdrivers.cpp.o            $gcc_flags
     i686-elf-c++ $1 -c src/drivers/buzzer.cpp                -o build/obj/drivers/buzzer.cpp.o             $gcc_flags
     #i686-elf-c++ $1 -c kernel/sound/beep.c             -o build/obj/kernel/sound/beep.c.o          $gcc_flags
-    i686-elf-c++ $1 -c src/drivers/timer.cpp                 -o build/obj/drivers/timer.cpp.o              $gcc_flags
+    i686-elf-c++ $1 -c src/drivers/pit.cpp                 -o build/obj/drivers/pit.cpp.o              $gcc_flags
     i686-elf-c++ $1 -c src/drivers/pic.cpp                   -o build/obj/drivers/pic.cpp.o                $gcc_flags
     #i686-elf-c++ $1 -c drivers/floppy.c                -o build/obj/drivers/floppy.c.o             $gcc_flags
     i686-elf-c++ $1 -c src/kernel/interrupt/irq.cpp          -o build/obj/kernel/interrupt/irq.cpp.o       $gcc_flags

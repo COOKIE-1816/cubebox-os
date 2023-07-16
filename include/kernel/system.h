@@ -39,6 +39,8 @@ namespace Kernel {
 
         void shutdown();
         void reboot();
+
+        extern void sleep(uint32_t __ms);
     };
 };
 

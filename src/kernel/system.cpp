@@ -49,3 +49,10 @@ void reboot() {
 
     _fail();
 }
+
+volatile uint32_t CountDown;
+
+void Kernel::System::sleep(uint32_t __ms) {
+    CountDown = __ms;
+    while (CountDown > 0);
+}

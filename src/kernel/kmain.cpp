@@ -1,5 +1,6 @@
 #include "kernel/tty.h"
 #include "drivers/vga.h"
+#include "drivers/pit.h"
 #include <stddef.h>
 
 #ifndef __E_VGATEST
@@ -20,6 +21,8 @@
     using namespace Kernel::IRQ;
     using namespace Kernel::IDT;
     using namespace Kernel::GDT;
+
+    using namespace PIT;
 #endif
 
 using namespace Kernel;
@@ -61,6 +64,7 @@ extern "C" void kernel_main(/*multiboot_info* __boot_info*/ void) {
 
     Kdrivers::init();
 
+    pit_init();
     kbd_init();
     #endif
 

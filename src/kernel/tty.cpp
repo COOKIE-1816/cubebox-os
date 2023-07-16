@@ -126,7 +126,8 @@ void Kernel::TTY::tty_init(void) {
 void Kernel::TTY::setColor(uint8_t color) {
 	tty_color = color;
 }
- 
+
+
 void Kernel::TTY::putEntryAt(char c, uint8_t color, size_t x, size_t y) {
 	const size_t index = y * VGA_WIDTH + x;
 	tty_buffer[index] = entry(c, color);

@@ -8,6 +8,8 @@ isofile=build/cubebox-$version-$phase.iso
 
 cat ./cb_ascii.txt
 
+sleep 2
+
 echo ""
 echo "------------------------------------------------"
 echo "CubeBox Build script"
@@ -96,10 +98,14 @@ fi
 echo STEP 4: Verify multiboot
 if grub-file --is-x86-multiboot $binfile; then
     echo "-> Multiboot confirmed. Continuing to build an ISO file with GRUB."
-    echo STEP 5: Create bootable ISO image
+
+    sh ./build_vgatest.sh
+
+    echo STEP 9: Create bootable ISO image
 
     mkdir -p build/iso/boot/grub
     cp $binfile build/iso/boot/cb_bin.bin
+    cp build/bin/cb_bin-vgatest.bin build/iso/boot/cb_bin-vgatest.bin
     cp src/grub.cfg build/iso/boot/grub/grub.cfg
 
     cp splash-*x*.png build/iso/boot/splash.png

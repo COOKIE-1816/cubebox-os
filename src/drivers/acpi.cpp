@@ -48,7 +48,7 @@ struct FACP {
 };
 
 unsigned int *acpi_checkRSDPtr(unsigned int *ptr) {
-   char *sig = "RSD PTR ";
+   String sig = "RSD PTR ";
 
    struct RSDPtr *rsdp = (struct RSDPtr *) ptr;
 
@@ -94,7 +94,7 @@ unsigned int *acpi_getRSDPtr(void) {
     return NULL;
 }
 
-int acpi_checkHeader(unsigned int *ptr, char *sig) {
+int acpi_checkHeader(unsigned int *ptr, String sig) {
     if (memcmp(ptr, sig, 4) == 0) {
         char check = 0;
         char *checkPtr = (char *) ptr;

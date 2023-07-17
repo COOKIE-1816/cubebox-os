@@ -24,6 +24,8 @@ _start:
 	mov $stack_top, %esp
 	call kernel_main
 
+	call kcrash
+
 	cli
 1:	hlt
 	jmp 1b

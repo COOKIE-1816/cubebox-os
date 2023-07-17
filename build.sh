@@ -51,6 +51,7 @@ comple_sources_fn (){
     i686-elf-c++ $1 -c src/kernel/memory/free.cpp            -o build/obj/kernel/memory/free.cpp.o         $gcc_flags
     i686-elf-c++ $1 -c src/kernel/memory/malloc.cpp          -o build/obj/kernel/memory/malloc.cpp.o       $gcc_flags
     i686-elf-c++ $1 -c src/kernel/cursor.cpp                 -o build/obj/kernel/cursor.cpp.o       $gcc_flags
+    i686-elf-c++ $1 -c src/kcrash.cpp                 -o build/obj/kcrash.cpp.o       $gcc_flags
     #i686-elf-c++ $1 -c src/text_ui/shapes.cpp                -o build/obj/text_ui/shapes.cpp.o             $gcc_flags
 }
 

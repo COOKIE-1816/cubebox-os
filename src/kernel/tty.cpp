@@ -42,7 +42,7 @@ size_t tty_column;
 uint8_t tty_color;
 static uint16_t* tty_buffer;
 
-const char* allowed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/*-+.\n,<>?:_\";'!\\|[]{}()` ";
+const char* allowed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/*-+.\n,<>?:_\";'!\\|[]{}()`= ";
 
 int isAllowed(char c) {
 	for(int i = 0; allowed[i]; i++) {

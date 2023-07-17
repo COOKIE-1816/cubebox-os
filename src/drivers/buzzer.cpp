@@ -4,7 +4,7 @@
 // ! WARNING:   For QEMU users - be sure to use QEMU with `-soundhw pcspk`.
 //              This is required to play sounds.
 
-inline void buzzer_makeSound(uint32_t __frequency) {
+void buzzer_makeSound(uint32_t __frequency) {
     uint32_t div;
     uint8_t temp;
 
@@ -20,7 +20,7 @@ inline void buzzer_makeSound(uint32_t __frequency) {
         outb(0x61, temp | 3);
 }
 
-inline void buzzer_stop() {
+void buzzer_stop() {
     uint8_t temp = inb(0x61) & 0xFC;
     outb(0x61, temp);
 }

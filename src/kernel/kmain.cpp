@@ -64,6 +64,7 @@ extern "C" void kernel_main(/*multiboot_info* __boot_info*/ void) {
     colored(3, "CubeBox OS: kernel:v0.0.1.0a\n");
     writeString("https://github.com/COOKIE-1816/cubebox-os\n");
     writeString("http://czechcookie.euweb.cz/projects/cubebox-os\n\n");
+    return;
 
     #ifndef __E_VGATEST
     gdt_install();

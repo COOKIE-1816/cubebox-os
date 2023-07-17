@@ -7,12 +7,12 @@ binfile=build/bin/cb_bin-vgatest.bin
 gcc_flags="-ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -m32 -I ./include/ -I ./include/libs -D __E_VGATEST"
 link_flags="src/linker.ld -o $binfile -ffreestanding -O2 -nostdlib -lgcc"
 
-rm -f $(find build/obj -name "*.o")
+#rm -f $(find build/obj -name "*.o")
 
 comple_sources_fn (){
-    i686-elf-c++ $1 -c src/libs/stringt.cpp                  -o build/obj/libs/stringt.cpp.o               $gcc_flags
-    i686-elf-c++ $1 -c src/drivers/vga.cpp                   -o build/obj/drivers/vga.cpp.o                $gcc_flags
-    i686-elf-c++ $1 -c src/kernel/tty.cpp                    -o build/obj/kernel/tty.cpp.o                 $gcc_flags
+    #i686-elf-c++ $1 -c src/libs/stringt.cpp                  -o build/obj/libs/stringt.cpp.o               $gcc_flags
+    #i686-elf-c++ $1 -c src/drivers/vga.cpp                   -o build/obj/drivers/vga.cpp.o                $gcc_flags
+    #i686-elf-c++ $1 -c src/kernel/tty.cpp                    -o build/obj/kernel/tty.cpp.o                 $gcc_flags
     i686-elf-c++ $1 -c src/kernel/kmain.cpp                -o build/obj/kernel/kmain.cpp.o               $gcc_flags
 }
 
@@ -21,7 +21,10 @@ link_obj_fn(){
         build/obj/libs/stringt.cpp.o \
         build/obj/drivers/vga.cpp.o \
         build/obj/kernel/tty.cpp.o \
-        build/obj/kernel/kmain.cpp.o
+        build/obj/kernel/kmain.cpp.o \
+        build/obj/kernel/cursor.cpp.o \
+        build/obj/kernel/common.cpp.o \
+        build/obj/boot.s.o
 }
 
 echo STEP 5: Assemble assembly files

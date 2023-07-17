@@ -18,7 +18,7 @@ comple_sources_fn (){
 
 link_obj_fn(){
     i686-elf-c++ $1 -T $link_flags \
-        build/obj/libs/stringt.cpp.o \
+        build/obj/libs/libc/stringt.cpp.o \
         build/obj/drivers/vga.cpp.o \
         build/obj/kernel/tty.cpp.o \
         build/obj/kernel/kmain.cpp.o \

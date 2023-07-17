@@ -1,6 +1,11 @@
 #ifndef _KERNEL_PANIC_H_
 #define _KERNEL_PANIC_H_
 
+#ifndef __cplusplus
+    #include "string.t"
+#endif
+
+
 /*
     Dumps memory contents to file, prints error message of last
     known error and halts the CPU.

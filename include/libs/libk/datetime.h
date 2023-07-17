@@ -32,7 +32,7 @@ typedef struct {
     uint8_t year;
 } datetime;
 
-static String months[12] = {
+inline String months[12] = {
     "january",
     "february",
     "march",
@@ -47,7 +47,7 @@ static String months[12] = {
     "december"
 };
 
-static String months_short[12] = {
+inline String months_short[12] = {
     "jan",
     "feb",
     "mar",

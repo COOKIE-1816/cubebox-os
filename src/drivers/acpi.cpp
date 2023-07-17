@@ -4,8 +4,11 @@
 #include "kernel/common.h"
 #include "kernel/kdrivers.h"
 #include "stringt.h"
+#include "kernel/panic.h"
+#include "kernel/error.h"
 #include <stdint.h>
 
+using namespace Kernel;
 using namespace Kernel::TTY;
 using namespace Kernel::Kdrivers;
 
@@ -140,10 +143,14 @@ int ACPI::acpi_enable(void) {
                 return 0;
             } else {
                 writeString("ACPI: Err: could not enable ACPI.\n");
+                kpanic("ACPI_ERR_UNAVAILABLE");
+
                 return -1;
             }
         } else {
             writeString("ACPI: Err: could not enable ACPI.\n");
+            kpanic("ACPI_ERR_UNAVAILABLE");
+
             return -1;
         }
     } else {
@@ -222,12 +229,15 @@ int ACPI::acpi_init(void) {
                         return 0;
                     } else {
                         writeString("ACPI: Err: _S5 parse error.\n");
+                        error("ACPI_ERR_S5_PARSE");
                     }
                 } else {
                     writeString("ACPI: Err: _S5 not present.\n");
+                    error("ACPI_ERR_NO_S5");
                 }
             } else {
                 writeString("ACPI: Err: DSDT invalid.\n");
+                error("ACPI_ERR_DSDT_INVALID");
             }
         }
 
@@ -236,8 +246,10 @@ int ACPI::acpi_init(void) {
     }
 
         writeString("ACPI: Err: no valid FACP present.\n");
+        error("ACPI_ERR_FACP_INVALID");
     } else {
         writeString("ACPI: Err: error.\n");
+        error("ACPI_ERR_GENERAL");
     }
 
     statusMsg_status(KDRIVERS_FAIL);

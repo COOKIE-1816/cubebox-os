@@ -4,7 +4,7 @@ phase=alpha
 binfile=build/bin/cb_bin-vgatest.bin
 #isofile=build/cubebox-$version-$phase.iso
 
-gcc_flags="-ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -m32 -I ./include/ -I ./include/libs -D __E_VGATEST"
+gcc_flags="-ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -m32 -I ./include/ -I ./include/libs/* -D __E_VGATEST"
 link_flags="src/linker.ld -o $binfile -ffreestanding -O2 -nostdlib -lgcc"
 
 #rm -f $(find build/obj -name "*.o")

@@ -18,7 +18,7 @@ echo " -   Phase:           $phase"
 echo " -   ISO Location:    $isofile"
 echo "------------------------------------------------"
 
-gcc_flags="-ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -m32 -I ./include/ -I ./include/libs"
+gcc_flags="-ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -m32 -I ./include/ -I ./include/libs/*"
 link_flags="src/linker.ld -o $binfile -ffreestanding -O2 -nostdlib -lgcc"
 
 rm -f $(find build/obj -name "*.o")

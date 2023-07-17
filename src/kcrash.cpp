@@ -11,6 +11,8 @@ using namespace Kernel::TTY;
 using namespace Kernel::Cursor;
 //using namespace PIT;
 
+uint8_t blinkingLightRed = 0x8C;
+
 extern "C" void kcrash(void) {
     //tty_init();
     //pit_init();
@@ -18,7 +20,7 @@ extern "C" void kcrash(void) {
     buzzer_makeSound(1000);
 
     writeString("\n\n ===== [ KERNEL PANIC ] =====\n");
-    colored(12, "Kernel panic. Kernel stopped ( kmain.c: kernel_main() ).\n");
+    colored(blinkingLightRed, "Kernel panic. Kernel stopped ( kmain.cpp: kernel_main() ).\n");
 
     setColor(15);
 

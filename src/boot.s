@@ -24,6 +24,7 @@ _start:
 	mov $stack_top, %esp
 	call kernel_main
 
+	# Call kernel panic if kernel_main() crashes.
 	call kcrash
 
 	cli

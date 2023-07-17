@@ -3,6 +3,7 @@
 #include "kernel/cursor.h"
 #include "drivers/keyboard.h"
 #include "drivers/buzzer.h"
+#include "kernel/system.h"
 //#include "drivers/pit.h"
 
 using namespace VGA;
@@ -16,11 +17,24 @@ extern "C" void kcrash(void) {
 
     buzzer_makeSound(1000);
 
-    writeString("\n\n ===== ! KERNEL CRASH ! =====\n");
-    writeString("Kernel crashed and cannot restore itself.\n");
-    writeString("You can leave it running and use debug tools for diagnosis purposes, or just try rebooting.\n\n");
+    writeString("\n\n ===== [ KERNEL PANIC ] =====\n");
+    colored(12, "Kernel panic. Kernel stopped ( kmain.c: kernel_main() ).\n");
 
-    writeString("System is halted now.");
+    setColor(15);
+
+    writeString("L.K. Error      |  "); 
+    writeString("\n");
+    writeString("Memory dumpfile |  "); 
+    writeString("\n");
+    writeString("Kernel          |  "); 
+    writeString(KERNEL_VERSION_STRING); 
+    writeString("\n");
+    writeString("Halting CPU...\n");
+
+    setColor(7);
+
+    writeString(" ============================");
+
 
     asm("cli");
     while(1) {

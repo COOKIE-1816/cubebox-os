@@ -71,6 +71,9 @@ mkdir    build/obj/kernel/timing            2> /dev/null
 mkdir    build/obj/kernel/sound             2> /dev/null
 mkdir    build/obj/kernel/memory            2> /dev/null
 mkdir    build/obj/text_ui                  2> /dev/null
+mkdir    build/iso/resources                2> /dev/null
+
+convert ./logo.png ./resources/default/logo.tga
 
 echo STEP 1: Assemble assembly files
 i686-elf-as  src/boot.s                                     -o build/obj/boot.s.o
@@ -107,11 +110,13 @@ if grub-file --is-x86-multiboot $binfile; then
     echo STEP 9: Create bootable ISO image
 
     mkdir -p build/iso/boot/grub
-    cp $binfile build/iso/boot/cb_bin.bin
+    cp $binfile build/iso/boot/cb_bin.bin 
     cp build/bin/cb_bin-vgatest.bin build/iso/boot/cb_bin-vgatest.bin
     cp src/grub.cfg build/iso/boot/grub/grub.cfg
 
     cp splash-*x*.png build/iso/boot/splash.png
+
+    cp -r resources/* build/iso/resources/
 
     grub-mkrescue -o $isofile build/iso
 else

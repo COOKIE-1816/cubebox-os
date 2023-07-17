@@ -28,6 +28,7 @@ These are dependencies required to build:
 * **Netwide assembler AKA NASM** - required to assemble system parts that were not able to be built using `i686-elf-as`.
 * **Grand Unified Bootloader AKA GNU GRUB** - required to make an ISO file containing the GNU GRUB bootloader. The required binaries are `grub-file` and `grub-mkrescue`.
 * **xorriso and mtools** - packages required with GNU GRUB to make bootable ISO image.
+* **ImageMagick** - for image files conversion.
 
 This is how I installed everything on my computer running Debian-based distribution (Ubuntu):
 ```sh

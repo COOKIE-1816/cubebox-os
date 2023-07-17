@@ -17,6 +17,7 @@ stack_bottom:
 stack_top:    
 
 .section .text
+
 .global _start
 .type _start, @function
 _start:

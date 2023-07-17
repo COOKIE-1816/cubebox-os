@@ -2,6 +2,7 @@
 #include "drivers/vga.h"
 #include "drivers/pit.h"
 #include "kernel/cursor.h"
+#include "kernel/error.h"
 #include <stddef.h>
 
 #ifndef __E_VGATEST
@@ -34,37 +35,14 @@ using namespace Kernel::Cursor;
     #define __E_ARCH_X32
 #endif
 
-/*void drawLine() {
-    for(size_t i = 0; i < VGA_WIDTH; i++)
-        writeString("-");
-}*/
-
-unsigned char* stringMem(size_t __size) {
-    unsigned char* memoryPtr = (unsigned char*) 0;
-    unsigned char* currentPtr = memoryPtr;
-
-    while (__size > 0) {
-        *currentPtr = 0;
-        currentPtr++;
-        __size--;
-    }
-
-    return memoryPtr;
-}
-
 extern "C" void kernel_main(/*multiboot_info* __boot_info*/ void) {
     tty_init();
-
-    /*asm("mov ax,1112h");
-    asm("xor bl,bl");
-    asm("int 10h");*/
 
     cursor_disable();
 
     colored(3, "CubeBox OS: kernel:v0.0.1.0a\n");
     writeString("https://github.com/COOKIE-1816/cubebox-os\n");
     writeString("http://czechcookie.euweb.cz/projects/cubebox-os\n\n");
-    return;
 
     #ifndef __E_VGATEST
     gdt_install();

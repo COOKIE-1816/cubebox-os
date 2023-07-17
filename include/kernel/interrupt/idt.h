@@ -11,7 +11,7 @@
 
 namespace Kernel {
     namespace IDT {
-        void setDescriptor(uint8_t __vector, void* __isr, uint8_t __flags);
+        void setDescriptor(uint8_t __vector, unsigned __isr, uint8_t __flags);
         void idt_init();
     };
 };

@@ -12,22 +12,22 @@ using namespace Kernel::System;
 using namespace Kernel::TTY;
 //using namespace Kernel::IRQ;
 
-extern "C" void irq0();
-extern "C" void irq1();
-extern "C" void irq2();
-extern "C" void irq3();
-extern "C" void irq4();
-extern "C" void irq5();
-extern "C" void irq6();
-extern "C" void irq7();
-extern "C" void irq8();
-extern "C" void irq9();
-extern "C" void irq10();
-extern "C" void irq11();
-extern "C" void irq12();
-extern "C" void irq13();
-extern "C" void irq14();
-extern "C" void irq15();
+extern void irq0() {}
+extern void irq1() {}
+extern void irq2() {}
+extern void irq3() {}
+extern void irq4() {}
+extern void irq5() {}
+extern void irq6() {}
+extern void irq7() {}
+extern void irq8() {}
+extern void irq9() {}
+extern void irq10() {}
+extern void irq11() {}
+extern void irq12() {}
+extern void irq13() {}
+extern void irq14() {}
+extern void irq15() {}
 
 void Kernel::IRQ::setMask(unsigned char IRQline) {
     uint16_t port;
@@ -69,7 +69,7 @@ static Kernel::IRQ::irqHandler_t irq_routines[16] = {
 
 void Kernel::IRQ::installHandler(int __irq, irqHandler_t __handler) {
     irq_routines[__irq] = __handler;
-    writeString("IRQ: Handler installed.\n");
+    //writeString("IRQ: Handler installed.\n");
 }
 
 void Kernel::IRQ::uninstallHandler(int __irq) {
@@ -92,23 +92,23 @@ void Kernel::IRQ::remap() {
 void Kernel::IRQ::irq_init() {
     remap();
 
-    /*idt_setGate(32, (unsigned)irq0, 0x08, 0x8E);
-    idt_setGate(33, (unsigned)irq1, 0x08, 0x8E);
-    idt_setGate(34, (unsigned)irq2, 0x08, 0x8E);
-    idt_setGate(35, (unsigned)irq3, 0x08, 0x8E);
-    idt_setGate(36, (unsigned)irq4, 0x08, 0x8E);
-    idt_setGate(37, (unsigned)irq5, 0x08, 0x8E);
-    idt_setGate(38, (unsigned)irq6, 0x08, 0x8E);
-    idt_setGate(39, (unsigned)irq7, 0x08, 0x8E);
+    setDescriptor(32, (unsigned) irq0, 0x08);
+    setDescriptor(33, (unsigned) irq1, 0x08);
+    setDescriptor(34, (unsigned) irq2, 0x08);
+    setDescriptor(35, (unsigned) irq3, 0x08);
+    setDescriptor(36, (unsigned) irq4, 0x08);
+    setDescriptor(37, (unsigned) irq5, 0x08);
+    setDescriptor(38, (unsigned) irq6, 0x08);
+    setDescriptor(39, (unsigned) irq7, 0x08);
 
-    idt_setGate(40, (unsigned)irq8, 0x08, 0x8E);
-    idt_setGate(41, (unsigned)irq9, 0x08, 0x8E);
-    idt_setGate(42, (unsigned)irq10, 0x08, 0x8E);
-    idt_setGate(43, (unsigned)irq11, 0x08, 0x8E);
-    idt_setGate(44, (unsigned)irq12, 0x08, 0x8E);
-    idt_setGate(45, (unsigned)irq13, 0x08, 0x8E);
-    idt_setGate(46, (unsigned)irq14, 0x08, 0x8E);
-    idt_setGate(47, (unsigned)irq15, 0x08, 0x8E);*/
+    setDescriptor(40, (unsigned) irq8, 0x08);
+    setDescriptor(41, (unsigned) irq9, 0x08);
+    setDescriptor(42, (unsigned) irq10, 0x08);
+    setDescriptor(43, (unsigned) irq11, 0x08);
+    setDescriptor(44, (unsigned) irq12, 0x08);
+    setDescriptor(45, (unsigned) irq13, 0x08);
+    setDescriptor(46, (unsigned) irq14, 0x08);
+    setDescriptor(47, (unsigned) irq15, 0x08);
 }
 
 extern "C" void Kernel::IRQ::irq_handler(regs *r) {

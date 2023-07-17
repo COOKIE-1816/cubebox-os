@@ -7,13 +7,13 @@ using namespace Kernel;
 
 #define IDT_MAX_DESCRIPTORS 256
 
-static void* isr_stub_table[IDT_MAX_DESCRIPTORS];
+static unsigned isr_stub_table[IDT_MAX_DESCRIPTORS];
 
 __attribute__((aligned(0x10))) 
 static IDT::idt_entry_t _IDT[IDT_MAX_DESCRIPTORS];
 static IDT::idtr_t IDTR;
 
-void Kernel::IDT::setDescriptor(uint8_t __vector, void* __isr, uint8_t __flags) {
+void Kernel::IDT::setDescriptor(uint8_t __vector, unsigned __isr, uint8_t __flags) {
     IDT::idt_entry_t *descriptor = &_IDT[__vector];
 
     #ifndef __E_ARCH_X64

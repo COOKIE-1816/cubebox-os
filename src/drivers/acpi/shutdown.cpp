@@ -1,7 +1,11 @@
 #include "drivers/acpi.h"
 #include "kernel/common.h"
+#include "kernel/error.h"
+#include "kernel/tty.h"
 
 using namespace ACPI;
+using namespace Kernel;
+using namespace Kernel::TTY;
 
 // inline  dword *SMI_CMD = 0;
 // inline  byte ACPI_ENABLE = 0;
@@ -29,5 +33,7 @@ int ACPI::acpi_shutdown(void) {
     if ( get_PM1b_CNT() != 0 )
         outb((unsigned int) get_PM1b_CNT(), get_SLP_TYPb() | get_SLP_EN() );
     
+    colored(10, "Failed to shutdown using ACPI. However, it should be now safe to power machine off manually.");
+    error("ACPI_ERR_POWER_OFF_FAIL");
     return 1;
 }

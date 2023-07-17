@@ -5,6 +5,7 @@
 #include "drivers/buzzer.h"
 #include "kernel/system.h"
 #include "kernel/error.h"
+#include "kernel/panic.h"
 //#include "drivers/pit.h"
 
 using namespace VGA;

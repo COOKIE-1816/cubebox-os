@@ -24,7 +24,14 @@ link_obj_fn(){
         build/obj/kernel/kmain.cpp.o \
         build/obj/kernel/cursor.cpp.o \
         build/obj/kernel/common.cpp.o \
-        build/obj/boot.s.o
+        build/obj/boot.s.o \
+        build/obj/kernel/panic.cpp.o \
+        build/obj/drivers/buzzer.cpp.o \
+        build/obj/kernel/error.cpp.o \
+        build/obj/drivers/keyboard.cpp.o \
+        build/obj/kernel/kdrivers.cpp.o \
+        build/obj/kernel/interrupt/irq.cpp.o \
+        build/obj/kernel/interrupt/idt.cpp.o 
 }
 
 echo STEP 5: Assemble assembly files

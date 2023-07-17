@@ -18,7 +18,7 @@ echo " -   Phase:           $phase"
 echo " -   ISO Location:    $isofile"
 echo "------------------------------------------------"
 
-gcc_flags="-ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -m32 -I ./include/ -I ./include/libs/*"
+gcc_flags="-ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -m32 -I ./include/ -I ./include/libs/ -I ./include/libs/libc/"
 link_flags="src/linker.ld -o $binfile -ffreestanding -O2 -nostdlib -lgcc"
 
 rm -f $(find build/obj -name "*.o")
@@ -26,7 +26,7 @@ rm -f $(find build/obj -name "*.o")
 # Function Declerations
 
 comple_sources_fn (){
-    i686-elf-c++ $1 -c src/libs/stringt.cpp                  -o build/obj/libs/stringt.cpp.o               $gcc_flags
+    i686-elf-c++ $1 -c src/libs/libc/stringt.cpp                  -o build/obj/libs/libc/stringt.cpp.o               $gcc_flags
     i686-elf-c++ $1 -c src/drivers/vga.cpp                   -o build/obj/drivers/vga.cpp.o                $gcc_flags
     i686-elf-c++ $1 -c src/kernel/tty.cpp                    -o build/obj/kernel/tty.cpp.o                 $gcc_flags
     i686-elf-c++ $1 -c src/kernel/kmain.cpp                -o build/obj/kernel/kmain.cpp.o               $gcc_flags
@@ -61,7 +61,7 @@ link_obj_fn(){
 
 mkdir -p build/obj/drivers/keyboard         2> /dev/null
 mkdir    build/obj/drivers/acpi             2> /dev/null
-mkdir -p build/obj/libs                     2> /dev/null
+mkdir -p build/obj/libs/libc                2> /dev/null
 mkdir -p build/obj/kernel/crt               2> /dev/null
 mkdir    build/obj/kernel/gdt               2> /dev/null
 mkdir    build/obj/kernel/interrupt         2> /dev/null

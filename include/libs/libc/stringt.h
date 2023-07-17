@@ -10,6 +10,6 @@ void* memcpy(void*, const void*, size_t);
 void* memmove(void*, const void*, size_t);
 void* memset(void*, int, size_t);
 
-extern size_t strlen(String str);
+size_t strlen(String str);
 
 #endif

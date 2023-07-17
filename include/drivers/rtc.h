@@ -12,7 +12,7 @@
 #define RTC_REG_MONTH 0x08
 #define RTC_REG_YEAR 0x09
 
-#include "kernel/libk/datetime.h"
+#include "datetime.h"
 #include <stdint.h>
 
 uint8_t rtc_readRegister(uint8_t reg);

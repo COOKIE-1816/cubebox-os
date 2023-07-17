@@ -18,7 +18,7 @@ echo " -   Phase:           $phase"
 echo " -   ISO Location:    $isofile"
 echo "------------------------------------------------"
 
-gcc_flags="-ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -m32 -I ./include/ -I ./include/libs/ -I ./include/libs/libc/"
+gcc_flags="-ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -m32 -I ./include/ -I ./include/libs/ -I ./include/libs/libc/ -I ./include/libs/libk/"
 link_flags="src/linker.ld -o $binfile -ffreestanding -O2 -nostdlib -lgcc"
 
 rm -f $(find build/obj -name "*.o")
@@ -62,6 +62,7 @@ link_obj_fn(){
 mkdir -p build/obj/drivers/keyboard         2> /dev/null
 mkdir    build/obj/drivers/acpi             2> /dev/null
 mkdir -p build/obj/libs/libc                2> /dev/null
+mkdir -p build/obj/libs/libk                2> /dev/null
 mkdir -p build/obj/kernel/crt               2> /dev/null
 mkdir    build/obj/kernel/gdt               2> /dev/null
 mkdir    build/obj/kernel/interrupt         2> /dev/null

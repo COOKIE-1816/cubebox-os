@@ -4,6 +4,7 @@
 #include "kernel/cursor.h"
 #include "kernel/error.h"
 #include <stddef.h>
+#include <stdint.h>
 
 #ifndef __E_VGATEST
     #include "kernel/interrupt/idt.h"
@@ -35,6 +36,48 @@ using namespace Kernel::Cursor;
     #define __E_ARCH_X32
 #endif
 
+/*
+#ifndef __E_VGATEST
+unsigned short detectMemory_cmos() {
+    unsigned short total;
+    unsigned char lowmem, highmem;
+
+
+    outb(0x70, 0x30);
+    io_wait();
+    lowmem = inb(0x71);
+    io_wait();
+
+    outb(0x70, 0x31);
+    io_wait();
+    highmem = inb(0x71);
+
+
+    total = lowmem | highmem << 8;
+    return total;
+}
+
+String unsignedShortToString(unsigned short num) {
+    if (num == 0) {
+        return "0";
+    }
+
+    String result;
+
+    while (num > 0) {
+        char digit = '0' + num % 10;
+        result = digit + result;
+        num /= 10;
+    }
+
+    return result;
+}
+
+#endif
+
+unsigned short _memorySize;
+*/
+
 extern "C" void kernel_main(/*multiboot_info* __boot_info*/ void) {
     tty_init();
 
@@ -49,10 +92,22 @@ extern "C" void kernel_main(/*multiboot_info* __boot_info*/ void) {
     idt_init();
     irq_init();
 
+    /*writeString("Detecting memory size using CMOS...\n");
+    _memorySize = detectMemory_cmos();*/
+
     Kdrivers::init();
 
     pit_init();
     kbd_init();
+
+    char* inputBuffer;
+    bool hintVisible = true;
+
+    char ascii;
+    uint8_t lastScancode = 0x00;
+    
+
+    
     #endif
 
     #if defined(__E_VGATEST)

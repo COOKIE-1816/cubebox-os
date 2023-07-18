@@ -34,6 +34,6 @@ int ACPI::acpi_shutdown(void) {
         outb((unsigned int) get_PM1b_CNT(), get_SLP_TYPb() | get_SLP_EN() );
     
     colored(10, "Failed to shutdown using ACPI. However, it should be now safe to power machine off manually.");
-    error("ACPI_ERR_POWER_OFF_FAIL");
+    error((char*) "ACPI_ERR_POWER_OFF_FAIL");
     return 1;
 }

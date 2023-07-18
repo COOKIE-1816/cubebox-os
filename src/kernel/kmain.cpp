@@ -122,7 +122,7 @@ extern "C" void kernel_main(/*multiboot_info* __boot_info*/ void) {
         }
 
 
-        error("KERNEL_NOTHING_TO_DO");
+        error((char*) "KERNEL_NOTHING_TO_DO");
         return;
     #endif
 

@@ -42,10 +42,7 @@ extern "C" void kpanic(String __error) {
     writeString(" ============================");
 
     asm("cli");
-    while(1) {
-        kbd_setLeds(0, 0, 0);
-        kbd_setLeds(0, 1, 0);
-    }
+    while(1);
 }
 
 extern "C" void kcrash(void) {

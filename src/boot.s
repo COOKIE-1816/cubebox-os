@@ -31,7 +31,7 @@ _start:
 
 	# Global descriptors
 	cli
-	global gdt_flush
+	
 
 	# Kernel
 	call kernel_main

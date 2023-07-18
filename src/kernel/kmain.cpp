@@ -73,4 +73,6 @@ extern "C" void kernel_main(/*multiboot_info* __boot_info*/ void) {
 
 
     #endif
+
+    while(1);
 }

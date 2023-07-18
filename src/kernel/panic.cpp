@@ -25,7 +25,7 @@ extern "C" void kpanic(String __error) {
 
     setColor(15);
 
-    writeString("L.K. Error (??) |  "); 
+    writeString("L.K. Error (?)  |  "); 
     writeString(__error);
     writeString("\n");
 

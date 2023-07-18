@@ -25,21 +25,18 @@ stack_top:
 .type _start, @function
 _start:
 	mov $stack_top, %esp
+	cli
 
 	# Global constructors
 	call _init
 
-	# Global descriptors
-	cli
-	
-
 	# Kernel
 	call kernel_main
 
-	# Call kernel panic if kernel_main() crashes.
+	# Disable interrupts and call kernel panic if kernel_main() crashes.
+	cli
 	call kcrash
 
-	cli
 1:	hlt
 	jmp 1b
 

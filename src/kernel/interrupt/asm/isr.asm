@@ -1,3 +1,10 @@
+
+; extern exception_handler
+
+exception_handler:
+    cli
+    hlt
+
 %macro isr_err_stub 1
 isr_stub_%+%1:
     call exception_handler
@@ -10,7 +17,7 @@ isr_stub_%+%1:
     iret
 %endmacro
 
-extern exception_handler
+
 isr_no_err_stub 0
 isr_no_err_stub 1
 isr_no_err_stub 2

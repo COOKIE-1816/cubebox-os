@@ -36,6 +36,7 @@
 #include "kernel/tty.h"
 #include "kernel/kdrivers.h"
 #include "kernel/interrupt/irq.h"
+#include "kernel/error.h"
 
 #include <stdint.h>
 #include <cboolean.h>
@@ -57,6 +58,7 @@
 
 #define KBD_KEYMAP_SIZE 512
 
+using namespace Kernel;
 using namespace Kernel::Kdrivers;
 using namespace Kernel::IRQ;
 using namespace Kernel::TTY;
@@ -486,18 +488,26 @@ uint8_t kbd_interfaceTest() {
         
         case KBD_INTERFACE_TEST_ERR_CLL_STUCK_LOW:
             writeString("Kbd: interface test: err: Clock line stuck low.\n");
+            error("KBD_ERR_INTTEST_CL_STUCK_LOW");
+            
             break;
         
         case KBD_INTERFACE_TEST_ERR_CLL_STUCK_HIGH:
             writeString("Kbd: interface test: err: Clock line stuck high.\n");
+            error("KBD_ERR_INTTEST_CL_STUCK_HIGH");
+
             break;
 
         case KBD_INTERFACE_TEST_ERR_DATAL_STUCK_HIGH:
             writeString("Kbd: interface test: err: Data line stuck high\n");
+            error("KBD_ERR_INTTEST_DL_STUCK_LOW");
+
             break;
 
         default:
             writeString("Kbd: interface test: err: Unrecognized, unknown or general error.\n");
+            error("KBD_ERR_INTTEST_GENERAL");
+
             break;
     }
 

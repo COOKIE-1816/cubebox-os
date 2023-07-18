@@ -2,13 +2,14 @@
 #include "kernel/system.h"
 #include "kernel/common.h"
 #include "kernel/tty.h"
+#include "kernel/panic.h"
 
+//using namespace Kernel;
 using namespace Kernel::TTY;
 using namespace ACPI;
 
 void _fail() {
-    colored(3, "\nKernel was unable to shutdown or reset this machine. You can try shutting down or reseting the machine manually.\n");
-    writeString("CPU halted.");
+    kpanic("KERNEL_ERR_POWER_OFF_FAIL");
 }
 
 void _warn() {
@@ -27,12 +28,14 @@ void shutdown() {
             outb((unsigned int) PM1b_CNT, SLP_TYPb | SLP_EN );
     }*/
 
-    acpi_shutdown();
+    
 
     // On emulators, use emulator-specific register to send shutdown command
     outb(0xB004, (uint8_t) 0x2000); // Shutdown QEMU < 2.0, BOCHS
     outb(0x604,  (uint8_t) 0x2000); // Shutdown QEMU >= 2.0
     outb(0x4004, (uint8_t) 0x3400); // Shutdown VirtualBox
+
+    acpi_shutdown();
 
     _fail();
 }

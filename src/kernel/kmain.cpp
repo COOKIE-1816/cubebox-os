@@ -99,12 +99,6 @@ extern "C" void kernel_main(/*multiboot_info* __boot_info*/ void) {
 
     pit_init();
     kbd_init();
-
-    char* inputBuffer;
-    bool hintVisible = true;
-
-    char ascii;
-    uint8_t lastScancode = 0x00;
     
 
     

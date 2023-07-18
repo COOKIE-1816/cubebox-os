@@ -21,8 +21,12 @@ stack_top:
 .global _start
 .type _start, @function
 _start:
-
 	mov $stack_top, %esp
+
+	# Global constructors
+	call _init
+
+	# Kernel
 	call kernel_main
 
 	# Call kernel panic if kernel_main() crashes.

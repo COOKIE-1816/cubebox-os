@@ -31,7 +31,9 @@ link_obj_fn(){
         build/obj/drivers/keyboard.cpp.o \
         build/obj/kernel/kdrivers.cpp.o \
         build/obj/kernel/interrupt/irq.cpp.o \
-        build/obj/kernel/interrupt/idt.cpp.o 
+        build/obj/kernel/interrupt/idt.cpp.o \
+        build/obj/kernel/crt/crti.s.o \
+        build/obj/kernel/crt/crtn.s.o 
 }
 
 echo STEP 5: Assemble assembly files

@@ -88,6 +88,7 @@ extern "C" void kernel_main(/*multiboot_info* __boot_info*/ void) {
     writeString("http://czechcookie.euweb.cz/projects/cubebox-os\n\n");
 
     #ifndef __E_VGATEST
+    //gdt_init();
     gdt_install();
     idt_init();
     irq_init();

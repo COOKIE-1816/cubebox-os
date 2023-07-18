@@ -1,8 +1,10 @@
 gdtr DW 0
      DD 0
  
-;extern setGdt
-setGdt:
+.section .setGdt
+.global _setGdt
+.type _setGdt, @function
+_setGdt:
    MOV   AX, [esp + 4]
    MOV   [gdtr], AX
    MOV   EAX, [ESP + 8]
@@ -10,8 +12,11 @@ setGdt:
    LGDT  [gdtr]
    RET
 
-;extern reloadSegments
-reloadSegments:
+
+.section reloadSegments
+.global _reloadSegments
+.type _reloadSegments, @function
+_reloadSegments:
    JMP   0x08:.reload_CS
 .reload_CS:
    MOV   AX, 0x10

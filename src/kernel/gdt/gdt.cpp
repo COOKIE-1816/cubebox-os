@@ -1,5 +1,6 @@
 #include "kernel/gdt.h"
 #include "kernel/tty.h"
+#include "kernel/panic.h"
 
 using namespace Kernel::TTY;
 
@@ -12,7 +13,7 @@ typedef struct _GDT {
 
 void gdt_encodeEntry(uint8_t *__target, _GDT __source) {
     if(__source.limit > 0xFFFFF) {
-        writeString("GDT: Err: Limit is to large to encode.\n");
+        kpanic("GDT_ERR_LIMIT_LARGE\n");
         return;
     }
 
@@ -30,10 +31,15 @@ void gdt_encodeEntry(uint8_t *__target, _GDT __source) {
     __target[6] |= (__source.flags << 4);
 }
 
-/*void gdt_init() {
+extern void setGdt(void);
+extern void reloadSegments(void);
+
+void Kernel::GDT::gdt_init() {
+    asm("cli"); // Disable interrupts
+
     setGdt();
     reloadSegments();
-}*/
+}
 
 void Kernel::GDT::createDescriptor(uint32_t __base, uint32_t __limit, uint16_t __flag) {
     uint64_t descriptor;

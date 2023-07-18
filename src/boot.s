@@ -1,3 +1,4 @@
+
 .set ALIGN,    1<<0            
 .set MEMINFO,  1<<1            
 .set FLAGS,    ALIGN | MEMINFO 
@@ -16,6 +17,8 @@ stack_bottom:
 .skip 16384 # 16 KiB
 stack_top:    
 
+
+
 .section .text
 
 .global _start
@@ -25,6 +28,10 @@ _start:
 
 	# Global constructors
 	call _init
+
+	# Global descriptors
+	cli
+	global gdt_flush
 
 	# Kernel
 	call kernel_main

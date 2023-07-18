@@ -48,6 +48,7 @@ namespace Kernel {
     namespace GDT {
         extern void createDescriptor(uint32_t __base, uint32_t __limit, uint16_t __flag);
         extern void gdt_install();
+        extern void gdt_init();
     };
 };
 

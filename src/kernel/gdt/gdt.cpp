@@ -36,9 +36,6 @@ extern void reloadSegments(void);
 
 void Kernel::GDT::gdt_init() {
     asm("cli"); // Disable interrupts
-
-    setGdt();
-    reloadSegments();
 }
 
 void Kernel::GDT::createDescriptor(uint32_t __base, uint32_t __limit, uint16_t __flag) {

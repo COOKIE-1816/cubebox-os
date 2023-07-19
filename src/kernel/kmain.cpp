@@ -25,6 +25,8 @@
     using namespace Kernel::IDT;
     using namespace Kernel::GDT;
 
+    using namespace ACPI;
+
     using namespace PIT;
 #endif
 
@@ -99,6 +101,7 @@ extern "C" void kernel_main(/*multiboot_info* __boot_info*/ void) {
     Kdrivers::init();
 
     pit_init();
+    acpi_init();
     kbd_init();
     
 

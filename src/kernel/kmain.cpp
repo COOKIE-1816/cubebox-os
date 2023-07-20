@@ -80,6 +80,8 @@ String unsignedShortToString(unsigned short num) {
 unsigned short _memorySize;
 */
 
+//extern void _vga_init();
+
 extern "C" void kernel_main(/*multiboot_info* __boot_info*/ void) {
     tty_init();
 
@@ -95,6 +97,7 @@ extern "C" void kernel_main(/*multiboot_info* __boot_info*/ void) {
     idt_init();
     irq_init();
 
+
     /*writeString("Detecting memory size using CMOS...\n");
     _memorySize = detectMemory_cmos();*/
 
@@ -104,6 +107,8 @@ extern "C" void kernel_main(/*multiboot_info* __boot_info*/ void) {
     acpi_init();
     kbd_init();
     
+    asm volatile("sti");
+    asm volatile("call _vga_init");
 
     
     #endif

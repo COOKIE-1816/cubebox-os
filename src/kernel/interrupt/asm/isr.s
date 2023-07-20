@@ -75,6 +75,7 @@ global irq_handler_9
 irq_handler_9:
     push dword 0
     push dword 9
+    
     jmp common_irq_handler
 
 global irq_handler_10

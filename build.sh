@@ -80,7 +80,7 @@ echo STEP 1: Assemble assembly files
 i686-elf-as  src/boot.s                                     -o build/obj/boot.s.o
 i686-elf-as  src/kernel/crt/crti.s                          -o build/obj/kernel/crt/crti.s.o
 i686-elf-as  src/kernel/crt/crtn.s                          -o build/obj/kernel/crt/crtn.s.o
-nasm -felf32 src/kernel/interrupt/asm/isr.asm               -o build/obj/kernel/interrupt/asm/isr.asm.o
+nasm -felf32 src/kernel/interrupt/asm/isr.s                 -o build/obj/kernel/interrupt/asm/isr.s.o
 #nasm -felf32 src/kernel/gdt/asm.s                           -o build/obj/kernel/gdt/asm.s.o
 #nasm -felf32  kernel/probe.s                             -o build/obj/kernel/probe.s.o
 #nasm -felf32 src/kernel/gdt/asm.s                         -o build/obj/kernel/gdt/asm.s.o

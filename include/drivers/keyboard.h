@@ -53,4 +53,6 @@ uint8_t kbd_getLast();
 int kbd_init();
 char kbd_toChar(uint8_t __scancode, kbd_kbdState __kbdStatea);
 
+extern "C" void kbd_irqHandler();
+
 #endif

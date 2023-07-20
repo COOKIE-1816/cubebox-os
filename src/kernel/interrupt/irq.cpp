@@ -1,3 +1,4 @@
+#include "drivers/keyboard.h"
 #include "kernel/interrupt/irq.h"
 #include "kernel/interrupt/idt.h"
 #include "kernel/tty.h"
@@ -5,6 +6,9 @@
 #include "kernel/system.h"
 #include "drivers/pic.h"
 #include <stdint.h>
+
+#include "kernel/defs/macros.h"
+#include "kernel/defs/vectors.h"
 
 using namespace Kernel::IDT;
 using namespace Kernel::IRQ;
@@ -111,13 +115,22 @@ void Kernel::IRQ::irq_init() {
     setDescriptor(47, (unsigned) irq15, 0x08);
 }
 
-extern "C" void Kernel::IRQ::irq_handler(regs *r) {
+extern "C" void irq_handler(regs *r, uint32_t __irq, uint32_t __e, uint32_t __eip) {
+    UNUSED(__e); // Complete original feature later.
+    UNUSED(__eip); // Complete original feature later.
+
+    if(__irq == INTR_KBD) {
+        kbd_irqHandler();
+        return;
+    }
+
+    //writeString("Interrupt handled.");
 
     unsigned int vector = r->int_no - 32;
     void (*handler)(struct regs *r);
 
     if (r->int_no > 47 || r->int_no < 32) {
-		handler = NULL;
+		handler = /*NULL*/ 0;
 	} else {
 		handler = irq_routines[vector];
 	}

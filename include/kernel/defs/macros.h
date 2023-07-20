@@ -25,6 +25,6 @@
 
 #define STOP CLI && HLT
 
-#define NULL (void)(0x00)
+#define NULL (void)(*)
 
 #endif

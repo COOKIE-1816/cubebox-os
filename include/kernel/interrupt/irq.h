@@ -28,5 +28,6 @@ namespace Kernel {
     };
 };
 
+extern "C" void irq_handler(Kernel::System::regs *r);
 
 #endif

@@ -4,6 +4,7 @@
 #include "kernel/interrupt/irq.h"
 #include "kernel/kdrivers.h"
 #include "kernel/tty.h"
+#include "kernel/defs/macros.h"
 
 #define PIT_CMD 0x43
 #define PIT_DIV 0x40
@@ -17,7 +18,7 @@ kdriver _pit;
 int _pit_ticks = 0;
 
 // Hides annoying "defined but not used" warns
-#define UNUSED(x) (void)(x)
+//#define UNUSED(x) (void)(x)
 
 void _pit_handler(struct regs *__r) {
     UNUSED(__r);

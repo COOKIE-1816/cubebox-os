@@ -4,6 +4,8 @@
 #include "kernel/common.h"
 #include "kernel/system.h"
 
+using namespace Kernel::System;
+
 extern unsigned int __irq_sem;
 
 #define IRQ_OFF { asm volatile ("cli"); }
@@ -18,16 +20,19 @@ namespace Kernel {
         void setMask(unsigned char IRQline);
         void clearMask(unsigned char IRQline);
 
-        void installHandler(int __irq, irqHandler_t __handler);
+        extern void installHandler(int __irq, irqHandler_t __handler);
         void uninstallHandler(int __irq);
 
         void remap();
         void irq_init();
 
-        extern "C" void irq_handler(Kernel::System::regs *r);
+        //extern "C" void irq_handler(regs *__r);
     };
 };
 
-extern "C" void irq_handler(Kernel::System::regs *r);
+extern "C" void irq_handler(regs *__r, 
+                            uint32_t __irq, 
+                            uint32_t __e, 
+                            uint32_t __eip);
 
 #endif

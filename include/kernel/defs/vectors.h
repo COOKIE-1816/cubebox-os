@@ -13,9 +13,9 @@
 #define INTR_SPU 0x07 // spurious interrupt
 #define INTR_LPT1 0x07
 #define INTR_RTC 0x08
-#define INTR_LGC 0x09 // legacy SCSI
-#define INTR_SCSI 0x0A
-#define INTR_SCSI 0x0B
+#define INTR_SCSIL 0x09 // legacy SCSI
+#define INTR_SCSI0 0x0A
+#define INTR_SCSI1 0x0B
 #define INTR_MSE 0x0C // PS2 mouse
 #define INTR_FPU 0x0D
 #define INTR_CPR 0x0D // Coprocessor

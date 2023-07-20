@@ -20,11 +20,13 @@
 // Prevents annoying 'defined but not used' warning
 #define UNUSED(x) (void)(x)
 
-#define HLT volatile asm("hlt")
-#define CLI volatile asm("cli")
+#define HLT {volatile asm("hlt");}
+#define CLI {volatile asm("cli");}
 
-#define STOP CLI && HLT
+#define KRNLSTOP {CLI; HLT;}
 
+#ifndef NULL
 #define NULL (void)(*)
+#endif
 
 #endif

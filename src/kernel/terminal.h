@@ -86,14 +86,14 @@ class Terminal {
         static size_t pos_y;
 
         public:
-        static void enable();
+        static void enable(u8 __start, u8 __end);
         static void disable();
 
         // Move the cursor to the specified position.
-        static void move(size_t __pos_x, size_t __pos_y);
+        static void move(int __pos_x, int __pos_y);
 
         // Get cursor position.
-        static size_t getPos();
+        static u16 getPos();
     };
 };
 

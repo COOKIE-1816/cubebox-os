@@ -8,3 +8,4 @@ build/*
 *.xcf
 *.a
 *.d
+*out

@@ -34,11 +34,11 @@ class Terminal {
         static size_t pos_y;
 
         public:
-        void enable();
-        void disable();
+        static void enable();
+        static void disable();
 
-        void move(size_t __pos_x, size_t __pos_y);
-        size_t getPos();
+        static void move(size_t __pos_x, size_t __pos_y);
+        static size_t getPos();
     };
 };
 

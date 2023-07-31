@@ -5,8 +5,8 @@
 #include "kernel/kernel.h"
 
 
-size_t VGA_WIDTH = 80;
-size_t VGA_HEIGHT = 25;
+const size_t VGA_WIDTH = 80;
+const size_t VGA_HEIGHT = 25;
 
 // Video Graphics Array (VGA) driver
 class Vga {
@@ -14,6 +14,7 @@ class Vga {
     static int _pallete;
 
     public:
+    /*
     // VGA Colors for 1-bit modes
     enum color1x {
         VGA_COLOR_BLACK = 0,
@@ -27,6 +28,7 @@ class Vga {
         VGA_COLOR_MAGENTA = 2,
         VGA_COLOR_GRAY = 3,
     };
+    */
 
     // VGA Colors for 4-bit modes
     enum color4x {
@@ -50,11 +52,13 @@ class Vga {
 
     static void setPalete(int __bits);
 
+    /*
     // Returns color entry for 1-bit pallete
     static u8 entryColor1x(enum Vga::color1x __foreground, enum Vga::color1x __background);
 
     // Returns color entry for 2-bit pallete
     static u8 entryColor2x(enum Vga::color2x __foreground, enum Vga::color2x __background);
+    */
 
     // Returns color entry for default 4-bit pallete
     static u8 entryColor  (enum Vga::color4x __foreground, enum Vga::color4x __background);

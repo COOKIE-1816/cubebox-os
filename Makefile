@@ -7,10 +7,10 @@ TARGET = ix86
 # =================================== TOOLS AND FLAGS DEFINITIONS ===================================
 
 CC = i686-elf-gcc
-CFLAGS = -std=gnu99 -ffreestanding -O2 -Wall -Wextra -I ./src/
+CFLAGS = -std=gnu99 -ffreestanding -O2 -Wall -Wextra -I ./src/ -I ./src/libc/
 
 CXX = i686-elf-g++
-CXXFLAGS = -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -I ./src/
+CXXFLAGS = -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -I ./src/ -I ./src/libc/
 
 AS = i686-elf-as
 
@@ -47,10 +47,16 @@ $(OBJ_DIR)/%.o: src/%.s
 	$(AS) $(ASFLAGS) $< -o $@
 
 # =================================== EXECUTABLE GENERATION ===================================
-$(BIN_DIR)/$(OS_NAME)-$(VERSION)-$(TARGET)-$(STAGE).bin: $(C_OBJECTS) $(CXX_OBJECTS) $(ASM_OBJECTS)
-	$(LD) $(LDFLAGS) $(C_OBJECTS) $(CXX_OBJECTS) $(ASM_OBJECTS) -o $(BIN_DIR)/$(OS_NAME)-$(VERSION)-$(TARGET)-$(STAGE).bin
+$(BIN_DIR)/kernel.bin: $(C_OBJECTS) $(CXX_OBJECTS) $(ASM_OBJECTS)
+	$(LD) $(LDFLAGS) $(C_OBJECTS) $(CXX_OBJECTS) $(ASM_OBJECTS) -o $(BIN_DIR)/kernel.bin
 
 
 # =================================== GENERATED FILES REMOVAL ===================================
 clean:
 	rm -f $(BIN_DIR)/$(OS_NAME).bin $(C_OBJECTS) $(CXX_OBJECTS) $(ASM_OBJECTS)
+
+# =================================== KERNEL TESTING ===================================
+qemu:
+	qemu-sysyem-x86_64 -cdrom build/*.iso
+qemu-kernel:
+	qemu-sysyem-x86_64 -kernel build/bin/kernel.bin

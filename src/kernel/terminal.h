@@ -16,9 +16,15 @@ class Terminal {
 
     public:
     static void init();
+    
+    // Clears the screen
+    static void clear();
 
     // Sets the color for next printing.
     static void setColor(u8 __color);
+    
+    // Sets the color to default values.
+    static void resetColor();
 
     // Puts entry (char) with specified color to specified position.
     static void putEntry(char __c, u8 __color, size_t __pos_x, size_t __pos_y);

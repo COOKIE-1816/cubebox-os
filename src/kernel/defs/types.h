@@ -9,5 +9,12 @@ typedef uint32_t u32;
 typedef uint64_t u64;
 
 typedef unsigned char uc;
+typedef const char* cc;
+
+typedef struct name_struct {
+    cc shortName;
+    cc name;
+    int numId
+} name_t;
 
 #endif

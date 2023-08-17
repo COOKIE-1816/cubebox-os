@@ -9,6 +9,10 @@ typedef const char* String;
 extern "C" {
 #endif
 
+int memcmp(const void*, const void*, size_t);
+void* memcpy(void* __restrict, const void* __restrict, size_t);
+void* memmove(void*, const void*, size_t);
+void* memset(void*, int, size_t);
 
 // Counts characters in __str string and returns count of them.
 size_t strlen(String __str);

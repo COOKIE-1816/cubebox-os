@@ -1,18 +1,28 @@
 #include "kernel/terminal.h"
 #include "drivers/vga/vga.h"
 
-inline void Terminal::init() {
+u8 color_default = 0x07;
+
+inline void Terminal::resetColor() {
+    color = color_default;
+}
+
+inline void Terminal::clear() {
     pos_x = 0;
     pos_y = 0;
 
-    color = 0x07;
     buffer = (u16*) 0xB8000;
 
     for (size_t y = 0; y < VGA_HEIGHT; y++) {
 		for (size_t x = 0; x < VGA_WIDTH; x++) {
-			buffer[ y * VGA_WIDTH + x] = Vga::entry(' ', color);
+			buffer[y * VGA_WIDTH + x] = Vga::entry(' ', color);
 		}
 	}
+}
+
+inline void Terminal::init() {
+    resetColor();
+    clear();
 }
 
 inline void Terminal::setColor(u8 __color) {

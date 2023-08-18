@@ -7,8 +7,6 @@
 
 #include "kernel/kernel.h"
 
-typedef u32 address_t;
-
 static u32  mmu_memory_size = 0;
 static u33  mmu_usedBlocks  = 0;
 static u32  mmu_maxBlocks   = 0;

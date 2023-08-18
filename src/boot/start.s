@@ -20,10 +20,13 @@ stack_top:
 .global _start
 .type _start, @function
 _start:
+    mov $stack_top, %esp
+
     call _init
     call _fini
 
-    mov $stack_top, %esp
+    cli
+
     call kmain
 
     cli

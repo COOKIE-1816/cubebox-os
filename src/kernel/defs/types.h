@@ -17,4 +17,6 @@ typedef struct name_struct {
     int numId
 } name_t;
 
+typedef u32 address_t;
+
 #endif

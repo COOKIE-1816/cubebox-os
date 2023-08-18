@@ -27,5 +27,13 @@ static void mmu_init(size_t __size, address_t __bitmap);
 static void mmu_initRegion(address_t __base, size_t __regionSize);
 static void mmu_uninitRegion(address_t __base, size_t __regionSize);
 
+#ifdef "__cplusplus"
+extern "C" {
+#endif
+
 static void free(void *__p);
 static void malloc();
+
+#ifdef "__cplusplus"
+}
+#endif

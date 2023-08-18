@@ -54,9 +54,19 @@ typedef struct gdt_descriptor_template {
 
 class Gdt {
     public:
+
+    //  ===== gdt.cpp =======================
     u64 createDescriptor(
         gdt_descriptor_template_t __descriptor
     );
+
+    // ===== flush.s ========================
+    void setGdt( u32 __limit,
+                 u32 __base,
+              /* u32 __offset */);
+
+    // ===== reload.s =======================
+    void reloadSegments();
 };
 
 #endif

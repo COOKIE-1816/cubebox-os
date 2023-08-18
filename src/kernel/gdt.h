@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include "kernel/kernel.h"
 
 #ifndef GDT_H
 #define GDT_H
@@ -44,5 +45,18 @@
 #define GDT_DATA_PL3 SEG_DESCTYPE(1) | SEG_PRES(1) | SEG_SAVL(0) | \
                      SEG_LONG(0)     | SEG_SIZE(1) | SEG_GRAN(1) | \
                      SEG_PRIV(3)     | SEG_DATA_RDWR
-                    
-                    #endif
+               
+typedef struct gdt_descriptor_template {
+    u32 base;
+    u32 limit;
+    u16 flag;
+} gdt_descriptor_template_t;
+
+class Gdt {
+    public:
+    u64 createDescriptor(
+        gdt_descriptor_template_t __descriptor
+    );
+};
+
+#endif

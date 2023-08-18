@@ -1,5 +1,8 @@
 #include "kernel/kernel.h"
 #include "kernel/terminal.h"
+#include "kernel/gdt.h"
+
+// static gdt_descriptor_template_t* _g[4];
 
 void printVersion() {
     Terminal::wstring("Kernel version: ");
@@ -20,4 +23,10 @@ extern "C" void kmain(void) {
 
     Terminal::resetColor();
     printVersion();
+
+    Gdt::createDescriptor(0x00, 0x000FFFFF, 0x00);
+    Gdt::createDescriptor(0x00, 0x000FFFFF, (GDT_CODE_PL0));
+    Gdt::createDescriptor(0x00, 0x000FFFFF, (GDT_DATA_PL0));
+    Gdt::createDescriptor(0x00, 0x000FFFFF, (GDT_CODE_PL3));
+    Gdt::createDescriptor(0x00, 0x000FFFFF, (GDT_DATA_PL3));
 }

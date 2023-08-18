@@ -60,6 +60,11 @@ class Gdt {
         gdt_descriptor_template_t __descriptor
     );
 
+    void encodeEntry(
+                     u8* __ptr, 
+                     gdt_descriptor_template_t __source
+    );
+
     // ===== flush.s ========================
     void setGdt( u32 __limit,
                  u32 __base,

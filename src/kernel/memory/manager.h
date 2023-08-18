@@ -1,4 +1,5 @@
 #ifndef MMU_H
+#define MMU_H
 
 #define MMU_BLOCKS_PER_BYTE 8
 #define MMU_BLOCK_SIZE      4096
@@ -36,4 +37,6 @@ static void malloc();
 
 #ifdef "__cplusplus"
 }
+#endif
+
 #endif

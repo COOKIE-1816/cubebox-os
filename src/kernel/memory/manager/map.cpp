@@ -13,7 +13,7 @@ inline int MemoryMap::test(int __bit) {
 }
 
 inline int MemoryMap::firstFree() {
-    for (u32 i = 0; i < mmu_getBlockCount() / 32; i++)
+    for (u32 i = 0; i < mmu_maxBlocks / 32; i++)
         if (mmu_memoryMap[i] != 0xffffffff)
             for (int j = 0; j < 32; j++) {
                 int bit = 1 << j;

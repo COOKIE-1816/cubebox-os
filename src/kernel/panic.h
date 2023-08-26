@@ -8,6 +8,10 @@
 extern "C" {
 #endif
 
+/*  Kernel panic function.
+
+    Prints error code on TTY, disables
+    interrupts and halts the CPU.          */
 void panic(string __error);
 
 #ifdef __cplusplus

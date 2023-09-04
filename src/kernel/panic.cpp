@@ -1,8 +1,8 @@
 #include "kernel/panic.h"
-#include "kernel/tty.h"
+#include "kernel/terminal.h"
 
 void __halt() {
-    wstring("System halted.");
+    Terminal::wstring("System halted.");
     
     __asm__ volatile ("cli");
     while(1) {
@@ -10,7 +10,7 @@ void __halt() {
     }
 }
 
-void panic(string __error) {
+void panic(String __error) {
      // disable interrupts
     __asm__ volatile ("cli");
     

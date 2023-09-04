@@ -1,0 +1,27 @@
+{
+  "configurations": [
+    {
+      "inheritEnvironments": [
+        "msvc_x86",
+        "gcc_x86"
+      ],
+      "name": "x86-Release",
+      "includePath": [
+        "${env.INCLUDE}",
+
+        "${workspaceRoot}\\src\\**",
+
+        "${workspaceRoot}\\src\\libs\\**",
+        "${workspaceRoot}\\src\\libs\\libc\\**",
+        "${workspaceRoot}\\src\\libs\\libk\\**"
+      ],
+      "defines": [
+        "WIN32",
+        "NDEBUG",
+        "UNICODE",
+        "_UNICODE"
+      ],
+      "intelliSenseMode": "linux-gcc-x86"
+    }
+  ]
+}

@@ -2,8 +2,7 @@
   "configurations": [
     {
       "inheritEnvironments": [
-        "msvc_x86",
-        "gcc_x86"
+        
       ],
       "name": "x86-Release",
       "includePath": [

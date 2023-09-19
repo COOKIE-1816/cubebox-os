@@ -15,7 +15,8 @@ void printVersion() {
     Terminal::wstring("\n");
 }
 
-extern "C" void kmain(void) {
+extern "C" 
+void kmain(void) {
     Terminal::init();
 
     Terminal::setColor(0x02); // Green text

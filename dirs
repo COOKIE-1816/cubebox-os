@@ -1,0 +1,27 @@
+################################################################
+####################### A DIRECTORY TREE #######################
+################################################################
+
+/														- Root directory 
+|
++- scripts												- A build scripts
++- src 													- A source code
+	+- boot												- Boot files, multiboot headers, etc.
+	|	+- grub											- GRUB Bootloader configs
+	+- drivers											- A hardware device drivers
+	+- kernel											- Kernel sources
+	|	+- arch											- Architecture/target specific sources
+	|	|	+- x86										- Sources for x86 architecture.
+	|	+- common										- A common kernel function. For exaple IO.
+	|	|	+- io 										- IO functions such as outb().
+	|	+- defs											- Kernel definitions, such as for struct, etc.
+	|	+- gdt											- Global Descriptor Table.
+	|	+- memory										- Physical memory related sources.
+	|	|	+- manager									- Physical memory management unit (P-MMU).
+	|	+- terminal										- Terminal driver.
+	+- libs												- Libraries
+		+- libc											- Standard C/C++ libs.
+			+- stdio									- stdio.h 
+			+- stdlib									- stdlib.h 
+			+- string									- string.h 
+			+- sys										- sys.h 

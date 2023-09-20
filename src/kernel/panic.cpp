@@ -26,3 +26,7 @@ void panic(String __error) {
     Terminal::wstring("End of kernel panic. ");
     __halt();
 }
+
+void asmpanic() {
+	panic("KERNEL_PANIC_UNK");
+}

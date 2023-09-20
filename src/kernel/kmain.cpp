@@ -5,7 +5,7 @@
 // static gdt_descriptor_template_t* _g[4];
 
 void printVersion() {
-    Terminal::wstring("Kernel version: ");
+    Terminal::wstring("Kernel version: \t");
     Terminal::wstring(kernel_version);
 
     #if KDEVSTAGE_STRING != "stable"

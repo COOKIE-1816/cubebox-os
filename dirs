@@ -4,6 +4,7 @@
 
 /														- Root directory 
 |
++- logo													- CubeBox OS logo
 +- scripts												- A build scripts
 +- src 													- A source code
 	+- boot												- Boot files, multiboot headers, etc.

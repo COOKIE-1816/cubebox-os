@@ -3,3 +3,4 @@
 stack_bottom:
 .skip 16384 # 16 KiB
 stack_top:
+

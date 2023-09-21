@@ -30,3 +30,4 @@ void panic(String __error) {
 void asmpanic() {
 	panic("KERNEL_PANIC_UNK");
 }
+

@@ -16,3 +16,4 @@
 
 //String kmsgGen(int __level, String __source, String __message);
 void kmsg(int __level, String __source, String __message);
+

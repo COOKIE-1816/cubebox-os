@@ -9,6 +9,3 @@
 .long MAGIC
 .long FLAGS
 .long CHECKSUM
-
-
-

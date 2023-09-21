@@ -36,3 +36,4 @@ void Gdt::encodeEntry(u8* __target, gdt_descriptor_template_t __source) {
  
     __target[6] |= (__source.flags << 4);
 }
+

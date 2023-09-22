@@ -1,3 +1,5 @@
+mkdir -p build/bin  
+mkdir -p build/obj  
 rm -f build/obj/* 
 rm -f build/bin/* 
 SOURCES_ASM=$(find -type f -name "*.s")
@@ -13,12 +15,11 @@ echo "-> Compiling source code..."
 echo "   C   | $SOURCES_C" 
 i686-elf-gcc $CFLAGS  -c -lc $SOURCES_C $SEARCH -std=gnu99  
 echo "   C++ | $SOURCES_C" 
-i686-elf-g++ $CFLAGS  -c -lc $SOURCES_CPP $SEARCH -fno-rtti   
+i686-elf-g++ $CFLAGS -c  -lc $SOURCES_CPP $SEARCH -fno-rtti   
 echo "-> Linking object files together..." 
 i686-elf-g++ -T src/linker.ld -o build/bin/cubebox.bin -ffreestanding -O2 -nostdlib build/obj/* -lgcc  
 OBJFILES=$(find -type f -name "*.o")
-cp $OBJFILES "build/obj"
-rm -f $OBJFILES 
+mv $OBJFILES build/obj 
 echo "-> Checking binaries for valid multiboot headers..." 
 if grub-file --is-x86-multiboot build/bin/cubebox.bin; then 
 	echo "-> Generating bootable ISO with GRUB bootloader..." 

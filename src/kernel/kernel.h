@@ -9,4 +9,4 @@ const char* kernel_devStage = KDEVSTAGE_STRING;
 
 #include "kernel/defs/types.h"
 
-#endif _KERNEL_H_
+#endif

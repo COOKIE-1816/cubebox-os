@@ -3,11 +3,13 @@
  
 __attribute__((__noreturn__))
 void abort(void) {
-#if defined(__is_libk)
-	printf("kernel: panic: abort()\n");
+	#if defined(__is_libk)
+		printf("kernel: panic: abort()\n");
         asm volatile("hlt");
-#else	printf("abort()\n");
-#endif
+	#else 
+		printf("abort()\n");
+	#endif
+	
 	while(1);
 	__builtin_unreachable();
 }

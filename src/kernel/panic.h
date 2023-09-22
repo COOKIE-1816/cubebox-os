@@ -12,7 +12,7 @@ extern "C" {
 
     Prints error code on TTY, disables
     interrupts and halts the CPU.          */
-void panic(string __error);
+void panic(String __error);
 
 #ifdef __cplusplus
 }

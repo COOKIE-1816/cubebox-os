@@ -33,26 +33,26 @@ inline void Terminal::putEntry(char __c, u8 __color, size_t __pos_x, size_t __po
 	buffer[__pos_y * VGA_WIDTH + __pos_x] = Vga::entry(__c, __color);
 }
 
-#define TAB_LENGTH 8
 
-void tab() {
-	if(TAB_LENGTH < VGA_WIDTH - __pos_x) {
+
+inline void Terminal::tab() {
+	if(TAB_LENGTH < VGA_WIDTH - pos_x) {
 		lineBreak();
 		return;
 	}
 		
-	static size_t* indent[VGA_WIDTH / TAB_LENGTH];
+	static size_t indent[VGA_WIDTH / TAB_LENGTH];
 	size_t indentchar;
-	for(int i = 0; i < VGA_WIDTH / TAB_LENGTH; i++) {
+	for(size_t i = 0; i < VGA_WIDTH / TAB_LENGTH; i++) {
 		indent[i] = i * TAB_LENGTH;
 			
-		if(indent[i] > __pos_x) {
+		if(indent[i] > pos_x) {
 			indentchar = indent[i];
 			break;
 		}
 	}
 		
-	__pos_x = indentchar;
+	pos_x = indentchar;
 }
 
 inline void Terminal::putChar(char __c) {

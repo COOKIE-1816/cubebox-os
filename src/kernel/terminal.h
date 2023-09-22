@@ -5,6 +5,8 @@
 #include "kernel/kernel.h"
 #include "libs/libc/string.h"
 
+const size_t TAB_LENGTH = 8;
+
 // Terminal class used to print text to the screen.
 class Terminal {
     private:
@@ -37,6 +39,8 @@ class Terminal {
 
     // Prints a string
     static void wstring(String __data);
+
+	static void tab();
 
     /*
         Prints styled text

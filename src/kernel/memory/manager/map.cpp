@@ -1,4 +1,4 @@
-#include "kernel/memory.h"
+/*#include "kernel/memory.h"
 
 inline void MemoryMap::set(int __bit) {
     mmu_memoryMap[__bit / 32] |= (1 << (__bit % 32));
@@ -25,3 +25,4 @@ inline int MemoryMap::firstFree() {
 // error
     return -1;
 }
+*/

@@ -5,7 +5,7 @@
 #include "kernel/kernel.h"
 #include "libs/libc/string.h"
 
-const size_t TAB_LENGTH = 8;
+extern const size_t TAB_LENGTH;
 
 // Terminal class used to print text to the screen.
 

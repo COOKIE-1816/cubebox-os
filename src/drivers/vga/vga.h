@@ -5,8 +5,8 @@
 #include "kernel/kernel.h"
 
 
-const size_t VGA_WIDTH = 80;
-const size_t VGA_HEIGHT = 25;
+extern const size_t VGA_WIDTH;
+extern const size_t VGA_HEIGHT;
 
     // VGA Colors for 4-bit modes
 enum vga_color4x {

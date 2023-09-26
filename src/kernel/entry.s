@@ -17,9 +17,9 @@ stack_bottom:
 stack_top:
 
 .section .text
-.global main
-.type main, @function
-main:
+.global _start
+.type _start, @function
+_start:
     mov $stack_top, %esp
     cli
 
@@ -29,4 +29,4 @@ main:
  1:	hlt
 	jmp 1b
 
-.size main, . - main
+.size _start, . - _start

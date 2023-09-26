@@ -23,7 +23,7 @@ set  LD_SCRIPTS="src/linker.ld"
 set  FLAGS=-ffreestanding -O2 -fno-exceptions -Wall -Wextra -Isrc -Isrc/libs/libc
 set  CFLAGS=-std=gnu99
 set  CPFLAGS=-fno-rtti
-set  LDFLAGS=-ffreestanding -O2 -nostdlib -lgcc
+set  LDFLAGS=-ffreestanding -O2 -nostdlib -lgcc -m32
 
 echo ===== [  LANG: C  ] =====
 i686-elf-gcc %FLAGS% %CFLAGS% -c %SOURCES_C%
@@ -43,7 +43,7 @@ i686-elf-as src/kernel/entry.s -o entry.o
 echo ==========================
 echo Linking everything together...
 
-wsl  find -type f -name '*.o'  >tmp/out
+wsl  find -type f -name '*.o' ^| paste -sd " " >tmp/out
 set /p OUTF=<tmp\out
 
 i686-elf-gcc -T %LD_SCRIPTS% %LDFLAGS% -o build/bin/kernel.bin %OUTF%

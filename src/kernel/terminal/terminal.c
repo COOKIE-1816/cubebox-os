@@ -3,6 +3,8 @@
 
 u8 color_default = 0x07;
 
+const size_t TAB_LENGTH = 8;
+
 void terminal_resetColor() {
     terminal_color = color_default;
 }

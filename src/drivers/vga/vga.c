@@ -1,5 +1,8 @@
 #include "drivers/vga/vga.h"
 
+const size_t VGA_WIDTH = 80;
+const size_t VGA_HEIGHT = 25;
+
 u8 vga_entryColor(enum vga_color4x __foreground, enum vga_color4x __background) {
     return __foreground | __background << 4;
 }

@@ -53,33 +53,29 @@ typedef struct gdt_descriptor_template {
 	u8  access;
 } gdt_descriptor_template_t;
 
-class Gdt {
-    public:
+//  ===== gdt.cpp =======================
+u64 gdt_createDescriptor(
+    /*gdt_descriptor_template_t __descriptor*/
+    
+    u32 base,
+    u32 limit,
+    u16 flag
+    
+);
 
-    //  ===== gdt.cpp =======================
-    u64 createDescriptor(
-        /*gdt_descriptor_template_t __descriptor*/
-		
-		u32 base,
-		u32 limit,
-		u16 flag
-		
-    );
+void gdt_encodeEntry(
+                    u8* __target_ptr, 
+                    gdt_descriptor_template_t __source
+);
 
-    void encodeEntry(
-                     u8* __target_ptr, 
-                     gdt_descriptor_template_t __source
-    );
+// TODO: Complete these ASAP.
+/*
+// ===== flush.s ========================
+void setGdt( u32 __limit,
+                u32 __base
+            );
 
-	// TODO: Complete these ASAP.
-	/*
-    // ===== flush.s ========================
-    void setGdt( u32 __limit,
-                 u32 __base
-				);
-
-    void reloadSegments();
-	*/
-};
+void reloadSegments();
+*/
 
 #endif

@@ -8,103 +8,96 @@
 const size_t TAB_LENGTH = 8;
 
 // Terminal class used to print text to the screen.
-class Terminal {
-    private:
-    static size_t pos_x;
-    static size_t pos_y;
 
-    static u8 color;
-    static u16* buffer;
+size_t terminal_pos_x;
+size_t terminal_pos_y;
 
-    public:
-    static void init();
-    
-    // Clears the screen
-    static void clear();
+u8 terminal_color;
+u16* terminal_buffer;
 
-    // Sets the color for next printing.
-    static void setColor(u8 __color);
-    
-    // Sets the color to default values.
-    static void resetColor();
+void terminal_init();
 
-    // Puts entry (char) with specified color to specified position.
-    static void putEntry(char __c, u8 __color, size_t __pos_x, size_t __pos_y);
+// Clears the screen
+void terminal_clear();
 
-    // Puts (prints) a new char to the display and buffer.
-    static void putChar(char __c);
+// Sets the color for next printing.
+void terminal_setColor(u8 __color);
 
-    // Prints a specified char array of specified length.
-    static void write(const char* __data, size_t __size);
+// Sets the color to default values.
+void terminal_resetColor();
 
-    // Prints a string
-    static void wstring(String __data);
+// Puts entry (char) with specified color to specified position.
+void terminal_putEntry(char __c, u8 __color, size_t __pos_x, size_t __pos_y);
 
-	static void tab();
+// Puts (prints) a new char to the display and buffer.
+void terminal_putChar(char __c);
 
-    /*
-        Prints styled text
+// Prints a specified char array of specified length.
+void terminal_write(const char* __data, size_t __size);
 
-        Symbol $$ prints $
-        Symbol %% prints %
+// Prints a string
+void terminal_wstring(String __data);
 
-        Symbol $0 set background black
-        Symbol $1 set background blue
-        Symbol $2 set background green
-        Symbol $3 set background cyan
-        Symbol $4 set background red
-        Symbol $5 set background magenta
-        Symbol $6 set background light grey
+void terminal_tab();
 
-        Symbol %0 set foreground black
-        Symbol %1 set foreground blue
-        Symbol %2 set foreground green
-        Symbol %3 set foreground cyan
-        Symbol %4 set foreground red
-        Symbol %5 set foreground magenta
-        Symbol %6 set foreground brown
-        Symbol %7 set foreground light grey
-        Symbol %8 set foreground dark grey
-        Symbol %9 set foreground light blue
-        Symbol %b set foreground light green
-        Symbol %c set foreground light cyan
-        Symbol %d set foreground light red
-        Symbol %e set foreground light magenta
-        Symbol %f set foreground yellow
-        Symbol %g set foreground white
+/*
+    Prints styled text
 
-        $r or %r will set defaults. 
-        Styling automatically resets after printing.
-    */
-    //static void wstyled(String __data_fmt);
+    Symbol $$ prints $
+    Symbol %% prints %
 
-    //static void redrawBuffer();
+    Symbol $0 set background black
+    Symbol $1 set background blue
+    Symbol $2 set background green
+    Symbol $3 set background cyan
+    Symbol $4 set background red
+    Symbol $5 set background magenta
+    Symbol $6 set background light grey
 
-    // Makes a line break.
-    static void lineBreak();
+    Symbol %0 set foreground black
+    Symbol %1 set foreground blue
+    Symbol %2 set foreground green
+    Symbol %3 set foreground cyan
+    Symbol %4 set foreground red
+    Symbol %5 set foreground magenta
+    Symbol %6 set foreground brown
+    Symbol %7 set foreground light grey
+    Symbol %8 set foreground dark grey
+    Symbol %9 set foreground light blue
+    Symbol %b set foreground light green
+    Symbol %c set foreground light cyan
+    Symbol %d set foreground light red
+    Symbol %e set foreground light magenta
+    Symbol %f set foreground yellow
+    Symbol %g set foreground white
 
-    // Makes a line break, but does not reset position on x axis.
-    static void lineBreak_noXChange();
+    $r or %r will set defaults. 
+    Styling automatically resets after printing.
+*/
+//static void wstyled(String __data_fmt);
 
-    // Scrolls.
-    static void scroll();
+//static void redrawBuffer();
+
+// Makes a line break.
+void terminal_lineBreak();
+
+// Makes a line break, but does not reset position on x axis.
+void terminal_lineBreak_noXChange();
+
+// Scrolls.
+void terminal_scroll();
 
     // A class to control text mode cursor.
-    class Cursor {
-        private:
-        static size_t pos_x;
-        static size_t pos_y;
+size_t terminal_cursor_pos_x;
+size_t terminal_cursor_pos_y;
 
-        public:
-        static void enable(u8 __start, u8 __end);
-        static void disable();
+void terminal_cursor_enable(u8 __start, u8 __end);
+void terminal_cursor_disable();
 
-        // Move the cursor to the specified position.
-        static void move(int __pos_x, int __pos_y);
+// Move the cursor to the specified position.
+void terminal_cursor_move(int __pos_x, int __pos_y);
 
-        // Get cursor position.
-        static u16 getPos();
-    };
-};
+// Get cursor position.
+u16 terminal_cursor_getPos();
 
 #endif

@@ -8,34 +8,25 @@
 #include "kernel/kernel.h"
 
 static u32  mmu_memory_size = 0;
-static u33  mmu_usedBlocks  = 0;
+static u32  mmu_usedBlocks  = 0;
 static u32  mmu_maxBlocks   = 0;
 static u32* mmu_memoryMap   = 0;
 
-class MemoryMap {
-    public:
-    static void set(int __bit);
-    static void unset(int __bit);
-    
-    static int test(int __bit);
-    
-    static int firstFree();
-};
 
-static void mmu_init(size_t __size, address_t __bitmap);
-static void mmu_initRegion(address_t __base, size_t __regionSize);
-static void mmu_uninitRegion(address_t __base, size_t __regionSize);
+void mmap_set(int __bit);
+void mmap_unset(int __bit);
 
-#ifdef "__cplusplus"
-extern "C" {
-#endif
+int mmap_test(int __bit);
 
-static void free(void *__p);
-static void malloc();
+int mmap_firstFree();
 
-#ifdef "__cplusplus"
-}
-#endif
+void mmu_init(size_t __size, address_t __bitmap);
+void mmu_initRegion(address_t __base, size_t __regionSize);
+void mmu_uninitRegion(address_t __base, size_t __regionSize);
+
+void free(void *__p);
+void malloc();
+
 
 #endif
 

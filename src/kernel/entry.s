@@ -16,21 +16,14 @@ stack_bottom:
 .skip 16384 # 16 KiB
 stack_top:
 
-
 .section .text
 .global main
 .type main, @function
 main:
     mov $stack_top, %esp
-
-    # call _init
-    # call _fini
-
     cli
 
     call kmain
-
-#	call asmpanic
 
    	cli
  1:	hlt

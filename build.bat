@@ -28,8 +28,8 @@ set  LDFLAGS=-ffreestanding -O2 -nostdlib -lgcc
 echo ===== [  LANG: C  ] =====
 i686-elf-gcc %FLAGS% %CFLAGS% -c %SOURCES_C%
 
-echo ===== [ LANG: C++ ] =====
-i686-elf-g++ %FLAGS% %CPFLAGS% -c %SOURCES_CPP%
+rem echo ===== [ LANG: C++ ] =====
+rem i686-elf-g++ %FLAGS% %CPFLAGS% -c %SOURCES_CPP%
 
 echo ===== [ ASSEMBLY  ] =====
 rem : For some reason, the code bellow not working.
@@ -52,4 +52,4 @@ move *.o build\obj
 
 wsl ./scripts/bootloader.sh
 
-del /F /S tmp
+del /F /S /Q tmp\*

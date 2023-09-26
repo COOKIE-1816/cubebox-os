@@ -14,33 +14,39 @@ wsl  find -type f -name '*.s'    > 	tmp/sources_asm
 wsl  find -type f -name '*.c'    > 	tmp/sources_c
 wsl  find -type f -name '*.cpp'  > 	tmp/sources_cpp
 
-set  SOURCES_ASM=<tmp/sources_asm
-set  SOURCES_C=<tmp\sources_c
-set  SOURCES_CPP=<tmp\sources_cpp
+set /p SOURCES_ASM=<tmp/sources_asm
+set /p SOURCES_C=<tmp\sources_c
+set /p SOURCES_CPP=<tmp\sources_cpp
 
 set  LD_SCRIPTS="src/linker.ld"
 
-set  FLAGS="-ffreestanding -O2 -fno-exceptions -Wall -Wextra"
-set  CFLAGS="-std=gnu99"
-set  CPFLAGS="-fno-rtti"
-set  LDFLAGS="-ffreestanding -O2 -nostdlib -lgcc"
-set  ASFLAGS=""
+set  FLAGS=-ffreestanding -O2 -fno-exceptions -Wall -Wextra -Isrc -Isrc/libs/libc
+set  CFLAGS=-std=gnu99
+set  CPFLAGS=-fno-rtti
+set  LDFLAGS=-ffreestanding -O2 -nostdlib -lgcc
 
 echo ===== [  LANG: C  ] =====
-echo %SOURCES_C%
-i686-elf-gcc %FLAGS% %CFLAGS% %SOURCES_C%
+i686-elf-gcc %FLAGS% %CFLAGS% -c %SOURCES_C%
 
 echo ===== [ LANG: C++ ] =====
-echo %SOURCES_CPP%
-i686-elf-g++ %FLAGS% %CPFLAGS% %SOURCES_CPP%
+i686-elf-g++ %FLAGS% %CPFLAGS% -c %SOURCES_CPP%
 
 echo ===== [ ASSEMBLY  ] =====
-echo %SOURCES_ASM%
-i686-elf-as %SOURECS_ASM% %AFLAGS%
+rem : For some reason, the code bellow not working.
+rem   Looks like assembler needs output file to be specified.
+rem i686-elf-as %SOURECS_ASM% 
+
+i686-elf-as src/boot/multiboot.s -o multiboot.o
+i686-elf-as src/kernel/entry.s -o entry.o
+i686-elf-as src/kernel/stack.s -o stack.o
 
 echo ==========================
 echo Linking everything together...
-i686-elf-g++ -T %LD_SCRIPTS% %LDFLAGS% build/obj/* -o build/bin/kernel.bin
+
+wsl  find -type f -name '*.o'  > 	tmp/out
+set /p OUTF=<tmp\out
+
+i686-elf-g++ -T %LD_SCRIPTS% %LDFLAGS% -o build/bin/kernel.bin %OUTF%
 
 wsl ./scripts/bootloader.sh
 

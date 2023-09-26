@@ -15,8 +15,7 @@ void printVersion() {
     Terminal::wstring("\n");
 }
 
-extern "C" 
-void kmain(void) {
+extern "C" void kmain(void) {
 	
 	Gdt gdtobj;
     Terminal::init();

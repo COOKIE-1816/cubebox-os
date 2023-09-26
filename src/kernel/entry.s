@@ -18,22 +18,22 @@ stack_top:
 
 
 .section .text
-.global _start
-.type _start, @function
-_start:
+.global main
+.type main, @function
+main:
     mov $stack_top, %esp
 
-    call _init
-    call _fini
+    # call _init
+    # call _fini
 
     cli
 
     call kmain
 
-	call asmpanic
+#	call asmpanic
 
-#    	cli
-# 	1:	hlt
-#		jmp 1b
+   	cli
+ 1:	hlt
+	jmp 1b
 
-.size _start, . - _start
+.size main, . - main

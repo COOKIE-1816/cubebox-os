@@ -1,5 +1,5 @@
  
-ENTRY(_start)
+ENTRY(main)
 
 SECTIONS
 {

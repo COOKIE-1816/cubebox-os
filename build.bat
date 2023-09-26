@@ -10,9 +10,9 @@ mkdir build\bin
 del /F /Q build\obj\*
 del /F /Q build\bin\*
 
-wsl  find -type f -name '*.s'    > 	tmp/sources_asm
-wsl  find -type f -name '*.c'    > 	tmp/sources_c
-wsl  find -type f -name '*.cpp'  > 	tmp/sources_cpp
+wsl  find -type f -name '*.s'	^| paste -sd " "    > 	tmp/sources_asm
+wsl  find -type f -name '*.c'   ^| paste -sd " " > 	tmp/sources_c
+wsl  find -type f -name '*.cpp' ^| paste -sd " "> 	tmp/sources_cpp
 
 set /p SOURCES_ASM=<tmp/sources_asm
 set /p SOURCES_C=<tmp\sources_c
@@ -36,17 +36,19 @@ rem : For some reason, the code bellow not working.
 rem   Looks like assembler needs output file to be specified.
 rem i686-elf-as %SOURECS_ASM% 
 
-i686-elf-as src/boot/multiboot.s -o multiboot.o
 i686-elf-as src/kernel/entry.s -o entry.o
-i686-elf-as src/kernel/stack.s -o stack.o
+
+
 
 echo ==========================
 echo Linking everything together...
 
-wsl  find -type f -name '*.o'  > 	tmp/out
+wsl  find -type f -name '*.o'  >tmp/out
 set /p OUTF=<tmp\out
 
-i686-elf-g++ -T %LD_SCRIPTS% %LDFLAGS% -o build/bin/kernel.bin %OUTF%
+i686-elf-gcc -T %LD_SCRIPTS% %LDFLAGS% -o build/bin/kernel.bin %OUTF%
+
+move *.o build\obj
 
 wsl ./scripts/bootloader.sh
 

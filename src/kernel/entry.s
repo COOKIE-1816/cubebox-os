@@ -23,7 +23,11 @@ _start:
     mov $stack_top, %esp
     cli
 
+    call _init
+
     call kmain
+
+    call _fini
 
    	cli
  1:	hlt

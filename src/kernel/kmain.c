@@ -1,5 +1,6 @@
 #include "kernel/kernel.h"
 #include "kernel/terminal.h"
+#include "kernel/panic.h"
 #include "kernel/gdt.h"
 
 // static gdt_descriptor_template_t* _g[4];
@@ -14,6 +15,8 @@ void printVersion() {
 	
     terminal_wstring("\n");
 }
+
+// #define __ALLOW_KERNEL_PANIC_TEST
 
 // extern "C" 
 void kmain(void) {
@@ -35,4 +38,8 @@ void kmain(void) {
     gdt_createDescriptor(0x00, 0x000FFFFF, (GDT_DATA_PL0));
     gdt_createDescriptor(0x00, 0x000FFFFF, (GDT_CODE_PL3));
     gdt_createDescriptor(0x00, 0x000FFFFF, (GDT_DATA_PL3));
+
+    #ifdef __ALLOW_KERNEL_PANIC_TEST
+        panic("KERNEL_PANIC_TEST");
+    #endif
 }

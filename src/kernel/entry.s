@@ -45,9 +45,12 @@ _start:
     call kmain
 
     call _fini
+	call asmpanic
 
+/*
    	cli
  1:	hlt
 	jmp 1b
+*/
 
 .size _start, . - _start

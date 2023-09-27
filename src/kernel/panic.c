@@ -19,9 +19,12 @@ void panic(String __error) {
     terminal_wstring("\n\n\n");
     terminal_wstring("======= [ KERNEL PANIC ] =======\n");
     
+    terminal_setColor(0b10001100);
     terminal_wstring("- kernel panic: ");
     terminal_wstring(__error);
     terminal_wstring("\n");
+
+    terminal_setColor(0x07);
     
     terminal_wstring("End of kernel panic. ");
     __halt();

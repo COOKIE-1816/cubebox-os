@@ -39,6 +39,7 @@ rem i686-elf-as %SOURECS_ASM%
 i686-elf-as src/kernel/entry.s -o entry.o
 i686-elf-as src/kernel/crti.s -o crti.o
 i686-elf-as src/kernel/crtn.s -o crtn.o
+rem i686-elf-as src/kernel/gdt/gdt.s -o gdt.s.o
 
 
 

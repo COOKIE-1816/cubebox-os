@@ -20,7 +20,7 @@ set /p SOURCES_CPP=<tmp\sources_cpp
 
 set  LD_SCRIPTS="src/linker.ld"
 
-set  FLAGS=-ffreestanding -O2 -fno-exceptions -Wall -Wextra -Isrc -Isrc/libs/libc -nostartfiles 
+set  FLAGS=-ffreestanding -O2 -fno-exceptions -Wall -Wextra -Isrc -Isrc/libs/libc -nostartfiles -fstack-protector
 set  CFLAGS=-std=gnu99
 set  CPFLAGS=-fno-rtti
 set  LDFLAGS=-ffreestanding -O2 -nostdlib -lgcc -m32

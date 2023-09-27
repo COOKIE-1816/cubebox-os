@@ -4,6 +4,12 @@
 #include <stddef.h>
 #include "kernel/kernel.h"
 
+#define VGA_GLYPH_WIDTH 9
+#define VGA_GLYPH_HEIGHT 16
+#define VGA_GLYPH_SIZE VGA_GLYPH_WIDTH * VGA_GLYPH_HEIGHT
+
+typedef int* glyph[VGA_GLYPH_SIZE];
+typedef glyph* vgaFont[256];
 
 extern const size_t VGA_WIDTH;
 extern const size_t VGA_HEIGHT;
@@ -35,5 +41,24 @@ u8 vga_entryColor  (enum vga_color4x __foreground, enum vga_color4x __background
 
 u16 vga_entry(uc __char, u8 __color);
 void vga_init();
+
+void vga_putPixel(int __pos_x, int __pos_y, enum vga_color4x __color);
+void vga_drawChar(  int __pos_x, 
+                    int __pos_y, 
+
+                    enum vga_color4x __color, 
+                    enum vga_color4x __colorBg, 
+
+                    uc __char
+);
+
+void vga_drawGlyph( int __pos_x,
+                    int __pos_y,
+                    
+                    enum vga_color4x __color, 
+                    enum vga_color4x __colorBg, 
+                    
+                    glyph __glyph
+);
 
 #endif

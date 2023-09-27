@@ -23,4 +23,12 @@ SECTIONS
 		*(COMMON)
 		*(.bss)
 	}
+	.init BLOCK(4K) : ALIGN(4K)
+	{
+		*(.init)
+	}
+	.fini BLOCK(4K) : ALIGN(4K)
+	{
+		*(.fini)
+	}
 }

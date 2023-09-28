@@ -6,7 +6,7 @@
 gdt_flush:
 	cli
 	
-    # lgdt (gp)
+    lgdt (gp)
     mov %ax, 0x10
 	
     mov %ds, %ax

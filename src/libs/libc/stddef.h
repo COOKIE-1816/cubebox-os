@@ -6,6 +6,6 @@
 typedef long size_t;
 
 #define offsetof(TYPE, MEMBER) ((size_t) & ((TYPE*) 0) -> MEMBER)
-#define sizeof(OBJECT) (char*) (&OBJECT + 1) - (char*)(&OBJECT)
+// #define sizeof(OBJECT) (char*) (&OBJECT + 1) - (char*)(&OBJECT)
 
 #endif

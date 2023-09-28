@@ -45,7 +45,8 @@
 #define GDT_DATA_PL3 SEG_DESCTYPE(1) | SEG_PRES(1) | SEG_SAVL(0) | \
                      SEG_LONG(0)     | SEG_SIZE(1) | SEG_GRAN(1) | \
                      SEG_PRIV(3)     | SEG_DATA_RDWR
-               
+              
+/*			  
 typedef struct gdt_descriptor_template {
     u32 base;
     u32 limit;
@@ -54,9 +55,7 @@ typedef struct gdt_descriptor_template {
 } gdt_descriptor_template_t;
 
 //  ===== gdt.cpp =======================
-u64 gdt_createDescriptor(
-    /*gdt_descriptor_template_t __descriptor*/
-    
+u64 gdt_createDescriptor(    
     u32 base,
     u32 limit,
     u16 flag
@@ -67,15 +66,35 @@ void gdt_encodeEntry(
                     u8* __target_ptr, 
                     gdt_descriptor_template_t __source
 );
-
-// TODO: Complete these ASAP.
-/*
-// ===== flush.s ========================
-void setGdt( u32 __limit,
-                u32 __base
-            );
-
-void reloadSegments();
 */
+
+struct gdt_entry {
+    unsigned short	limit_low;
+	
+    unsigned short 	base_low;
+    unsigned char 	base_middle;
+	unsigned char 	base_high;
+	
+    unsigned char 	access;
+    unsigned char 	granularity;
+} __attribute__((packed));
+
+struct gdt_ptr {
+    unsigned short 	limit;
+    unsigned int 	base;
+} __attribute__((packed));
+
+typedef  struct gdt_ptr gdtptr;
+
+extern void gdt_flush();
+
+void gdt_setGate(	int 			__num, 
+					unsigned long 	__base, 
+					unsigned long 	__limit, 
+					unsigned char 	__access, 
+					unsigned char 	__granularity
+);
+
+void gdt_install();
 
 #endif

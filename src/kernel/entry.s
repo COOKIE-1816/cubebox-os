@@ -23,23 +23,6 @@ _start:
     mov $stack_top, %esp
     cli
 
-/*
-    lgdt ($gdt_descriptor)
-    mov %eax, %cr0
-    or %eax, 0x1
-    mov cr0, %eax
-
-    mov %ax, DATA_SEG
-    mov %ds, %ax
-    mov %ss, %ax
-    mov %es, %ax
-    mov %fs, %ax
-    mov %gs, %ax
-
-    mov %ebp, 0x90000
-    mov %esp, %ebp
-*/
-
     call _init
 
     call kmain
@@ -52,5 +35,7 @@ _start:
  1:	hlt
 	jmp 1b
 */
+
+
 
 .size _start, . - _start

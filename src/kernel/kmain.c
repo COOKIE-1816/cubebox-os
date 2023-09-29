@@ -4,7 +4,10 @@
 #include "kernel/gdt.h"
 #include "kernel/interrupts.h"
 
+#include "drivers/serial/serial.h"
+
 // static gdt_descriptor_template_t* _g[4];
+
 
 void printVersion() {
     terminal_wstring("Kernel version: ");
@@ -45,7 +48,25 @@ void kmain(void) {
 	gdt_install();
 	idt_init();
 	
+	/*
+	serial_record_startRecording(COM1, 0xFFFF, SERIAL_RX + SERIAL_TX);
+	serial_record_startRecording(COM2, 0xFFFF, SERIAL_RX + SERIAL_TX);
+	*/
+	
+	serial_init();
+	
+	
     #ifdef __ALLOW_KERNEL_PANIC_TEST
         panic("KERNEL_PANIC_TEST");
     #endif
+	
+	/*
+	serial_record_stopRecording(COM1);
+	serial_record_stopRecording(COM2);
+	*/
+	
+	__asm__ volatile ("cli");
+    while(1) {
+        // do nothing.
+    }
 }

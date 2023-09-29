@@ -12,8 +12,8 @@ const char* kmsg_str[6] = {
 };
 
 static u8 kmsg_colors[6] = {
-	0b00000101,	// Brown
-	0b00001000, // Red
+	0X06,	// Brown
+	0X04, // Red
 	0b00000110, // Default
 	0b00000110, // Default
 	0b00000110, // Default 
@@ -27,7 +27,7 @@ static u8 kmsg_colors[6] = {
 void kmsg(int __level, String __source, String __message) {
 	terminal_setColor(kmsg_colors[__level]);
 	terminal_wstring(kmsg_str[__level]);
-	terminal_wstring("\t");
+	//terminal_wstring("\t");
 	
 	terminal_resetColor();
 	terminal_wstring("[");

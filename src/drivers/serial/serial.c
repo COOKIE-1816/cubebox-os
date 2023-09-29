@@ -31,7 +31,7 @@ int serial_checkFaultyPort(u16 __port) {
 	// should give the same response, if everything
 	// works fine.
 	outb(__port + 0, 0xAE);
-	u8 faulty = inb(__port + 0) == 0xAE;
+	u8 faulty = inb(__port + 0) ;
 	
 	activeOngoingTestReq = 0;
 	
@@ -40,7 +40,12 @@ int serial_checkFaultyPort(u16 __port) {
 		_record_irq(__port, SERIAL_RX, 0xAE);
 	*/
 	
-	if(faulty != 0x00)
+	if(faulty == 0) {
+		// No connection
+		return 2;
+	}
+	
+	if(faulty != 0xAE)
 		return 1;
 	
 	return 0;
@@ -57,9 +62,15 @@ void _init__port(u16 __port, int __iterator) {
 	outb(__port + 0x04, 0x1E);
  
 	// Check if specified port and client device operates correctly.
-	if(serial_checkFaultyPort(__port) != 0x00) {
+	int isFaulty = serial_checkFaultyPort(__port);
+	if(isFaulty != 0x00) {
 		/*kmsg(KMSG_LVL_WARNING, "Serial", "Writing SERIAL_TEST command resulted with incorrect response.");*/
 		
+		// No response = no connection.
+		if(isFaulty == 2)
+			return;
+		
+		// Connected, but bad response.
 		terminal_wstring("WARN [Serial] ");
 		terminal_wstring(_portNames[__iterator]);
 		terminal_wstring(": Serial port test resulted with incorrect response.\n");
@@ -85,6 +96,9 @@ void serial_init() {
 	for(int i = 0; i < ports; i++) {
 		_init__port(_ports[i], i);
 	}
+	
+	idt_installHandler(IRQ_COM1, &_irq_com1);
+	idt_installHandler(IRQ_COM2, &_irq_com2);
 	
 	//idt_enable();
 	

@@ -35,23 +35,10 @@ void kmain(void) {
     printVersion();
     terminal_wstring("\n");
 
-    terminal_cursor_move(terminal_pos_x, terminal_pos_y);
-
-	/*
-    gdt_createDescriptor(0x00, 0x000FFFFF, 0x00);
-    gdt_createDescriptor(0x00, 0x000FFFFF, (GDT_CODE_PL0));
-    gdt_createDescriptor(0x00, 0x000FFFFF, (GDT_DATA_PL0));
-    gdt_createDescriptor(0x00, 0x000FFFFF, (GDT_CODE_PL3));
-    gdt_createDescriptor(0x00, 0x000FFFFF, (GDT_DATA_PL3));
-	*/
+	terminal_cursor_disable();
 	
 	gdt_install();
 	idt_init();
-	
-	/*
-	serial_record_startRecording(COM1, 0xFFFF, SERIAL_RX + SERIAL_TX);
-	serial_record_startRecording(COM2, 0xFFFF, SERIAL_RX + SERIAL_TX);
-	*/
 	
 	serial_init();
 	
@@ -59,11 +46,6 @@ void kmain(void) {
     #ifdef __ALLOW_KERNEL_PANIC_TEST
         panic("KERNEL_PANIC_TEST");
     #endif
-	
-	/*
-	serial_record_stopRecording(COM1);
-	serial_record_stopRecording(COM2);
-	*/
 	
 	__asm__ volatile ("cli");
     while(1) {

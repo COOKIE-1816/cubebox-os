@@ -12,6 +12,7 @@ void idt_setDescriptor(u8 vector, void* isr, u8 flags) {
 }
 
 static u8 vectors[32];
+static u64 _idt_routine_handlers[32];
 
 void idt_init() {
     idtr.base =	(uintptr_t)	&idt[0];
@@ -37,4 +38,11 @@ void idt_enable() {
 
 void idt_disable() {
 	__asm__ volatile ("cli");
+}
+
+#define IDT_DESCRIPTOR_EXT (0x0E | 0x80)
+
+void idt_installHandler(u8 __vector, void* __handler_ptr) {
+	_idt_routine_handlers[__vector] = (u64) __handler_ptr;
+	idt_setDescriptor(__vector, isr_stub_table[vector], IDT_DESCRIPTOR_EXT, 0x8E);
 }

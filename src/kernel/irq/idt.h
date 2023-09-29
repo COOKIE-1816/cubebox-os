@@ -29,4 +29,6 @@ void idt_init(void);
 void idt_enable();
 void idt_disable();
 
+void idt_installHandler(u8 __vector, void* __handler_ptr);
+
 #endif

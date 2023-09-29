@@ -44,5 +44,9 @@ void idt_disable() {
 
 void idt_installHandler(u8 __vector, void* __handler_ptr) {
 	_idt_routine_handlers[__vector] = (u64) __handler_ptr;
-	idt_setDescriptor(__vector, isr_stub_table[vector], IDT_DESCRIPTOR_EXT, 0x8E);
+	idt_setDescriptor(	__vector, 
+						isr_stub_table[__vector], 
+						IDT_DESCRIPTOR_EXT /*, 
+						0x8E*/
+	);
 }
